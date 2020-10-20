@@ -8,7 +8,6 @@ PENIN Antoine # 10081
 - Scan d'article
   - Récupérer le prix
   - Les propriétés nutritionnelles
-  - Demander au user de scanner de nouveau si la capture n'est pas bonne
 - Panier
   - Ajouter/Retirer des produits
   - Gérer la quantité
