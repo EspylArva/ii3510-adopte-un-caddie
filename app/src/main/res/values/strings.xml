@@ -18,4 +18,11 @@
     </string>
     <string name="backToBasket">Retourner au panier</string>
     <string name="menu_barcodeScanner">Scanner de code-barre</string>
+    <string name="menu_basket">Panier</string>
+
+    <string-array name="shop_names">
+        <item>Auchan</item>
+        <item>Carrefour</item>
+        <item>Monoprix</item>
+    </string-array>
 </resources>
