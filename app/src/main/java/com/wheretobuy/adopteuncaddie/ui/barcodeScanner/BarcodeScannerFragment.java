@@ -48,6 +48,7 @@ public class BarcodeScannerFragment extends Fragment {
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_barcode_scanner, container, false);
 
+
         return root;
     }
 }

@@ -1,5 +1,6 @@
 package com.wheretobuy.adopteuncaddie.ui.gallery;
 
+import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -53,7 +55,8 @@ public class GalleryFragment extends Fragment {
             public void onChanged(Double location) {
                 if(location == null)
                 {
-                    galleryViewModel.gps.showSettingsAlert((MainActivity)getActivity());
+//                    galleryViewModel.gps.showSettingsAlert((MainActivity)getActivity());
+                    ActivityCompat.requestPermissions((MainActivity)getActivity(),new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },1);
                 }
                 else
                 {
@@ -68,7 +71,11 @@ public class GalleryFragment extends Fragment {
             public void onChanged(Double location) {
                 if(location == null)
                 {
-                    galleryViewModel.gps.showSettingsAlert((MainActivity)getActivity());
+//                    galleryViewModel.gps.showSettingsAlert((MainActivity)getActivity());
+//                    ActivityCompat.requestPermissions(
+//                            (MainActivity)getActivity(),
+//                            new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },
+//                            1);
                 }
                 else
                 {

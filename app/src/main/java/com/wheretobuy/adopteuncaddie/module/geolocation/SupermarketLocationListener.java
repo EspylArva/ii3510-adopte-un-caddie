@@ -1,5 +1,6 @@
 package com.wheretobuy.adopteuncaddie.module.geolocation;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,6 +8,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 public class SupermarketLocationListener implements LocationListener {
@@ -32,7 +35,7 @@ public class SupermarketLocationListener implements LocationListener {
 
     protected LocationManager locationManager;
 
-    public SupermarketLocationListener(Application application) {
+    public SupermarketLocationListener(Context application) {
         this.context = application;
     }
 
@@ -41,9 +44,11 @@ public class SupermarketLocationListener implements LocationListener {
 
     // TODO
 
-    public Location getLocation()
+    public Location refreshLocation()
     {
+        System.out.println(context);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        System.out.println("" + (locationManager == null));
         // Setting status flags
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -57,9 +62,14 @@ public class SupermarketLocationListener implements LocationListener {
                 if (isGPSEnabled) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,10, this);
                     if (locationManager != null) {
-                        Log.d("GPS Enabled", "GPS Enabled");
                         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) { refreshPosition(location); } // refreshing the positions so we can pull
+                        if (location != null) {
+                            Log.d("GPS Enabled", "Fetched position: " + location.getLatitude() + " - " + location.getLongitude());
+                            refreshPosition(location);
+                        } // refreshing the positions so we can pull
+                        else {
+                            Log.e("GPS failure", "Could not get a valid location using GPS");
+                        }
                     }
                 } // Checking with GPS first
                 else if (isNetworkEnabled) {
@@ -137,7 +147,13 @@ public class SupermarketLocationListener implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
+        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.removeUpdates(this);
+        }
     }
 
     @Override

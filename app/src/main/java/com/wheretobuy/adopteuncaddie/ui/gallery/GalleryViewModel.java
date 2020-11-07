@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -37,36 +38,31 @@ public class GalleryViewModel extends AndroidViewModel {
         this.latitude = new MutableLiveData<>();
         this.longitude = new MutableLiveData<>();
         this.mText.setValue("No position yet");
-//        this.location.setValue(getGeoLocation());
     }
 
     public void getGeoLocation() {
         Location location = null;
-        try{
+        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
+            Log.e("Permissions", "Neither GPS nor Internet permissions were granted");
+        } // No permissions
+        else
+        {
             gps = new SupermarketLocationListener(this.context);
-            location = gps.getLocation();
+            location = gps.refreshLocation();
+            this.location.setValue(location);
+
             if(location != null){
                 Toast.makeText(this.context, "Your Location is: Lat: " + location.getLatitude() + " - Long: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                this.latitude.setValue(location.getLatitude());
+                this.longitude.setValue(location.getLongitude());
             }
             else {
                 Log.e("Geolocation", "Could not fetch position. Location is null");
-
+                this.latitude.setValue(null);
+                this.longitude.setValue(null);
             }
         }
-        catch (SecurityException e) { e.printStackTrace(); }
-        this.location.setValue(location);
-
-        if(this.location.getValue() != null)
-        {
-            this.latitude.setValue(this.location.getValue().getLatitude());
-            this.longitude.setValue(this.location.getValue().getLongitude());
-        }
-        else
-        {
-            this.latitude.setValue(null);
-            this.longitude.setValue(null);
-        }
-
     }
 
     public MutableLiveData<Double> getLatitude()
@@ -77,8 +73,6 @@ public class GalleryViewModel extends AndroidViewModel {
     {
         return this.longitude;
     }
-
-
     public LiveData<String> getText() {
         return mText;
     }
