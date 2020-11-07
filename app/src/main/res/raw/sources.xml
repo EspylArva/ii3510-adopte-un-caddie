@@ -1,0 +1,14 @@
+<sources>
+	<category>XML resources</category>
+	<source description="formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
+
+	<category>Functionalities</category>
+	<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
+	<source description="" link=""/>
+
+	<category>AndroidManifest</category>
+	<source description="Managing permissions" link=""/>
+</sources>
+
+
+<source description="" link=""/>

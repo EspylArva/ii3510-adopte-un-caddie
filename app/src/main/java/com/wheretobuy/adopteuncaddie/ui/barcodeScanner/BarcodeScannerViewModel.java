@@ -1,14 +1,17 @@
-package com.wheretobuy.adopteuncaddie.ui.home;
+package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class BarcodeScannerViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public BarcodeScannerViewModel(Application app) {
+        super(app);
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

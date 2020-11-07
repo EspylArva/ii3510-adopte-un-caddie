@@ -10,4 +10,12 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="lorem">lorem ipsum</string>
+    <string name="hint_manualBarcode">Entrez un code barre manuellement</string>
+    <string name="title_barcodeScanningFragment">
+        ou<br/>
+        Scannez un code-barre
+    </string>
+    <string name="backToBasket">Retourner au panier</string>
+    <string name="menu_barcodeScanner">Scanner de code-barre</string>
 </resources>
