@@ -3,9 +3,15 @@
 	<source description="formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
 
 	<category>Functionalities</category>
-	<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
-	<source description="" link=""/>
-
+		<subcategory description="Using Camera">
+			<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
+			<source description="" link=""/>
+		</subcategory>	
+		<subcategory description="Using Geolocation">
+			<source description="Android Library" link="https://developer.android.com/reference/android/location/package-summary"/>
+			<source description="Pulling geolocation positions" link="https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android"/>
+			<source description="Fused Location Provider" link="https://developer.android.com/training/location/request-updates"/>
+		</subcategory>
 	<category>AndroidManifest</category>
 	<source description="Managing permissions" link=""/>
 </sources>
