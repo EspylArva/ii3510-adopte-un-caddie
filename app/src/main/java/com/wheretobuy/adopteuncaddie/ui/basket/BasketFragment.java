@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class BasketFragment extends Fragment {
     BasketViewModel vm;
     Spinner shopList;
     FloatingActionButton addItem;
+    Button payButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class BasketFragment extends Fragment {
         View root = viewsInit(inflater, container);
         setViewModelObservers();
         setClickListeners();
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.shop_names,
                 android.R.layout.simple_spinner_item);
@@ -78,6 +81,8 @@ public class BasketFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_basket, container, false);
         shopList = root.findViewById(R.id.shop_list);
         addItem = root.findViewById(R.id.fab);
+        payButton = root.findViewById(R.id.pay_button);
+        payButton.setText("Payer");
         initImageBitmaps();
         RecyclerView recyclerView = root.findViewById(R.id.recycler_items);
         BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getmItemNames(), vm.getmImageUrls(), getContext());
