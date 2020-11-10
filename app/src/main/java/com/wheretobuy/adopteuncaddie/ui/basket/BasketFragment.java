@@ -1,5 +1,6 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wheretobuy.adopteuncaddie.R;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
+import com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment;
 
 public class BasketFragment extends Fragment {
 
@@ -31,6 +36,7 @@ public class BasketFragment extends Fragment {
         vm = ViewModelProviders.of(this).get(BasketViewModel.class);
 
         View root = viewsInit(inflater, container);
+
         setViewModelObservers();
         setClickListeners();
 
@@ -64,6 +70,19 @@ public class BasketFragment extends Fragment {
 
             }
         });
+
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment payFragment = new PaymentFragment();  // https://stackoverflow.com/questions/40871451/how-implement-a-next-button-in-a-fragment
+                FragmentTransaction transaction = ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, payFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
     }
 
 
@@ -91,7 +110,7 @@ public class BasketFragment extends Fragment {
         return root;
     }
 
-    private void initImageBitmaps(){
+    private void initImageBitmaps() {
 
         vm.getmImageUrls().add("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg");
         vm.getmItemNames().add("Kiwi");
