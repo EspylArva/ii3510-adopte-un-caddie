@@ -18,4 +18,15 @@
     </string>
     <string name="backToBasket">Retourner au panier</string>
     <string name="menu_barcodeScanner">Scanner de code-barre</string>
+
+    <!-- Barcode Scanner-->
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="ok">OK</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="permission_camera">This app needs camera permission to scan barcode</string>
+    <string name="grant">GRANT</string>
+    <string name="cancel">CANCEL</string>
+
 </resources>

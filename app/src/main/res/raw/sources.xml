@@ -1,20 +1,30 @@
 <sources>
 	<category>XML resources</category>
-	<source description="formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
+	<source description="Formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
+	<source description="Creating a border for a View" link="https://stackoverflow.com/questions/3263611/border-for-an-image-view-in-android"/>
+
+	<category>Project Architecture</category>
+	<source description="Why ViewModels should be uncoupled from Activities" link="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e"/>
+
 
 	<category>Functionalities</category>
 		<subcategory description="Using Camera">
 			<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
-			<source description="" link=""/>
+			<source description="Google Developers Barcode API" link="https://developers.google.com/vision/android/barcodes-overview"/>
+			<source description="Using Google Vision in fragment" link="https://github.com/avaneeshkumarmaurya/Barcode-Reader"/>
 		</subcategory>	
 		<subcategory description="Using Geolocation">
 			<source description="Android Library" link="https://developer.android.com/reference/android/location/package-summary"/>
 			<source description="Pulling geolocation positions" link="https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android"/>
 			<source description="Fused Location Provider" link="https://developer.android.com/training/location/request-updates"/>
+			<source description="Fixing getLastKnownLocation() returning null" link="https://stackoverflow.com/questions/23906926/locationmanager-getlastknownlocation-return-null"/>
 		</subcategory>
 	<category>AndroidManifest</category>
 	<source description="Managing permissions" link=""/>
 </sources>
 
 
+<!--
 <source description="" link=""/>
+https://stackoverflow.com/questions/43518520/how-to-ask-user-to-enable-gps-at-the-launch-of-application
+	-->

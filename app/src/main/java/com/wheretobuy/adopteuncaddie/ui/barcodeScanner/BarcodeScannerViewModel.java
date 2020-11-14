@@ -19,4 +19,5 @@ public class BarcodeScannerViewModel extends AndroidViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
 }

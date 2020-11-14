@@ -18,21 +18,27 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.wheretobuy.adopteuncaddie.MainActivity;
 import com.wheretobuy.adopteuncaddie.module.geolocation.SupermarketLocationListener;
+
+import java.io.Serializable;
 
 public class GalleryViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
-    private Application context;
+
     private MutableLiveData<Location> location;
     private MutableLiveData<Double> latitude, longitude;
     public SupermarketLocationListener gps;
+    private FusedLocationProviderClient client;
 
 
     public GalleryViewModel(Application app) {
         super(app);
-        this.context = app;
+        this.client = LocationServices.getFusedLocationProviderClient(app);
         this.mText = new MutableLiveData<>();
         this.location = new MutableLiveData<>();
         this.latitude = new MutableLiveData<>();
@@ -42,18 +48,25 @@ public class GalleryViewModel extends AndroidViewModel {
 
     public void getGeoLocation() {
         Location location = null;
-        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
+
+        if(ContextCompat.checkSelfPermission(this.getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplication(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
             Log.e("Permissions", "Neither GPS nor Internet permissions were granted");
         } // No permissions
         else
         {
-            gps = new SupermarketLocationListener(this.context);
+//            client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                @Override
+//                public void onSuccess(Location currentLocation) {
+//                    location[0] = currentLocation;
+//                }
+//            });
+            gps = new SupermarketLocationListener(this.getApplication());
             location = gps.refreshLocation();
             this.location.setValue(location);
-
+//
             if(location != null){
-                Toast.makeText(this.context, "Your Location is: Lat: " + location.getLatitude() + " - Long: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getApplication(), "Your Location is: Lat: " + location.getLatitude() + " - Long: " + location.getLongitude(), Toast.LENGTH_LONG).show();
                 this.latitude.setValue(location.getLatitude());
                 this.longitude.setValue(location.getLongitude());
             }

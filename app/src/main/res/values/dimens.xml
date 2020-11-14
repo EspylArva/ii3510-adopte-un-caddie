@@ -8,4 +8,5 @@
     <dimen name="title">28dp</dimen>
     <dimen name="defaultTopBottomMargin">80dp</dimen>
     <dimen name="defaultInterComponentMargin">10dp</dimen>
+    <dimen name="defaultStartEndMargin">30dp</dimen>
 </resources>

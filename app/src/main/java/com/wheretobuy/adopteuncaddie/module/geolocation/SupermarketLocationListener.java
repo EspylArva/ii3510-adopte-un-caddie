@@ -37,12 +37,19 @@ public class SupermarketLocationListener implements LocationListener {
 
     public SupermarketLocationListener(Context application) {
         this.context = application;
+        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.removeUpdates(this);
+        }
     }
 
 
     /** ACQUISITION **/
 
-    // TODO
+    /* TODO: Known bugs: Position is not actively fetched. No location fetch using network instead of GPS. */
 
     public Location refreshLocation()
     {
@@ -99,30 +106,7 @@ public class SupermarketLocationListener implements LocationListener {
         }
     }
 
-    public void showSettingsAlert(final Activity activity){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
 
-        alertDialog.setTitle("GPS Settings");
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // On pressing the Settings button.
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                activity.startActivity(intent);
-            }
-        });
-
-        // On pressing the cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
 
 
     /** GETTER & SETTERS **/
@@ -147,13 +131,13 @@ public class SupermarketLocationListener implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-        {
-            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            locationManager.removeUpdates(this);
-        }
+//        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+//        {
+//            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//            locationManager.removeUpdates(this);
+//        }
     }
 
     @Override
