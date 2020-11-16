@@ -1,0 +1,18 @@
+package com.wheretobuy.adopteuncaddie.model.openfoodfacts;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Locale;
+
+/**
+ * Kind of Product Image
+ */
+public enum ProductImageField {
+    FRONT, INGREDIENTS, NUTRITION, PACKAGING, OTHER;
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.name().toLowerCase(Locale.getDefault());
+    }
+}

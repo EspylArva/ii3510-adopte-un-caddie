@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.barcodeScanner.ProductScannedFragment">
+
+    <TextView
+        android:id="@+id/lbl_productName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/defaultTopBottomMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_price_nutriscore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultInterComponentMargin"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_productName"
+        android:layout_marginStart="@dimen/defaultStartEndMargin"
+        android:layout_marginEnd="@dimen/defaultStartEndMargin">
+
+
+        <TextView
+            android:id="@+id/lbl_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_price_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            android:text="@string/lorem"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_price" />
+
+        <TextView
+            android:id="@+id/lbl_nutriscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nutriscore"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_nutriscore_score"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            android:background="@drawable/round"
+            android:text="@string/lorem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_nutriscore" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/img_productFront"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/defaultStartEndMargin"
+        android:layout_marginEnd="@dimen/defaultStartEndMargin"
+        android:layout_marginTop="@dimen/defaultInterComponentMargin"
+        android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+        app:layout_constraintTop_toBottomOf="@id/layout_price_nutriscore"
+        app:layout_constraintBottom_toTopOf="@id/layout_informations_textAreas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_informations_textAreas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/defaultInterComponentMargin"
+        app:layout_constraintTop_toBottomOf="@+id/img_productFront"
+        app:layout_constraintBottom_toTopOf="@id/layout_buttons"
+        android:layout_marginStart="@dimen/defaultStartEndMargin"
+        android:layout_marginEnd="@dimen/defaultStartEndMargin"
+        android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+        >
+
+
+    <TextArea
+        android:id="@+id/txtArea_mainInformations"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txtArea_secondaryInformations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextArea
+        android:id="@+id/txtArea_secondaryInformations"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/defaultInterComponentMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtArea_mainInformations" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/defaultStartEndMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/defaultStartEndMargin"
+        android:layout_marginEnd="@dimen/defaultStartEndMargin">
+
+        <ImageButton
+            android:id="@+id/btn_increaseNumber"
+            android:background="@drawable/round"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circled_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@string/addToBasket"
+            app:layout_constraintEnd_toStartOf="@+id/btn_decreaseNumber"
+            app:layout_constraintStart_toEndOf="@+id/btn_increaseNumber"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/defaultInterComponentMargin"
+            android:layout_marginEnd="@dimen/defaultInterComponentMargin"/>
+
+        <ImageButton
+            android:id="@+id/btn_decreaseNumber"
+            android:background="@drawable/round"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circled_remove"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

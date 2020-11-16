@@ -9,12 +9,25 @@
         android:id="@+id/nav_barcodeScanner"
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerFragment"
         android:label="@string/menu_barcodeScanner"
-        tools:layout="@layout/fragment_barcode_scanner" />
+        tools:layout="@layout/fragment_barcode_scanner" >
+<!--        <action-->
+<!--            android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned2"-->
+<!--            app:destination="@id/nav_productScanned" />-->
+        <action
+            android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned3"
+            app:destination="@id/nav_productScanned" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.wheretobuy.adopteuncaddie.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_productScanned"
+        android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragment"
+        android:label="@string/menu_productScanned"
+        tools:layout="@layout/fragment_product_scanned" />
 
 </navigation>

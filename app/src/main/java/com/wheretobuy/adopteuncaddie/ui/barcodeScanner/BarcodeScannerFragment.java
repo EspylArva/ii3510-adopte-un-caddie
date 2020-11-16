@@ -1,5 +1,6 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.wheretobuy.adopteuncaddie.R;
@@ -23,11 +25,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private BarcodeScannerViewModel vm;
 
     private CaptureFragment barcodeReader;
-    private Guideline guideline_horizontal, guideline_vertical;
-
-    public static int SCREEN_WIDTH_PX;
-    public static int SCREEN_HEIGHT_PX;
-
 
     private static final String TAG = "Barcode-reader";
 
@@ -42,11 +39,15 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         return root;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onScanned(final Barcode barcode) {
-        Log.e(TAG, "onScanned: " + barcode.displayValue);
+        Log.e(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.valueFormat + ")");
         barcodeReader.playBeep();
         Toast.makeText(getActivity(), "Barcode: " + barcode.displayValue, Toast.LENGTH_SHORT).show();
+
+        NavHostFragment.findNavController(this).navigate(R.layout.fragment_product_scanned);
+
     }
 
     @Override
@@ -80,11 +81,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_barcode_scanner, container, false);
-        guideline_horizontal = root.findViewById(R.id.horizontalLine);
-        guideline_vertical = root.findViewById(R.id.verticalLine);
-
-        SCREEN_HEIGHT_PX = guideline_vertical.getTop();
-        SCREEN_WIDTH_PX = guideline_horizontal.getLeft();
 
         barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
