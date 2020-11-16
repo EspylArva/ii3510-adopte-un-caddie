@@ -55,3 +55,6 @@ A l'heure actuelle, trois endpoints sont disponibles :
 - Page de paiement
 - Page de paramètres
 - Drawer
+
+
+Prochaine réunion planifiée le 25/11/2020
