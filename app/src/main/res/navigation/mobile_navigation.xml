@@ -10,11 +10,8 @@
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerFragment"
         android:label="@string/menu_barcodeScanner"
         tools:layout="@layout/fragment_barcode_scanner" >
-<!--        <action-->
-<!--            android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned2"-->
-<!--            app:destination="@id/nav_productScanned" />-->
         <action
-            android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned3"
+            android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned"
             app:destination="@id/nav_productScanned" />
     </fragment>
 
@@ -29,5 +26,4 @@
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragment"
         android:label="@string/menu_productScanned"
         tools:layout="@layout/fragment_product_scanned" />
-
 </navigation>

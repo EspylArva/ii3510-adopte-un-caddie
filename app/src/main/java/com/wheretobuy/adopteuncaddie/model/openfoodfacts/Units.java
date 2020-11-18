@@ -46,7 +46,6 @@ public final class Units {
             if (Units.UNIT_MILLILITRE.equalsIgnoreCase(unitOfValue)) {
                 return value;
             }
-            //TODO : what about % DV and IU
             return value;
         }
 

@@ -359,13 +359,13 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
      * Releases the resources associated with the camera source, the associated detectors, and the
      * rest of the processing pipeline.
      */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mPreview != null) {
-            mPreview.release();
-        }
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        if (mPreview != null) {
+//            mPreview.release();
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -482,8 +482,6 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         if (best != null) {
             Intent data = new Intent();
             data.putExtra(BarcodeObject, best);
-
-            // TODO - pass the scanned value
             getActivity().setResult(CommonStatusCodes.SUCCESS, data);
             return true;
         }

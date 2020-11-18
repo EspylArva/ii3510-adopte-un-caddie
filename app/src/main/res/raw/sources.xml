@@ -6,6 +6,8 @@
 	<category>Project Architecture</category>
 	<source description="Why ViewModels should be uncoupled from Activities" link="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e"/>
 
+	<category>Navigation Drawer</category>
+	<source description="Navigating across fragments using NavController" link="https://stackoverflow.com/questions/53803598/how-to-interact-with-other-fragment-when-using-navigation-architecture-component"/>
 
 	<category>Functionalities</category>
 		<subcategory description="Using Camera">

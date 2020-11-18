@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class BarcodeScannerFragment extends Fragment implements CaptureFragment.BarcodeReaderListener {
 
+    private static boolean REQUIRE_CONFIRMATION = true;
     private BarcodeScannerViewModel vm;
 
     private CaptureFragment barcodeReader;
@@ -42,11 +45,26 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     @SuppressLint("ResourceType")
     @Override
     public void onScanned(final Barcode barcode) {
-        Log.e(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.valueFormat + ")");
-        barcodeReader.playBeep();
+        Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.valueFormat + ")");
+        try {
+            barcodeReader.playBeep();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         Toast.makeText(getActivity(), "Barcode: " + barcode.displayValue, Toast.LENGTH_SHORT).show();
 
-        NavHostFragment.findNavController(this).navigate(R.layout.fragment_product_scanned);
+        if(BarcodeScannerFragment.REQUIRE_CONFIRMATION)
+        {
+            try {
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.action_nav_barcodeScanner_to_nav_productScanned);
+            }
+            catch (Exception e){e.printStackTrace();}
+        }
+
+        // FIXME
 
     }
 
