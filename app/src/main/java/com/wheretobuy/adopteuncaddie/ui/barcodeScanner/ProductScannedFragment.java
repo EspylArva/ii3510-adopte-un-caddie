@@ -56,27 +56,17 @@ public class ProductScannedFragment extends Fragment {
         try {
             Product product = state.getProduct();
 
-            String productName = product.getProductName();
+            String productName = !product.getProductName().isEmpty() ? product.getProductName() : "-";
             String nutriscore = product.getNutritionGradeTag();
             String image = product.getImageFrontUrl();
-            String packaging = product.getPackaging();
-            String brand = product.getBrands();
-            int nb_ingredients = product.getIngredients().size();
-            String allergenes =  product.getAllergens();
-            String quantity = product.getQuantity();
-
-
-//            Log.d("Name", productName);
-//            Log.d("Nutriscore", nutriscore);
-//            Log.d("Image", image);
-//            Log.d("Packaging", packaging);
-//            Log.d("Brand", brand);
-//            Log.d("Number of Ingredients", String.valueOf(nb_ingredients));
-//            Log.d("Allergenes", allergenes);
-//            Log.d("Quantity", quantity);
+            String packaging = !product.getPackaging().isEmpty() ? product.getPackaging() : "-";
+            String brand = !product.getBrands().isEmpty() ? product.getBrands() : "-";
+            int nb_ingredients = (product.getIngredients() != null && product.getIngredients().size() != 0) ? product.getIngredients().size() : null;
+            String allergenes = !product.getAllergens().isEmpty() ? product.getAllergens() : "-";
+            String quantity = !product.getQuantity().isEmpty() ? product.getQuantity() : "-";
 
             lbl_productName.setText(productName);
-            if(!nutriscore.equals("not-applicable")) // FIXME
+            if(!nutriscore.equals("not-applicable"))
             {
                 switch (nutriscore)
                 {
@@ -102,8 +92,13 @@ public class ProductScannedFragment extends Fragment {
 
 
             textArea_PrimaryInformations.setText(
-                    String.format("Marque : %s\nNombre d'ingrédients : %s\nAllergènes : %s\nPoids/Volume : %s",
-                    brand, nb_ingredients, allergenes, quantity));
+                    String.format("Marque : %s\nNombre d'ingrédients : %s\nPackaging : %s\nAllergènes : %s\nPoids/Volume : %s",
+                    brand, nb_ingredients, packaging, allergenes, quantity));
+
+//            String proteins = !product.getNutriments().contains("proteins")
+            // TODO: Showing nutriments list
+
+
             textArea_SecondaryInformations.setText(String.format(""));
             // TODO
             /** txtArea 2

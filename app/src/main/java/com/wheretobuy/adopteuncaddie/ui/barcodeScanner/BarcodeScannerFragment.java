@@ -63,33 +63,27 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.format + ")");
         if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
-//            Toast.makeText(getActivity(), "Barcode: " + barcode.displayValue, Toast.LENGTH_SHORT).show();
-            try {
-                Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
-                RetrofitCall.callProductById(productState -> {
-                    if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket
+            Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
+            RetrofitCall.callProductById(productState -> {
+                if(productState.getStatus() == 1) // status_verbose: product found
+                {
+                    NavController navController = NavHostFragment.findNavController(this);
+                    if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
                     {
-//                        if(NavHostFragment.)
-                        // java.lang.IllegalStateException: Fragment BarcodeScannerFragment{1666d5a} (77401e93-f890-49cf-aaca-a73f37f4c649)} not associated with a fragment manager.
-                        NavController navController = NavHostFragment.findNavController(this);
-//                        NavController navController = NavHostFragment.getNavController();
-                        if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
-                            // else: a navRequest has already been posted, we're just waiting for the transition.
-                            // Avoid the following code from being ran twice, as the fragment has technically already been changed
+                        if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket. Redirect to ProductScannedFragment
                         {
                             BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
                             navController.navigate(action);
                         }
-                    }
-                    else
-                    {
-                        // Add 1 element of product to basket
-                        // TODO
-                    }
-
-                }, barcode.displayValue);
-            }
-            catch (Exception e){e.printStackTrace();}
+                        else
+                        {
+                            // Add 1 element of product to basket
+                            // TODO
+                        }
+                    } // else: a navRequest has already been posted, we're just waiting for the transition.
+                      // Avoid the following code from being ran twice, as the fragment has technically already been changed
+                } // else: (status == 0) -> status_verbose: product not found
+            }, barcode.displayValue);
         }
     }
 
@@ -100,10 +94,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         {
             onScanned(barcode);
         }
-//        if(barcodes != null && barcodes.size() > 0)
-//        {
-//            onScanned(barcodes.get(0));
-//        }
     }
 
     @Override
