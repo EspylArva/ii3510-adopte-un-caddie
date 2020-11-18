@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public interface RetrofitCall {
-    public static String OFF_BASE_URL = "https://world.openfoodfacts.org/api/";
+    String OFF_BASE_URL = "https://world.openfoodfacts.org/api/";
 
     static void callProductById(final BarcodeCallback callback, String barcode)
     {

@@ -13,8 +13,7 @@
         <action
             android:name="productScanned"
             android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_barcodeScanner"
+
             app:destination="@id/nav_productScanned">
 
             <argument
