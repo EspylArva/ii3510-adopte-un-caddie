@@ -14,6 +14,7 @@
 			<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
 			<source description="Google Developers Barcode API" link="https://developers.google.com/vision/android/barcodes-overview"/>
 			<source description="Using Google Vision in fragment" link="https://github.com/avaneeshkumarmaurya/Barcode-Reader"/>
+			<source description="Getting a barcode format" linl="https://developers.google.com/android/reference/com/google/android/gms/vision/barcode/Barcode#format"/>
 		</subcategory>	
 		<subcategory description="Using Geolocation">
 			<source description="Android Library" link="https://developer.android.com/reference/android/location/package-summary"/>

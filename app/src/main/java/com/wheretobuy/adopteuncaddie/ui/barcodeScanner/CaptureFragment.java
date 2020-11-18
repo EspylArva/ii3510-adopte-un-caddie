@@ -94,18 +94,6 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         return fragment;
     }
 
-
-    public static CaptureFragment newInstance(boolean autoFocus, boolean useFlash, int scanOverlayVisibleStatus) {
-
-        Bundle args = new Bundle();
-        args.putBoolean(KEY_AUTO_FOCUS, autoFocus);
-        args.putBoolean(KEY_USE_FLASH, useFlash);
-        args.putInt(KEY_SCAN_OVERLAY_VISIBILITY, scanOverlayVisibleStatus);
-        CaptureFragment fragment = new CaptureFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     /**
      * Use this listener if you want more callbacks
      *

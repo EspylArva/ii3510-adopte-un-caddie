@@ -65,78 +65,10 @@ public class GalleryFragment extends Fragment {
         setClickListeners();
 
 
-        callAPI("3596710414222");
-
-
         return root;
 
     }
 
-    /**
-     * String productName = product.getProductName();
-     *                     String nutriscore = product.getNutritionGradeTag();
-     *                     String image = product.getImageFrontUrl();
-     *                     String packaging = product.getPackaging();
-     *                     String brand = product.getBrands();
-     *                     int nb_ingredients = product.getIngredients().size();
-     *                     String allergenes =  product.getAllergens();
-     *                     String quantity = product.getQuantity();
-     *
-     *
-     *                     Log.d("Name", productName);
-     *                     Log.d("Nutriscore", nutriscore);
-     *                     Log.d("Image", image);
-     *                     Log.d("Packaging", packaging);
-     *                     Log.d("Brand", brand);
-     *                     Log.d("Number of Ingredients", String.valueOf(nb_ingredients));
-     *                     Log.d("Allergenes", allergenes);
-     *                     Log.d("Quantity", quantity);
-     */
-
-    private void callAPI(String barcode)
-    {
-        String baseUrl = "https://world.openfoodfacts.org/api/";
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(JacksonConverterFactory.create()).build();
-
-        OpenFoodFactsService service = retrofit.create(OpenFoodFactsService.class);
-        service.getProductById(barcode).enqueue(new Callback<ProductState>() {
-            @Override
-            public void onResponse(Call<ProductState> call, Response<ProductState> response) {
-                try {
-                    Log.d("Retrofit", call.request().url().toString());
-
-                    Product product = response.body().getProduct();
-
-                    String productName = product.getProductName();
-                    String nutriscore = product.getNutritionGradeTag();
-                    String image = product.getImageFrontUrl();
-                    String packaging = product.getPackaging();
-                    String brand = product.getBrands();
-                    int nb_ingredients = product.getIngredients().size();
-                    String allergenes =  product.getAllergens();
-                    String quantity = product.getQuantity();
-
-
-                    Log.d("Name", productName);
-                    Log.d("Nutriscore", nutriscore);
-                    Log.d("Image", image);
-                    Log.d("Packaging", packaging);
-                    Log.d("Brand", brand);
-                    Log.d("Number of Ingredients", String.valueOf(nb_ingredients));
-                    Log.d("Allergenes", allergenes);
-                    Log.d("Quantity", quantity);
-
-                } // Get artist's best work artwork
-                catch (Exception e){
-                    Log.e("Retrofit error", e.getMessage());
-                }
-            }
-            @Override
-            public void onFailure(Call<ProductState> call, Throwable t) {
-                Log.e("Retrofit error", String.format("%s threw error %s", call.request().url(), t.getMessage()));
-            }
-        });
-    }
 
 
     private void setClickListeners() {
@@ -221,17 +153,6 @@ public class GalleryFragment extends Fragment {
                 }
             }
         });
-
-//        galleryViewModel.getLongitude().observe(getViewLifecycleOwner(), new Observer<Double>()
-//        {
-//            @Override
-//            public void onChanged(Double location) {
-//                if(location == null) {/* should be handled in getLatitude() observer */}
-//                else{
-//                    textView.setText(String.format("Lat: %s - Lng: %s", galleryViewModel.getLatitude().getValue(), galleryViewModel.getLongitude().getValue()));
-//                }
-//            }
-//        });
     }
 
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {

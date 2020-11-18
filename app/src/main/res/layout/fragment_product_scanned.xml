@@ -62,6 +62,8 @@
             android:layout_marginTop="@dimen/defaultInterComponentMargin"
             android:background="@drawable/round"
             android:text="@string/lorem"
+
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_nutriscore" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,25 +94,25 @@
         >
 
 
-    <TextArea
-        android:id="@+id/txtArea_mainInformations"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/defaultInterComponentMargin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/txtArea_secondaryInformations"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/txtArea_mainInformations"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/txtArea_secondaryInformations"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextArea
-        android:id="@+id/txtArea_secondaryInformations"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/defaultInterComponentMargin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtArea_mainInformations" />
+        <TextView
+            android:id="@+id/txtArea_secondaryInformations"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtArea_mainInformations" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,37 +125,37 @@
         android:layout_marginEnd="@dimen/defaultStartEndMargin">
 
         <ImageButton
-            android:id="@+id/btn_increaseNumber"
-            android:background="@drawable/round"
+            android:id="@+id/btn_decreaseNumber"
+            android:background="@drawable/high"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_circled_add"
+            app:srcCompat="@drawable/ic_circled_remove"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_addToBasket"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:text="@string/addToBasket"
-            app:layout_constraintEnd_toStartOf="@+id/btn_decreaseNumber"
-            app:layout_constraintStart_toEndOf="@+id/btn_increaseNumber"
+            app:layout_constraintEnd_toStartOf="@+id/btn_increaseNumber"
+            app:layout_constraintStart_toEndOf="@+id/btn_decreaseNumber"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="@dimen/defaultInterComponentMargin"
             android:layout_marginEnd="@dimen/defaultInterComponentMargin"/>
 
         <ImageButton
-            android:id="@+id/btn_decreaseNumber"
-            android:background="@drawable/round"
+            android:id="@+id/btn_increaseNumber"
+            android:background="@drawable/low"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_circled_remove"
+            app:srcCompat="@drawable/ic_circled_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

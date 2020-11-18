@@ -95,6 +95,7 @@
     <string name="price">Prix</string>
     <string name="nutriscore">Nutri-score</string>
     <string name="menu_productScanned">Fiche du produit</string>
+    <string name="productNotFound">Produit introuvable</string>
 
 
 </resources>

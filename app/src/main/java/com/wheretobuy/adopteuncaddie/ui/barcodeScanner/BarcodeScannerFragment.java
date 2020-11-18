@@ -19,12 +19,26 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.wheretobuy.adopteuncaddie.R;
+import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
+import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
+import com.wheretobuy.adopteuncaddie.module.openfoodfacts.BarcodeCallback;
+import com.wheretobuy.adopteuncaddie.module.openfoodfacts.OpenFoodFactsService;
+import com.wheretobuy.adopteuncaddie.module.openfoodfacts.RetrofitCall;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class BarcodeScannerFragment extends Fragment implements CaptureFragment.BarcodeReaderListener {
 
     private static boolean REQUIRE_CONFIRMATION = true;
+    private static final List<Integer> ACCEPTED_BARCODE_FORMATS = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 32, 64, 128, 512, 1024, 5));
     private BarcodeScannerViewModel vm;
 
     private CaptureFragment barcodeReader;
@@ -45,40 +59,55 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     @SuppressLint("ResourceType")
     @Override
     public void onScanned(final Barcode barcode) {
-        Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.valueFormat + ")");
-        try {
-            barcodeReader.playBeep();
-        }
-        catch(Exception e)
+        Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.format + ")");
+        if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
-            e.printStackTrace();
-        }
-        Toast.makeText(getActivity(), "Barcode: " + barcode.displayValue, Toast.LENGTH_SHORT).show();
-
-        if(BarcodeScannerFragment.REQUIRE_CONFIRMATION)
-        {
+//            Toast.makeText(getActivity(), "Barcode: " + barcode.displayValue, Toast.LENGTH_SHORT).show();
             try {
-                NavController navController = NavHostFragment.findNavController(this);
-                navController.navigate(R.id.action_nav_barcodeScanner_to_nav_productScanned);
+                Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
+                RetrofitCall.callProductById(productState -> {
+                    if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket
+                    {
+//                        if(this instanceof BarcodeScannerFragment)
+//                        {
+
+
+
+                            NavController navController = NavHostFragment.findNavController(this);
+                        if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
+                            // else: a navRequest has already been posted, we're just waiting for the transition.
+                            // Avoid the following code from being ran twice, as the fragment has technically already been changed
+                        {
+//                            Log.d("navController.getCurrentDestination()", String.valueOf(navController.getCurrentDestination().getId()));
+//                            Log.d("this", String.valueOf(this.getId()));
+//                            Log.d("R.id.nav_barcodeScanner", String.valueOf(R.id.nav_barcodeScanner));
+//                            Log.d("R.id.nav_productScanned", String.valueOf(R.id.nav_productScanned));
+                            BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
+                            navController.navigate(action);
+                        }
+
+
+
+//                        }
+                    }
+                    else
+                    {
+                        // Add 1 element of product to basket
+                    }
+
+                }, barcode.displayValue);
             }
             catch (Exception e){e.printStackTrace();}
         }
-
-        // FIXME
-
     }
 
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
-        Log.e(TAG, "onScannedMultiple: " + barcodes.size());
-
-        String codes = "";
-        for (Barcode barcode : barcodes) {
-            codes += barcode.displayValue + ", ";
+        Log.d(TAG, "onScannedMultiple: " + barcodes.size());
+        for(Barcode barcode : barcodes)
+        {
+            onScanned(barcode);
         }
-
-        final String finalCodes = codes;
-        Toast.makeText(getActivity(), "Barcodes: " + finalCodes, Toast.LENGTH_SHORT).show();
     }
 
     @Override
