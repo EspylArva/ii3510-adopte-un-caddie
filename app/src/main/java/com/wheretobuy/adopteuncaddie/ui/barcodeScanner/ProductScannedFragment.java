@@ -1,6 +1,7 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import com.bumptech.glide.Glide;
 import com.wheretobuy.adopteuncaddie.R;
 import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
 import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProductScannedFragment extends Fragment {
 
@@ -56,14 +60,14 @@ public class ProductScannedFragment extends Fragment {
         try {
             Product product = state.getProduct();
 
-            String productName = !product.getProductName().isEmpty() ? product.getProductName() : "-";
-            String nutriscore = product.getNutritionGradeTag();
-            String image = product.getImageFrontUrl();
-            String packaging = !product.getPackaging().isEmpty() ? product.getPackaging() : "-";
-            String brand = !product.getBrands().isEmpty() ? product.getBrands() : "-";
-            int nb_ingredients = (product.getIngredients() != null && product.getIngredients().size() != 0) ? product.getIngredients().size() : null;
-            String allergenes = !product.getAllergens().isEmpty() ? product.getAllergens() : "-";
-            String quantity = !product.getQuantity().isEmpty() ? product.getQuantity() : "-";
+            String productName  = product.getProductName() != null  ? product.getProductName()          : "-";
+            String nutriscore   = product.getNutritionGradeTag(); // error cases managed
+            String image        = product.getImageFrontUrl(); // Glide manages error case
+            String packaging    = product.getPackaging() != null    ? product.getPackaging()            : "-";
+            String brand        = product.getBrands() != null       ? product.getBrands()               : "-";
+            int nb_ingredients  = product.getIngredients() != null  ? product.getIngredients().size()   : 0;
+            String allergens    = product.getAllergens() != null    ? product.getAllergens()            : "-";
+            String quantity     = product.getQuantity() != null     ? product.getQuantity()             : "-";
 
             lbl_productName.setText(productName);
             if(!nutriscore.equals("not-applicable"))
@@ -88,25 +92,23 @@ public class ProductScannedFragment extends Fragment {
             {
                 lbl_nutriscoreScore.setText("-");
             }
-//        lbl_priceValue.setText(); // TODO
+              // TODO: Get price, awaiting private API
+//            lbl_priceValue.setText(); //
 
+            String primaryText = "<b>" + getResources().getString(R.string.brand) + " : </b>" + brand + "<br/>" +
+                    "<b>" + getResources().getString(R.string.nbOfIngredients) + " : </b>" + nb_ingredients + "<br/>" +
+                    "<b>" + getResources().getString(R.string.packaging) + " : </b>" + packaging + "<br/>" +
+                    "<b>" + getResources().getString(R.string.allergens) + " : </b>" + allergens + "<br/>" +
+                    "<b>" + getResources().getString(R.string.volume) + " : </b>" + quantity;
+            String secondaryText = "<b>" + getResources().getString(R.string.energy_kcal) + " : </b>" + product.getNutriments().get100g("energy-kcal") + "<br/>" +
+                    "<b>" + getResources().getString(R.string.sugars) + " : </b>" + product.getNutriments().get100g("sugars") + "<br/>" +
+                    "<b>" + getResources().getString(R.string.salt) + " : </b>" + product.getNutriments().get100g("salt") + "<br/>" +
+                    "<b>" + getResources().getString(R.string.proteins) + " : </b>" + product.getNutriments().get100g("proteins") + "<br/>" +
+                    "<b>" + getResources().getString(R.string.carbohydrates) + " : </b>" + product.getNutriments().get100g("carbohydrates") + "<br/>" +
+                    "<b>" + getResources().getString(R.string.sodium) + " : </b>" + product.getNutriments().get100g("sodium");
 
-            textArea_PrimaryInformations.setText(
-                    String.format("Marque : %s\nNombre d'ingrédients : %s\nPackaging : %s\nAllergènes : %s\nPoids/Volume : %s",
-                    brand, nb_ingredients, packaging, allergenes, quantity));
-
-//            String proteins = !product.getNutriments().contains("proteins")
-            // TODO: Showing nutriments list
-
-
-            textArea_SecondaryInformations.setText(String.format(""));
-            // TODO
-            /** txtArea 2
-             * Protéines
-             * Lipides
-             * Energie
-             * etc.
-             */
+            textArea_PrimaryInformations.setText(Html.fromHtml(primaryText, Html.FROM_HTML_MODE_LEGACY));
+            textArea_SecondaryInformations.setText(Html.fromHtml(secondaryText, Html.FROM_HTML_MODE_LEGACY));
 
             Glide.with(this).load(image).placeholder(R.drawable.adopte_un_caddie).fitCenter().into(img_productVisual);
         }
@@ -134,9 +136,11 @@ public class ProductScannedFragment extends Fragment {
         btn_addToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
                 // Add to list in basket
+                // TODO: Add to basket static list of products
+
                 // Close fragment
+                getParentFragmentManager().popBackStack();
             }
         });
     }

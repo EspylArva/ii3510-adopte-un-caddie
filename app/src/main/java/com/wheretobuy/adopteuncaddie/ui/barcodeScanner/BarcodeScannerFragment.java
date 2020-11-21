@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +46,8 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private BarcodeScannerViewModel vm;
 
     private CaptureFragment barcodeReader;
+    private TextView txt_manualBarcode;
+
 
     private static final String TAG = "Barcode-reader";
 
@@ -64,26 +69,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
             Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
-            RetrofitCall.callProductById(productState -> {
-                if(productState.getStatus() == 1) // status_verbose: product found
-                {
-                    NavController navController = NavHostFragment.findNavController(this);
-                    if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
-                    {
-                        if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket. Redirect to ProductScannedFragment
-                        {
-                            BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
-                            navController.navigate(action);
-                        }
-                        else
-                        {
-                            // Add 1 element of product to basket
-                            // TODO
-                        }
-                    } // else: a navRequest has already been posted, we're just waiting for the transition.
-                      // Avoid the following code from being ran twice, as the fragment has technically already been changed
-                } // else: (status == 0) -> status_verbose: product not found
-            }, barcode.displayValue);
+            processBarcode(barcode.displayValue);
         }
     }
 
@@ -118,26 +104,74 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
 
+        txt_manualBarcode = root.findViewById(R.id.txt_manualBarcode);
+
+
 
         return root;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setClickListeners() {
 //        btn_<ID_HERE>.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                //TODO: DO STUFF
+//                //DO STUFF
 //            }
 //        });
+
+        txt_manualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                processBarcode(txt_manualBarcode.getText().toString());
+                txt_manualBarcode.setFocusable(false);
+                return false;
+            }
+        });
+        txt_manualBarcode.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) {
+                txt_manualBarcode.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
     }
     private void setViewModelObservers()
     {
 //        vm.<MUTABLE_LIVE_DATA_GETTER>().observe(getViewLifecycleOwner(), new Observer<TYPE_OF_ATTRIBUTE>() {
 //            @Override
 //            public void onChanged(@Nullable TYPE_OF_ATTRIBUTE variable) {
-//                //TODO: DO STUFF
+//                // DO STUFF
 //            }
 //        });
+    }
+
+    private void processBarcode(String barcode)
+    {
+        RetrofitCall.callProductById(productState -> {
+            if(productState.getStatus() == 1) // status_verbose: product found
+            {
+                NavController navController = NavHostFragment.findNavController(this);
+                if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
+                {
+                    if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket. Redirect to ProductScannedFragment
+                    {
+                        BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
+                        navController.navigate(action);
+                    }
+                    else
+                    {
+                        // Add 1 element of product to basket
+                        // TODO: Add 1 to basket static list of products
+                    }
+                } // else: a navRequest has already been posted, we're just waiting for the transition.
+                // Avoid the following code from being ran twice, as the fragment has technically already been changed
+            }
+            else
+            {
+                Toast.makeText(getContext(), getResources().getText(R.string.productNotFound).toString(), Toast.LENGTH_SHORT).show();
+            }// else: (status == 0) -> status_verbose: product not found
+        }, barcode);
     }
 
 }

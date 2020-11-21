@@ -91,11 +91,25 @@
     <string name="nutrition_trans_fat">Trans fat</string>
     <string name="nutrition_monounsaturatedFat">Monounsaturated fat</string>
     <string name="nutrition_polyunsaturatedFat">Polyunsaturated fat</string>
+
+
     <string name="addToBasket">Ajouter au panier</string>
     <string name="price">Prix</string>
     <string name="nutriscore">Nutri-score</string>
     <string name="menu_productScanned">Fiche du produit</string>
     <string name="productNotFound">Produit introuvable</string>
+
+    <string name="brand">Marque</string>
+    <string name="nbOfIngredients">Nombre d\'ingrédients</string>
+    <string name="packaging">Emballage</string>
+    <string name="allergens">Allergènes</string>
+    <string name="volume">Poids/Volume</string>
+    <string name="energy_kcal">Energie (en kcal)</string>
+    <string name="sugars">Sucres</string>
+    <string name="salt">Sel</string>
+    <string name="proteins">Protéines</string>
+    <string name="carbohydrates">Glucides</string>
+    <string name="sodium">Sodium</string>
 
 
 </resources>
