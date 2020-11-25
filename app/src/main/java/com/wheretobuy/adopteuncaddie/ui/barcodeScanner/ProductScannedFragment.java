@@ -2,6 +2,7 @@ package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,6 +168,9 @@ public class ProductScannedFragment extends Fragment {
         img_productVisual = root.findViewById(R.id.img_productFront);
         textArea_PrimaryInformations = root.findViewById(R.id.txtArea_mainInformations);
         textArea_SecondaryInformations = root.findViewById(R.id.txtArea_secondaryInformations);
+
+        textArea_PrimaryInformations.setMovementMethod(new ScrollingMovementMethod());
+        textArea_SecondaryInformations.setMovementMethod(new ScrollingMovementMethod());
 
         return root;
     }

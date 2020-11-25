@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/lorem"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/defaultTopBottomMargin"
+        android:layout_marginTop="@dimen/defaultStartEndMargin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/layout_price_nutriscore"
         app:layout_constraintBottom_toTopOf="@id/layout_informations_textAreas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_informations_textAreas"
@@ -99,6 +99,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/txtArea_secondaryInformations"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +111,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

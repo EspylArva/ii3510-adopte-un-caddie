@@ -76,6 +76,18 @@ public class SupermarketLocationListener implements LocationListener {
                         } // refreshing the positions so we can pull
                         else {
                             Log.e("GPS failure", "Could not get a valid location using GPS");
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.GPS_PROVIDER,
+                                    60000,
+                                    100, this);
+                            if (locationManager != null) {
+                                location = locationManager
+                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (location != null) {
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                }
+                            }
                         }
                     }
                 } // Checking with GPS first
@@ -136,6 +148,11 @@ public class SupermarketLocationListener implements LocationListener {
 //        {
 //            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
 //            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//            try {
+//                wait(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 //            locationManager.removeUpdates(this);
 //        }
     }
