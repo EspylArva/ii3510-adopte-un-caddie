@@ -1,4 +1,4 @@
-package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
+package com.wheretobuy.adopteuncaddie.ui.payment;
 
 import android.app.Application;
 
@@ -6,11 +6,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class BarcodeScannerViewModel extends AndroidViewModel {
-
+public class PaymentViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
 
-    public BarcodeScannerViewModel(Application app) {
+    public PaymentViewModel(Application app) {
         super(app);
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
@@ -18,5 +17,4 @@ public class BarcodeScannerViewModel extends AndroidViewModel {
 
     public LiveData<String> getText() { return mText;
     }
-
 }

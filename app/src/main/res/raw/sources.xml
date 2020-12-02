@@ -26,6 +26,7 @@
 	<source description="Managing permissions" link=""/>
 </sources>
 
+<<<<<<< HEAD
 
 <!--
 <source description="" link=""/>
@@ -35,3 +36,5 @@ https://github.com/openfoodfacts/openfoodfacts-androidapp
 
 https://stackoverflow.com/questions/53803598/how-to-interact-with-other-fragment-when-using-navigation-architecture-component
 	-->
+=======
+>>>>>>> dev-antoine

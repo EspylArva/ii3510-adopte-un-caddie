@@ -14,7 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Guideline;
+
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
@@ -29,9 +35,14 @@ import com.wheretobuy.adopteuncaddie.module.openfoodfacts.BarcodeCallback;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.OpenFoodFactsService;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.RetrofitCall;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.w3c.dom.Text;
+
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,11 +56,13 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private static final List<Integer> ACCEPTED_BARCODE_FORMATS = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 32, 64, 128, 512, 1024, 5));
     private BarcodeScannerViewModel vm;
 
+
     private CaptureFragment barcodeReader;
     private TextView txt_manualBarcode;
 
 
     private static final String TAG = "Barcode-reader";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -138,6 +151,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     }
     private void setViewModelObservers()
     {
+
 //        vm.<MUTABLE_LIVE_DATA_GETTER>().observe(getViewLifecycleOwner(), new Observer<TYPE_OF_ATTRIBUTE>() {
 //            @Override
 //            public void onChanged(@Nullable TYPE_OF_ATTRIBUTE variable) {
@@ -172,6 +186,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
                 Toast.makeText(getContext(), getResources().getText(R.string.productNotFound).toString(), Toast.LENGTH_SHORT).show();
             }// else: (status == 0) -> status_verbose: product not found
         }, barcode);
+
     }
 
 }
