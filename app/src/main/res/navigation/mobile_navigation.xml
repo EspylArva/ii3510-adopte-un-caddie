@@ -13,9 +13,7 @@
         <action
             android:name="productScanned"
             android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned"
-
             app:destination="@id/nav_productScanned">
-
             <argument
                 android:name="productState"
                 app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
@@ -28,7 +29,6 @@ import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.BarcodeCallback;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.OpenFoodFactsService;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.RetrofitCall;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,14 +48,16 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private CaptureFragment barcodeReader;
     private TextView txt_manualBarcode;
 
-
     private static final String TAG = "Barcode-reader";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         vm = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
 
+
+
         View root = viewsInit(inflater, container);
+
         setViewModelObservers();
         setClickListeners();
 
@@ -142,6 +144,12 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 //            @Override
 //            public void onChanged(@Nullable TYPE_OF_ATTRIBUTE variable) {
 //                // DO STUFF
+//            }
+//        });
+//        vm.getBarcode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//            @Override
+//            public void onChanged(Integer integer) {
+//                Toast.makeText(getContext(), "BARCODE: " + String.valueOf(integer), Toast.LENGTH_SHORT).show();
 //            }
 //        });
     }

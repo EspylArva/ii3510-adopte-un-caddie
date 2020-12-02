@@ -1,63 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_barcode_scanner"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.barcodeScanner.BarcodeScannerFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel"/>
+    </data>
 
-    <fragment
-        android:id="@+id/barcode_fragment"
-        android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:layout_marginStart="@dimen/defaultStartEndMargin"
-        android:layout_marginTop="@dimen/defaultInterComponentMargin"
-        android:layout_marginEnd="@dimen/defaultStartEndMargin"
-        android:layout_marginBottom="@dimen/defaultInterComponentMargin"
-        app:auto_focus="true"
-        app:layout_constraintBottom_toTopOf="@id/btn_returnToBasket"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lbl_titleBarcodeScanner"
-        app:use_flash="false" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.barcodeScanner.BarcodeScannerFragment">
+
+        <fragment
+            android:id="@+id/barcode_fragment"
+            android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_marginStart="@dimen/defaultStartEndMargin"
+            android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            android:layout_marginEnd="@dimen/defaultStartEndMargin"
+            android:layout_marginBottom="@dimen/defaultInterComponentMargin"
+            app:auto_focus="true"
+            app:layout_constraintBottom_toTopOf="@id/btn_returnToBasket"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titleBarcodeScanner"
+            app:use_flash="false" />
 
 
-    <EditText
-        android:id="@+id/txt_manualBarcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/defaultTopBottomMargin"
-        android:hint="@string/hint_manualBarcode"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/txt_manualBarcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultTopBottomMargin"
+            android:hint="@string/hint_manualBarcode"
+            android:text="@={`` + viewmodel.barcode}"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/lbl_titleBarcodeScanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/defaultInterComponentMargin"
-        android:gravity="center"
-        android:text="@string/title_barcodeScanningFragment"
-        android:textSize="@dimen/title"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_manualBarcode" />
+        <TextView
+            android:id="@+id/lbl_titleBarcodeScanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultInterComponentMargin"
+            android:gravity="center"
+            android:text="@string/title_barcodeScanningFragment"
+            android:textSize="@dimen/title"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_manualBarcode" />
 
-    <Button
-        android:id="@+id/btn_returnToBasket"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/defaultTopBottomMargin"
-        android:text="@string/backToBasket"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/btn_returnToBasket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/defaultTopBottomMargin"
+            android:text="@string/backToBasket"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
