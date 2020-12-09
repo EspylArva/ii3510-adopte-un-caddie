@@ -17,7 +17,6 @@ public class BarcodeScannerViewModel extends AndroidViewModel {
 //        barcode = new MutableLiveData<Integer>();
     }
 
-
     public Integer getBarcode() {
         return barcode;
     }

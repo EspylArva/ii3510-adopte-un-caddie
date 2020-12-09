@@ -19,6 +19,7 @@
     <string name="backToBasket">Retourner au panier</string>
     <string name="menu_barcodeScanner">Scanner de code-barre</string>
 
+
     <!-- Barcode Scanner-->
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
@@ -111,5 +112,12 @@
     <string name="carbohydrates">Glucides</string>
     <string name="sodium">Sodium</string>
 
+    <string name="menu_basket">Panier</string>
+
+    <string-array name="shop_names">
+        <item>Auchan</item>
+        <item>Carrefour</item>
+        <item>Monoprix</item>
+    </string-array>
 
 </resources>
