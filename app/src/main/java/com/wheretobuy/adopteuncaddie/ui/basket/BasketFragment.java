@@ -33,6 +33,18 @@ import com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment;
 
 public class BasketFragment extends Fragment {
 
+    /**
+     * @Antoine FIXME
+     * Choses ajoutées :
+     * - Navigation (voir ligne #64 et #107, 108)
+     *
+     * Choses à revoir :
+     * - Revoir la visibilité des attributs (private en priorité, public sinon)
+     * - Ajout des articles, il faudra probablement créer une nouvelle classe pour contenir les articles
+     * - Préférer le XML au code java, tu peux plus facilement set des propriétés sur le XML (genre le texte d'un bouton) et ca nettoie un peu le code
+     * - Problème d'affichage du Spinner quand il y a trop d'articles
+     */
+
     BasketViewModel vm;
     Spinner shopList;
     FloatingActionButton addItem;

@@ -19,6 +19,7 @@ public class BasketViewModel extends AndroidViewModel {
         return mImageUrls;
     }
 
+    // FIXME Fix temporaire pour garder un seul panier
     private static ArrayList<String> mItemNames = new ArrayList<>();
     private static ArrayList<String> mImageUrls = new ArrayList<>();
 
