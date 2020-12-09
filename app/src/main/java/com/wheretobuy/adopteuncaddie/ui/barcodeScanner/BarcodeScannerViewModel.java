@@ -16,18 +16,18 @@ import com.wheretobuy.adopteuncaddie.utils.ManualBarcodeListener;
 
 public class BarcodeScannerViewModel extends AndroidViewModel{ // implements ManualBarcodeListener {
 
-    private Long barcode = 0L;
+    private String barcode;
 
     public BarcodeScannerViewModel(Application app) {
         super(app);
         setBarcode(null);
     }
 
-    public Long getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(Long barcode) {
+    public void setBarcode(String barcode) {
         if(this.barcode != barcode)
         {
             this.barcode = (barcode);

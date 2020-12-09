@@ -38,11 +38,11 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     private static boolean REQUIRE_CONFIRMATION = true;
     private static final List<Integer> ACCEPTED_BARCODE_FORMATS = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 32, 64, 128, 512, 1024, 5));
-    private BarcodeScannerViewModel vm;
+//    private BarcodeScannerViewModel vm;
 
 
     private CaptureFragment barcodeReader;
-    private TextView txt_manualBarcode;
+//    private TextView txt_manualBarcode;
 
     private static final String TAG = "Barcode-reader";
 
@@ -56,13 +56,13 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         View root = binding.getRoot();
 
 //        barcodeReader = (CaptureFragment)binding.barcodeFragment;
-        txt_manualBarcode = binding.txtManualBarcode;
+//        txt_manualBarcode = binding.txtManualBarcode;
 
         barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
 
-        setViewModelObservers();
-        setClickListeners();
+        setViewModelObservers(binding);
+        setClickListeners(binding);
 
 
 
@@ -108,10 +108,10 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_barcode_scanner, container, false);
 
-        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
-        barcodeReader.setListener(this);
-
-        txt_manualBarcode = root.findViewById(R.id.txt_manualBarcode);
+//        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
+//        barcodeReader.setListener(this);
+//
+//        txt_manualBarcode = root.findViewById(R.id.txt_manualBarcode);
 
 
 
@@ -119,34 +119,35 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setClickListeners() {
+    private void setClickListeners(FragmentBarcodeScannerBinding binding) {
 //        btn_<ID_HERE>.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                //DO STUFF
 //            }
 //        });
+//        binding.btnReturnToBasket.
 
         // Remove the caret bar & try to get the product page
-        txt_manualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        binding.txtManualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("Code barre from VM", String.valueOf(vm.getBarcode()));
-                processBarcode(String.valueOf(vm.getBarcode()));
-                txt_manualBarcode.setFocusable(false);
+                Log.d("Code barre from VM", binding.getViewmodel().getBarcode());
+                processBarcode(binding.getViewmodel().getBarcode());
+                binding.txtManualBarcode.setFocusable(false);
                 return false;
             }
         });
         // Get the caret bar back
-        txt_manualBarcode.setOnTouchListener(new View.OnTouchListener() {
+        binding.txtManualBarcode.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) {
-                txt_manualBarcode.setFocusableInTouchMode(true);
+            public boolean onTouch(View v, MotionEvent event) {
+                binding.txtManualBarcode.setFocusableInTouchMode(true);
                 return false;
             }
         });
     }
-    private void setViewModelObservers()
+    private void setViewModelObservers(FragmentBarcodeScannerBinding binding)
     {
 
 //        vm.<MUTABLE_LIVE_DATA_GETTER>().observe(getViewLifecycleOwner(), new Observer<TYPE_OF_ATTRIBUTE>() {
