@@ -1,29 +1,48 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-public class BarcodeScannerViewModel extends AndroidViewModel {
+import com.wheretobuy.adopteuncaddie.utils.ManualBarcodeListener;
 
-    private Integer barcode;
+
+public class BarcodeScannerViewModel extends AndroidViewModel{ // implements ManualBarcodeListener {
+
+    private Long barcode = 0L;
 
     public BarcodeScannerViewModel(Application app) {
         super(app);
-//        barcode = new MutableLiveData<Integer>();
+        setBarcode(null);
     }
 
-    public Integer getBarcode() {
+    public Long getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(Integer barcode) {
-        this.barcode = (barcode);
-        Toast.makeText(getApplication(), "BARCODE: " + barcode, Toast.LENGTH_SHORT).show();
+    public void setBarcode(Long barcode) {
+        if(this.barcode != barcode)
+        {
+            this.barcode = (barcode);
+        }
         Log.e("DATA BINDING", String.valueOf(barcode));
     }
+
+//    @Override
+//    public void onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//    }
+//
+//    @Override
+//    public void onTouch(View v, MotionEvent event) {
+//
+//    }
+
 }

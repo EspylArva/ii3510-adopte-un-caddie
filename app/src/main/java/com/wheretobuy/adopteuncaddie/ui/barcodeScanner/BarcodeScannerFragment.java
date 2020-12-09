@@ -19,13 +19,16 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.wheretobuy.adopteuncaddie.R;
+import com.wheretobuy.adopteuncaddie.databinding.FragmentBarcodeScannerBinding;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.RetrofitCall;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,14 +49,22 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        vm = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+//        vm = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+        FragmentBarcodeScannerBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_barcode_scanner, container, false);
+        binding.setViewmodel(ViewModelProviders.of(this).get(BarcodeScannerViewModel.class));
 
+        View root = binding.getRoot();
 
+//        barcodeReader = (CaptureFragment)binding.barcodeFragment;
+        txt_manualBarcode = binding.txtManualBarcode;
 
-        View root = viewsInit(inflater, container);
+        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
+        barcodeReader.setListener(this);
 
         setViewModelObservers();
         setClickListeners();
+
+
 
         return root;
     }
@@ -116,14 +127,17 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 //            }
 //        });
 
+        // Remove the caret bar & try to get the product page
         txt_manualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                processBarcode(txt_manualBarcode.getText().toString());
+                Log.d("Code barre from VM", String.valueOf(vm.getBarcode()));
+                processBarcode(String.valueOf(vm.getBarcode()));
                 txt_manualBarcode.setFocusable(false);
                 return false;
             }
         });
+        // Get the caret bar back
         txt_manualBarcode.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) {
