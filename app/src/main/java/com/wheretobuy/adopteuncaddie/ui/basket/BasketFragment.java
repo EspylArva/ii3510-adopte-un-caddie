@@ -15,13 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wheretobuy.adopteuncaddie.R;
+import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
+import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
+import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentDirections;
 import com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment;
 
 public class BasketFragment extends Fragment {
@@ -31,9 +38,18 @@ public class BasketFragment extends Fragment {
     FloatingActionButton addItem;
     Button payButton;
 
+    // Ajout par TK
+    // Gère la transmission d'article de ProductScannedFragment -> BasketFragment
+    private int itemAddedNumber;                // Nombre d'item à ajouter
+    private ProductState itemAddedProductState; // Fiche OpenFoodFacts de l'article
+    // Gère la redirection des fragments via Navigation
+    private NavController navController;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         vm = ViewModelProviders.of(this).get(BasketViewModel.class);
+
+        navController = NavHostFragment.findNavController(this);
 
         View root = viewsInit(inflater, container);
 
@@ -46,10 +62,23 @@ public class BasketFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shopList.setAdapter(adapter);
 
+        // get the item if the fragment request comes from ProductScannedFragment
+        if(getArguments() != null)
+        {
+            itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
+            itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
+            addItemToBasket(itemAddedProductState, itemAddedNumber);
+        }
 
         // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));
 
         return root;
+    }
+
+    private void addItemToBasket(ProductState itemAddedProductState, int itemAddedNumber) {
+        // FIXME
+        vm.getmImageUrls().add(itemAddedProductState.getProduct().getImageFrontUrl());
+        vm.getmItemNames().add(itemAddedProductState.getProduct().getProductName());
     }
 
     private void setClickListeners() {
@@ -59,6 +88,15 @@ public class BasketFragment extends Fragment {
 //                //TODO: DO STUFF
 //            }
 //        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = BasketFragmentDirections.actionNavBasketToNavBarcodeScanner();
+                navController.navigate(action);
+            }
+        });
+
         shopList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -74,12 +112,14 @@ public class BasketFragment extends Fragment {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment payFragment = new PaymentFragment();  // https://stackoverflow.com/questions/40871451/how-implement-a-next-button-in-a-fragment
-                FragmentTransaction transaction = ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, payFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
+                navController.navigate(action);
 
+//                Fragment payFragment = new PaymentFragment();  // https://stackoverflow.com/questions/40871451/how-implement-a-next-button-in-a-fragment
+//                FragmentTransaction transaction = ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.nav_host_fragment, payFragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 

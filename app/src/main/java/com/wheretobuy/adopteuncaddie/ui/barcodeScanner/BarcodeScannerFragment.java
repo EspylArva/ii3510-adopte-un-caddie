@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
@@ -40,6 +42,8 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     private static final List<Integer> ACCEPTED_BARCODE_FORMATS = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 32, 64, 128, 512, 1024, 5));
 //    private BarcodeScannerViewModel vm;
 
+    NavController navController;
+
 
     private CaptureFragment barcodeReader;
 //    private TextView txt_manualBarcode;
@@ -54,6 +58,8 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         binding.setViewmodel(ViewModelProviders.of(this).get(BarcodeScannerViewModel.class));
 
         View root = binding.getRoot();
+
+        navController = NavHostFragment.findNavController(this);
 
 //        barcodeReader = (CaptureFragment)binding.barcodeFragment;
 //        txt_manualBarcode = binding.txtManualBarcode;
@@ -104,20 +110,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         Toast.makeText(getActivity(), "Camera permission denied!", Toast.LENGTH_LONG).show();
     }
 
-
-    private View viewsInit(LayoutInflater inflater, ViewGroup container) {
-        View root = inflater.inflate(R.layout.fragment_barcode_scanner, container, false);
-
-//        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
-//        barcodeReader.setListener(this);
-//
-//        txt_manualBarcode = root.findViewById(R.id.txt_manualBarcode);
-
-
-
-        return root;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private void setClickListeners(FragmentBarcodeScannerBinding binding) {
 //        btn_<ID_HERE>.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +118,17 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 //                //DO STUFF
 //            }
 //        });
-//        binding.btnReturnToBasket.
+        binding.btnReturnToBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
+                {
+                    NavDirections action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavBasket();
+                    navController.navigate(action);
+                } // else: a navRequest has already been posted, we're just waiting for the transition.
+                // Avoid the following code from being ran twice, as the fragment has technically already been changed
+            }
+        });
 
         // Remove the caret bar & try to get the product page
         binding.txtManualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -169,7 +171,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         RetrofitCall.callProductById(productState -> {
             if(productState.getStatus() == 1) // status_verbose: product found
             {
-                NavController navController = NavHostFragment.findNavController(this);
                 if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
                 {
                     if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket. Redirect to ProductScannedFragment

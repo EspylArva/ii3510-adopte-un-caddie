@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_barcodeScanner">
 
+<!--    Scanner de code barre -->
     <fragment
         android:id="@+id/nav_barcodeScanner"
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerFragment"
@@ -18,16 +19,23 @@
                 android:name="productState"
                 app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
         </action>
+
+        <action
+            android:name="backToBasket"
+            android:id="@+id/action_nav_barcodeScanner_to_nav_basket"
+            app:destination="@id/nav_basket">
+        </action>
     </fragment>
 
+<!--    Page de test -->
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.wheretobuy.adopteuncaddie.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
+<!--    Details de l'article scanne -->
     <fragment
-
         android:id="@+id/nav_productScanned"
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragment"
         android:label="@string/menu_productScanned"
@@ -35,14 +43,42 @@
         <argument
             android:name="productState"
             app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
+        <action
+            android:name="addToBasket"
+            android:id="@+id/action_nav_productScanned_to_nav_basket"
+            app:destination="@id/nav_basket">
+            <argument
+                android:name="productState"
+                app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
+            <argument
+                android:name="numberOfProduct"
+                app:argType="integer" />
+        </action>
     </fragment>
 
+<!--    Panier -->
     <fragment
-
         android:id="@+id/nav_basket"
         android:name="com.wheretobuy.adopteuncaddie.ui.basket.BasketFragment"
         android:label="@string/menu_basket"
-        tools:layout="@layout/fragment_basket" />
+        tools:layout="@layout/fragment_basket">
+        <action
+            android:name="scanNewProduct"
+            android:id="@+id/action_nav_basket_to_nav_barcodeScanner"
+            app:destination="@id/nav_barcodeScanner">
+        </action>
+        <action
+            android:name="gotoPayment"
+            android:id="@+id/action_nav_basket_to_nav_payment"
+            app:destination="@id/nav_payment">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_payment"
+        android:name="com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment"
+        android:label="@string/menu_payment"
+        tools:layout="@layout/fragment_payment"/>
 
 
 

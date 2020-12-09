@@ -19,8 +19,8 @@ public class BasketViewModel extends AndroidViewModel {
         return mImageUrls;
     }
 
-    private ArrayList<String> mItemNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private static ArrayList<String> mItemNames = new ArrayList<>();
+    private static ArrayList<String> mImageUrls = new ArrayList<>();
 
     private MutableLiveData<String> mText;
 

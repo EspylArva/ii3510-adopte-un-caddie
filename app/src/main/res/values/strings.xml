@@ -113,6 +113,7 @@
     <string name="sodium">Sodium</string>
 
     <string name="menu_basket">Panier</string>
+    <string name="menu_payment">Paiment du panier</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>
