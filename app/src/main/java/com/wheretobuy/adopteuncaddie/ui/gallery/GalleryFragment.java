@@ -64,9 +64,7 @@ public class GalleryFragment extends Fragment {
         setViewModelObservers();
         setClickListeners();
 
-
         return root;
-
     }
 
 
@@ -78,12 +76,11 @@ public class GalleryFragment extends Fragment {
                 if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
                 {
-                    ActivityCompat.requestPermissions((MainActivity)getActivity(),new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },1);
+                    ActivityCompat.requestPermissions((MainActivity)getActivity(), new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },1);
                 }
-                else{ /* Nothing happens */
+                else{ /* Nothing happens */ }
 
-                } // Permission granted. Now check if module is activated
-
+                // Permission granted. Now check if module is activated
                 // Checking if GPS module is activated
                 LocationRequest locationRequest = LocationRequest.create();
                 locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

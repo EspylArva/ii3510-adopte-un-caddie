@@ -51,6 +51,8 @@ import com.wheretobuy.adopteuncaddie.module.barcode_scanner.GraphicOverlay;
 import java.io.IOException;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class CaptureFragment extends Fragment implements View.OnTouchListener, BarcodeGraphicTracker.BarcodeGraphicTrackerListener {
     protected static final String TAG = CaptureFragment.class.getSimpleName();
     protected static final String KEY_AUTO_FOCUS = "key_auto_focus";
@@ -239,7 +241,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
      */
     @SuppressLint("InlinedApi")
     private void createCameraSource(final boolean autoFocus, final boolean useFlash) {
-        Log.e(TAG, "createCameraSource:");
+        Timber.e("createCameraSource:");
         Context context = getActivity();
 
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
@@ -261,7 +263,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
             // isOperational() can be used to check if the required native libraries are currently
             // available.  The detectors will automatically become operational once the library
             // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
+            Timber.w("Detector dependencies are not yet available.");
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
@@ -270,7 +272,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
             if (hasLowStorage) {
                 Toast.makeText(getActivity(), R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                Log.w(TAG, getString(R.string.low_storage_error));
+                Timber.w(getString(R.string.low_storage_error));
             }
         }
 
@@ -427,7 +429,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
             try {
                 mPreview.start(mCameraSource, mGraphicOverlay);
             } catch (IOException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
+                Timber.e(TAG, "Unable to start camera source.", e);
                 mCameraSource.release();
                 mCameraSource = null;
             }

@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import timber.log.Timber;
+
 //import openfoodfacts.github.scrachx.openfood.R;
 //import openfoodfacts.github.scrachx.openfood.network.ApiFields;
 //import openfoodfacts.github.scrachx.openfood.utils.Modifier;
@@ -237,8 +239,7 @@ public class Nutriments implements Serializable {
                 getModifier(nutrimentName));
         } catch (NullPointerException e) {
             // In case one of the getters was unable to get data as string
-            String stacktrace = Log.getStackTraceString(e);
-            Log.e("NUTRIMENTS-MODEL", stacktrace);
+            Timber.e(e);
             return null;
         }
     }
@@ -426,7 +427,7 @@ public class Nutriments implements Serializable {
                 float portionInGram = Units.UnitUtils.convertToGrams(userSetServing, otherUnit);
                 return Utils.getRoundNumber(valueFor100g / 100 * portionInGram);
             } catch (NumberFormatException fmt) {
-                Log.w(Nutriments.class.getSimpleName(), "getForAnyValue can't parse value " + strValue, fmt);
+                Timber.w(fmt, "getForAnyValue can't parse value %s", strValue);
             }
             return StringUtils.EMPTY;
         }

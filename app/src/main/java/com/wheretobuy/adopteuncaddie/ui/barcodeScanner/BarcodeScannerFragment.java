@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class BarcodeScannerFragment extends Fragment implements CaptureFragment.BarcodeReaderListener {
 
     private static boolean REQUIRE_CONFIRMATION = true;
@@ -78,17 +80,17 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     @SuppressLint("ResourceType")
     @Override
     public void onScanned(final Barcode barcode) {
-        Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.format + ")");
+        Timber.d("onScanned: %s (format: %s)", barcode.displayValue, barcode.format);
         if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
-            Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
+            Timber.d("Barcode: %s", barcode.displayValue);
             processBarcode(barcode.displayValue);
         }
     }
 
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
-        Log.d(TAG, "onScannedMultiple: " + barcodes.size());
+        Timber.d("onScannedMultiple: %s", barcodes.size());
         for(Barcode barcode : barcodes)
         {
             onScanned(barcode);
@@ -102,7 +104,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     @Override
     public void onScanError(String errorMessage) {
-        Log.e(TAG, "onScanError: " + errorMessage);
+        Timber.e("onScanError: %s", errorMessage);
     }
 
     @Override
@@ -134,7 +136,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         binding.txtManualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("Code barre from VM", binding.getViewmodel().getBarcode());
+                Timber.d(binding.getViewmodel().getBarcode());
                 processBarcode(binding.getViewmodel().getBarcode());
                 binding.txtManualBarcode.setFocusable(false);
                 return false;

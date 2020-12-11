@@ -26,6 +26,8 @@ import com.wheretobuy.adopteuncaddie.module.geolocation.SupermarketLocationListe
 
 import java.io.Serializable;
 
+import timber.log.Timber;
+
 public class GalleryViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
@@ -51,16 +53,10 @@ public class GalleryViewModel extends AndroidViewModel {
 
         if(ContextCompat.checkSelfPermission(this.getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplication(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
-            Log.e("Permissions", "Neither GPS nor Internet permissions were granted");
+            Timber.e("Neither GPS nor Internet permissions were granted");
         } // No permissions
         else
         {
-//            client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-//                @Override
-//                public void onSuccess(Location currentLocation) {
-//                    location[0] = currentLocation;
-//                }
-//            });
             gps = new SupermarketLocationListener(this.getApplication());
             location = gps.refreshLocation();
             this.location.setValue(location);
@@ -71,7 +67,7 @@ public class GalleryViewModel extends AndroidViewModel {
                 this.longitude.setValue(location.getLongitude());
             }
             else {
-                Log.e("Geolocation", "Could not fetch position. Location is null");
+                Timber.e("Could not fetch position. Location is null");
                 this.latitude.setValue(null);
                 this.longitude.setValue(null);
             }

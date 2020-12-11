@@ -10,6 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import timber.log.Timber;
 
 public interface RetrofitCall {
     String OFF_BASE_URL = "https://world.openfoodfacts.org/api/";
@@ -21,12 +22,12 @@ public interface RetrofitCall {
         service.getProductById(barcode).enqueue(new Callback<ProductState>() {
             @Override
             public void onResponse(Call<ProductState> call, Response<ProductState> response) {
-                Log.d("Retrofit", call.request().url().toString());
+                Timber.d(call.request().url().toString());
                 callback.onSuccess(response.body());
             }
             @Override
             public void onFailure(Call<ProductState> call, Throwable t) {
-                Log.e("Retrofit error", String.format("%s threw an error: %s", call.request().url(), t.getMessage()));
+                Timber.e("%s threw an error: %s", call.request().url(), t.getMessage());
             }
         });
     }

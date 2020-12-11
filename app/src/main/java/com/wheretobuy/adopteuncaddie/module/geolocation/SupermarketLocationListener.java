@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import timber.log.Timber;
+
 public class SupermarketLocationListener implements LocationListener {
 
     private final Context context;
@@ -30,7 +32,7 @@ public class SupermarketLocationListener implements LocationListener {
 //    private boolean canGetLocation = false;
 
     // Location
-    private Location location;
+    private Location location = null;
     private double latitude, longitude;
 
     protected LocationManager locationManager;
@@ -40,8 +42,8 @@ public class SupermarketLocationListener implements LocationListener {
         if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
         {
-            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            Timber.v(location.getLatitude() + " and " + location.getLongitude());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
             locationManager.removeUpdates(this);
         }
     }
@@ -53,55 +55,50 @@ public class SupermarketLocationListener implements LocationListener {
 
     public Location refreshLocation()
     {
-        System.out.println(context);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        System.out.println("" + (locationManager == null));
         // Setting status flags
-        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        isGPSEnabled        = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isNetworkEnabled    = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        if (!isGPSEnabled && !isNetworkEnabled) { /*ERR: Cannot access position. Neither GPS nor Network are authorized by user */
-            Log.e("Location getter", "Cannot access position. Neither GPS nor Network are authorized by user");}
+        // ERR: Cannot access position. Neither GPS nor Network are authorized by user
+        if (!isGPSEnabled && !isNetworkEnabled) { Timber.e("Cannot access position. Neither GPS nor Network are authorized by user"); }
         else{
-            Log.d("Location getter", String.format("Seems like we should be able to get a position! GPS enabled: %s - Network enabled: %s", isGPSEnabled, isNetworkEnabled ));
+            Timber.d("Seems like we should be able to get a position! GPS enabled: %s - Network enabled: %s", isGPSEnabled, isNetworkEnabled );
             try{
                 // TODO: we might want to switch GPS first / network second to network first / GPS second?
-                if (isGPSEnabled) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,10, this);
-                    if (locationManager != null) {
+                Timber.d("LocationManager is null: %s", locationManager == null);
+                if(locationManager == null)
+                {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,10, this);
+                    if (isGPSEnabled) {
                         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         if (location != null) {
-                            Log.d("GPS Enabled", "Fetched position: " + location.getLatitude() + " - " + location.getLongitude());
+                            Timber.d("Fetched position: %s - %s", location.getLatitude(), location.getLongitude());
                             refreshPosition(location);
                         } // refreshing the positions so we can pull
                         else {
-                            Log.e("GPS failure", "Could not get a valid location using GPS");
-                            locationManager.requestLocationUpdates(
-                                    LocationManager.GPS_PROVIDER,
-                                    60000,
-                                    100, this);
+                            Timber.e("Could not get a valid location using GPS");
                             if (locationManager != null) {
-                                location = locationManager
-                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                if (location != null) {
-                                    latitude = location.getLatitude();
-                                    longitude = location.getLongitude();
-                                }
+                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
                             }
                         }
-                    }
-                } // Checking with GPS first
+                    } // Checking with GPS first
+                }
                 else if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,10, this);
                     if (locationManager != null) {
-                        Log.d("Using Network", "Using Network");
+                        Timber.d("Using Network");
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) { refreshPosition(location); } // refreshing the positions so we can pull
                     }
                 } // Checking with network if we can't access GPS
+                locationManager.removeUpdates(this);
             } // for security purposes
             catch (SecurityException e) { e.printStackTrace(); }
         } // We can get location
+        locationManager.removeUpdates(this);
 
         stopUsingGPS(); // We only want to pull position once
         return location;
@@ -118,9 +115,6 @@ public class SupermarketLocationListener implements LocationListener {
         }
     }
 
-
-
-
     /** GETTER & SETTERS **/
 
     public double getLatitude(){
@@ -133,12 +127,6 @@ public class SupermarketLocationListener implements LocationListener {
         return longitude;
     }
 
-//    public boolean canGetLocation() {
-//        return this.canGetLocation;
-//    }
-
-
-
     /** CLASS OVERRIDES **/
 
     @Override
@@ -146,7 +134,7 @@ public class SupermarketLocationListener implements LocationListener {
 //        if(ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 //                ContextCompat.checkSelfPermission(this.context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
 //        {
-//            Log.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
+//            Timber.v("Location Changed", location.getLatitude() + " and " + location.getLongitude());
 //            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 //            try {
 //                wait(1000);

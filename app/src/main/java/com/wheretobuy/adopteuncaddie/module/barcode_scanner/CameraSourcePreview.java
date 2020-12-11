@@ -30,6 +30,8 @@ import com.google.android.gms.common.images.Size;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";
 
@@ -113,9 +115,9 @@ public class CameraSourcePreview extends ViewGroup {
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG,"Do not have permission to start the camera", se);
+                Timber.e(se,"Do not have permission to start the camera");
             } catch (IOException e) {
-                Log.e(TAG, "Could not start camera source.", e);
+                Timber.e(e,"Could not start camera source.");
             }
         }
 
@@ -169,9 +171,9 @@ public class CameraSourcePreview extends ViewGroup {
         try {
             startIfReady();
         } catch (SecurityException se) {
-            Log.e(TAG,"Do not have permission to start the camera", se);
+            Timber.e(se,"Do not have permission to start the camera");
         } catch (IOException e) {
-            Log.e(TAG, "Could not start camera source.", e);
+            Timber.e(e, "Could not start camera source.");
         }
     }
 
@@ -184,7 +186,7 @@ public class CameraSourcePreview extends ViewGroup {
             return true;
         }
 
-        Log.d(TAG, "isPortraitMode returning false by default");
+        Timber.d(TAG, "isPortraitMode returning false by default");
         return false;
     }
 }
