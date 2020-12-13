@@ -168,59 +168,16 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         super.onActivityCreated(savedInstanceState);
         permissionStatus = getActivity().getSharedPreferences("permissionStatus", getActivity().MODE_PRIVATE);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                //Show Information about why you need the permission
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.grant_permission));
-                builder.setMessage(getString(R.string.permission_camera));
-                builder.setPositiveButton(R.string.grant, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CALLBACK_CONSTANT);
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        mListener.onCameraPermissionDenied();
-                    }
-                });
-                builder.show();
-            } else if (permissionStatus.getBoolean(Manifest.permission.CAMERA, false)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.grant_permission));
-                builder.setMessage(getString(R.string.permission_camera));
-                builder.setPositiveButton(R.string.grant, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        sentToSettings = true;
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                        intent.setData(uri);
-                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        mListener.onCameraPermissionDenied();
-                    }
-                });
-                builder.show();
-            } else {
-                //just request the permission
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CALLBACK_CONSTANT);
-            }
-
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_CALLBACK_CONSTANT);
 
             SharedPreferences.Editor editor = permissionStatus.edit();
             editor.putBoolean(Manifest.permission.CAMERA, true);
             editor.apply();
-        } else {
+            onActivityCreated(savedInstanceState);
+        }
+        else {
             //You already have the permission, just go ahead.
             proceedAfterPermission();
         }

@@ -114,12 +114,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     @SuppressLint("ClickableViewAccessibility")
     private void setClickListeners(FragmentBarcodeScannerBinding binding) {
-//        btn_<ID_HERE>.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //DO STUFF
-//            }
-//        });
         binding.btnReturnToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

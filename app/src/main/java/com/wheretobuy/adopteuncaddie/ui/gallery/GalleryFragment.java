@@ -1,16 +1,12 @@
 package com.wheretobuy.adopteuncaddie.ui.gallery;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +17,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -36,18 +30,10 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.wheretobuy.adopteuncaddie.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.wheretobuy.adopteuncaddie.R;
-import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
-import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
-import com.wheretobuy.adopteuncaddie.module.geolocation.SupermarketLocationListener;
-import com.wheretobuy.adopteuncaddie.module.openfoodfacts.OpenFoodFactsService;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import timber.log.Timber;
 
 public class GalleryFragment extends Fragment {
 
@@ -59,7 +45,7 @@ public class GalleryFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         galleryViewModel =
                 ViewModelProviders.of(this).get(GalleryViewModel.class);
-        
+
         View root = viewsInit(inflater, container);
         setViewModelObservers();
         setClickListeners();
@@ -68,64 +54,91 @@ public class GalleryFragment extends Fragment {
     }
 
 
+    private boolean checkPermissions() {
+        return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    private void requestPermissions() {
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // Provide an additional rationale to the user. This would happen if the user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            Timber.i("Displaying permission rationale to provide additional context.");
+            Snackbar.make(
+                    getView(),
+                    "Location permission is needed for core functionality",
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    34);
+                        }
+                    })
+                    .show();
+        } else {
+            Timber.i("Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    34);
+        }
+    }
+
 
     private void setClickListeners() {
         btn_refreshGeolocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-                {
-                    ActivityCompat.requestPermissions((MainActivity)getActivity(), new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },1);
-                }
-                else{ /* Nothing happens */ }
 
-                // Permission granted. Now check if module is activated
-                // Checking if GPS module is activated
-                LocationRequest locationRequest = LocationRequest.create();
-                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-                Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getActivity()).checkLocationSettings(builder.build());
+                if (!checkPermissions()) {
+                    requestPermissions();
+                } else { // add null checker
+                    Timber.d("Requesting position");
+                    // Permission granted. Now check if module is activated
+                    // Checking if GPS module is activated
+                    LocationRequest locationRequest = LocationRequest.create();
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+                    Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getActivity()).checkLocationSettings(builder.build());
 
-                result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-                        try {
-                            LocationSettingsResponse response = task.getResult(ApiException.class);
-                            // All location settings are satisfied. The client can initialize location
-                            // requests here.
-
-                            galleryViewModel.getGeoLocation();
-
-                        } catch (ApiException exception) {
-                            switch (exception.getStatusCode()) {
-                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                    // Location settings are not satisfied. But could be fixed by showing the
-                                    // user a dialog.
-                                    try {
-                                        // Cast to a resolvable exception.
-                                        ResolvableApiException resolvable = (ResolvableApiException) exception;
-                                        // Show the dialog by calling startResolutionForResult(),
-                                        // and check the result in onActivityResult().
-                                        resolvable.startResolutionForResult(
-                                                getActivity(),
-                                                LocationRequest.PRIORITY_HIGH_ACCURACY);
-                                    } catch (IntentSender.SendIntentException e) {
-                                        // Ignore the error.
-                                    } catch (ClassCastException e) {
-                                        // Ignore, should be an impossible error.
-                                    }
-                                    break;
-                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                    // Location settings are not satisfied. However, we have no way to fix the
-                                    // settings so we won't show the dialog.
-                                    break;
+                    result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                            try {
+                                LocationSettingsResponse response = task.getResult(ApiException.class);
+//                                GeolocationService serv = new GeolocationService(getActivity());
+//                                serv.getLastLocation();
+                                galleryViewModel.fetchLocation();
+                            }
+                            catch (ApiException exception) {
+                                if(exception.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED){
+                                        try {
+                                            // Cast to a resolvable exception.
+                                            ResolvableApiException resolvable = (ResolvableApiException) exception;
+                                            // Show the dialog by calling startResolutionForResult(),
+                                            // and check the result in onActivityResult().
+                                            resolvable.startResolutionForResult(
+                                                    getActivity(),
+                                                    LocationRequest.PRIORITY_HIGH_ACCURACY);
+                                        } catch (Exception e) {
+                                            // Ignore the error.
+                                        }
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
 
+                }
             }
         });
     }
@@ -138,15 +151,12 @@ public class GalleryFragment extends Fragment {
             }
         });
 
-        galleryViewModel.getLatitude().observe(getViewLifecycleOwner(), new Observer<Double>()
+        galleryViewModel.getLastLocation().observe(getViewLifecycleOwner(), new Observer<Location>()
         {
             @Override
-            public void onChanged(Double location) {
-                if(location == null){
-
-                }
-                else{
-                    lbl_geolocation.setText(String.format("Lat: %s - Lng: %s", galleryViewModel.getLatitude().getValue(), galleryViewModel.getLongitude().getValue()));
+            public void onChanged(Location location) {
+                if(location != null){
+                    lbl_geolocation.setText(String.format("Lat: %s - Lng: %s", location.getLatitude(), location.getLongitude()));
                 }
             }
         });
@@ -158,5 +168,4 @@ public class GalleryFragment extends Fragment {
         btn_refreshGeolocation = root.findViewById(R.id.btn_callGeo);
         return root;
     }
-
 }
