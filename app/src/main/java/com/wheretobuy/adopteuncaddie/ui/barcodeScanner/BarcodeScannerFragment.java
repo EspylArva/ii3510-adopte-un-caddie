@@ -118,7 +118,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
             public void onClick(View v) {
                 if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
                 {
-                    NavDirections action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavBasket();
+                    NavDirections action = BarcodeScannerFragmentDirections.returnNavBarcodeScannerToNavBasket();
                     navController.navigate(action);
                 } // else: a navRequest has already been posted, we're just waiting for the transition.
                 // Avoid the following code from being ran twice, as the fragment has technically already been changed
@@ -177,6 +177,8 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
                     {
                         // Add 1 element of product to basket
                         // TODO: Add 1 to basket static list of products
+                        BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
+                        navController.navigate(action);
                     }
                 } // else: a navRequest has already been posted, we're just waiting for the transition.
                 // Avoid the following code from being ran twice, as the fragment has technically already been changed

@@ -19,10 +19,17 @@
                 android:name="productState"
                 app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
         </action>
-
+        <action
+            android:name="quickAddToBasket"
+            android:id="@+id/action_nav_barcodeScanner_to_nav_basket"
+            app:destination="@id/nav_basket">
+            <argument
+                android:name="productState"
+                app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
+        </action>
         <action
             android:name="backToBasket"
-            android:id="@+id/action_nav_barcodeScanner_to_nav_basket"
+            android:id="@+id/return_nav_barcodeScanner_to_nav_basket"
             app:destination="@id/nav_basket">
         </action>
     </fragment>
