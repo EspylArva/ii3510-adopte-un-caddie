@@ -80,6 +80,12 @@
         android:label="@string/menu_payment"
         tools:layout="@layout/fragment_payment"/>
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.wheretobuy.adopteuncaddie.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings"/>
+
 
 
 

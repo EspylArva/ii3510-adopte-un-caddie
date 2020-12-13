@@ -55,7 +55,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        vm = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
         FragmentBarcodeScannerBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_barcode_scanner, container, false);
         binding.setViewmodel(ViewModelProviders.of(this).get(BarcodeScannerViewModel.class));
 
