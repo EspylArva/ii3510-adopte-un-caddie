@@ -63,11 +63,14 @@ public class BasketFragment extends Fragment {
         shopList.setAdapter(adapter);
 
         // get the item if the fragment request comes from ProductScannedFragment
-        itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
-        itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
-        if(itemAddedProductState != null)
+        if(getArguments() != null)
         {
-            addItemToBasket(itemAddedProductState, itemAddedNumber);
+            itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
+            itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
+            if(itemAddedProductState != null)
+            {
+                addItemToBasket(itemAddedProductState, itemAddedNumber);
+            }
         }
 
         // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));

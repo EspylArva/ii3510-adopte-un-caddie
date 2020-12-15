@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,8 @@ import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import timber.log.Timber;
+
 public class SettingsFragment extends Fragment {
     private GalleryViewModel galleryViewModel;
     private TextView lbl_geolocation;
@@ -44,6 +47,22 @@ public class SettingsFragment extends Fragment {
 
         initViews(binding);
         setClickListeners(binding);
+
+
+        /**
+         * Handle back arrow
+         */
+//        // This callback will only be called when MyFragment is at least Started.
+//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                // Handle the back button event
+//                Timber.d("Pressed back from Settings windows");
+//            }
+//        };
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+
 
         return root;
     }

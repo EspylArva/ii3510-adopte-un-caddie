@@ -1,5 +1,7 @@
 package com.wheretobuy.adopteuncaddie;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,8 @@ import com.wheretobuy.adopteuncaddie.ui.basket.BasketFragmentDirections;
 import com.wheretobuy.adopteuncaddie.ui.settings.SettingsFragment;
 import com.wheretobuy.adopteuncaddie.utils.CustomDebugTree;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
+    private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,23 +47,29 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
+
+//        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
+//        drawer.addDrawerListener(actionBarDrawerToggle);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_barcodeScanner,
-                R.id.nav_gallery,
-                R.id.nav_basket)
-
-                .setDrawerLayout(drawer)
+//                R.id.nav_barcodeScanner,
+//                R.id.nav_gallery,
+//                R.id.nav_basket,
+//                R.id.nav_settings)
+                navController.getGraph())
+                .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,19 +88,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if(item.getItemId() == R.id.action_settings)
+        switch (item.getItemId())
         {
-            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//            NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
-            navController.navigate(R.id.nav_settings);
-
-//            Fragment payFragment = new SettingsFragment();  // https://stackoverflow.com/questions/40871451/how-implement-a-next-button-in-a-fragment
-//            FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.nav_host_fragment, payFragment);
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-
+            case(R.id.action_settings):
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_settings);
+                break;
+            case(R.id.home):
+                onSupportNavigateUp();
+                break;
+            default:
+                break;
         }
         return true;
     }
