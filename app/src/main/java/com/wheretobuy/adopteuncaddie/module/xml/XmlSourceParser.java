@@ -56,7 +56,6 @@ public class XmlSourceParser extends XmlParser
 
         parser.require(XmlPullParser.START_TAG, ns, "category");
         String category = parser.getAttributeValue(null, "title");
-        String subcategory = null;
         List<Map.Entry<String, String>> links = new ArrayList<Map.Entry<String, String>>();
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) { continue; }
@@ -73,13 +72,7 @@ public class XmlSourceParser extends XmlParser
         return sources;
     }
 
-    private static String readCategory(XmlPullParser parser) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, "category");
-        String title = parser.getAttributeValue(null, "title");
-        parser.nextTag();
-        parser.require(XmlPullParser.END_TAG, ns, "category");
-        return title;
-    }
+
 
     // Processes source tags in the feed.
     private static DevelopmentSource readSubcategory(XmlPullParser parser, String category) throws IOException, XmlPullParserException {

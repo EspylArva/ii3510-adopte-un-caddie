@@ -35,4 +35,19 @@ public abstract class XmlParser {
     }
 
 
+    protected static String readCompressedXml(XmlPullParser parser, String beacon, String attribute) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, beacon);
+        String content = parser.getAttributeValue(null, attribute);
+        parser.nextTag();
+        parser.require(XmlPullParser.END_TAG, ns, beacon);
+        return content;
+    }
+
+    protected static String readFullXml(XmlPullParser parser, String beacon) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, beacon);
+        String content = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, beacon);
+        return content;
+    }
+
 }

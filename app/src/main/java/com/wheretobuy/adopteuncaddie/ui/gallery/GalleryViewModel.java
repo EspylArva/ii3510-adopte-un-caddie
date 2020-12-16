@@ -23,6 +23,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,7 +44,9 @@ public class GalleryViewModel extends AndroidViewModel {
     public MutableLiveData<Location> mLastLocation;
     private FusedLocationProviderClient mFusedLocationClient;
 
-    public MutableLiveData<Location> getLastLocation(){return this.mLastLocation;}
+    public MutableLiveData<Location> getLastLocation() {
+        return this.mLastLocation;
+    }
 
     public GalleryViewModel(Application app) {
         super(app);
@@ -64,18 +69,47 @@ public class GalleryViewModel extends AndroidViewModel {
     @SuppressWarnings("MissingPermission")
     public void fetchLocation() {
         mFusedLocationClient.getLastLocation()
-            .addOnCompleteListener(this.getApplication().getMainExecutor(), new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        mLastLocation.postValue(task.getResult());
+                .addOnCompleteListener(this.getApplication().getMainExecutor(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation.postValue(task.getResult());
 //                        Timber.d("Long: %s - Lat: %s", mLastLocation.getValue().getLongitude(), mLastLocation.getValue().getLatitude());
-                    } else {
-                        Timber.w(task.getException(), "getLastLocation:message");
+                        } else {
+                            Timber.w(task.getException(), "getLastLocation:message");
+//                        mFusedLocationClient.getCurrentLocation()
+                            initLocation();
+                        }
+                    }
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void initLocation() {
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(60000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        //TODO: UI updates.
                     }
                 }
-            });
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(getApplication(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.getFusedLocationProviderClient(getApplication()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            fetchLocation();
+        }
     }
+
     public LiveData<String> getText() {
         return mText;
     }

@@ -24,6 +24,7 @@
 			<source description="Pulling geolocation positions" link="https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android"/>
 			<source description="Fused Location Provider" link="https://developer.android.com/training/location/request-updates"/>
 			<source description="Fixing getLastKnownLocation() returning null" link="https://stackoverflow.com/questions/23906926/locationmanager-getlastknownlocation-return-null"/>
+			<source description="Fetching actively position with FusedLocation" link="https://stackoverflow.com/questions/51984960/how-to-get-just-one-location-with-fused-location-client"/>
 		</subcategory>
 	</category>
 

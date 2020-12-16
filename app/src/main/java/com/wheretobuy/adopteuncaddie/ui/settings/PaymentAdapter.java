@@ -17,8 +17,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.MyViewHo
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
-        public ImageView img_illustration;
-        public TextView lbl_description;
+        private ImageView img_illustration;
+        private TextView lbl_description;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             lbl_description = itemView.findViewById(R.id.lbl_description);
@@ -43,7 +43,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        holder.textView.setText(dataset.get(position).getCapitalName());
+        //FIXME
+//        holder.textView.setText(dataset.get(position).get...());
 
         // get Item #position
         // Call Glide

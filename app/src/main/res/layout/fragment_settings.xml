@@ -30,11 +30,13 @@
                 android:id="@+id/lbl_favorite_shops"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/favorite_shops"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:padding="@dimen/defaultInterComponentMargin"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_shops"
@@ -54,11 +56,13 @@
                 android:id="@+id/lbl_payment_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/payment_list"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:padding="@dimen/defaultInterComponentMargin"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_payment"
@@ -75,10 +79,12 @@
             android:layout_marginBottom="@dimen/defaultInterComponentMargin">
 
             <TextView
+                android:padding="@dimen/defaultInterComponentMargin"
                 android:id="@+id/lbl_languages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/languages"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -99,10 +105,12 @@
             android:layout_marginBottom="@dimen/defaultInterComponentMargin">
 
             <TextView
+                android:padding="@dimen/defaultInterComponentMargin"
                 android:id="@+id/lbl_eula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/eula"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"

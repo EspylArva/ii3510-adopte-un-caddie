@@ -20,10 +20,14 @@ import com.wheretobuy.adopteuncaddie.R;
 import com.wheretobuy.adopteuncaddie.components.RecyclerViewMargin;
 import com.wheretobuy.adopteuncaddie.databinding.FragmentBarcodeScannerBinding;
 import com.wheretobuy.adopteuncaddie.databinding.FragmentSettingsBinding;
+import com.wheretobuy.adopteuncaddie.module.xml.XmlEulaParser;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,7 +51,7 @@ public class SettingsFragment extends Fragment {
         return root;
     }
 
-    private void initViews(FragmentSettingsBinding binding) {
+    private void initViews(FragmentSettingsBinding binding){
         setupRecycler(binding.recyclerShops);
         setupRecycler(binding.recyclerPayment);
         setupRecycler(binding.recyclerLanguages);
@@ -56,7 +60,10 @@ public class SettingsFragment extends Fragment {
         binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
         binding.recyclerLanguages.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Français", "English"))));
-        binding.recyclerEula.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Art. 1", "Art. 2", "Art. 3", "Art. 4"))));
+        try{
+            binding.recyclerEula.setAdapter(new SimpleTextAdapter(XmlEulaParser.parse(getResources().openRawResource(R.raw.eula))));
+        }
+        catch (Exception e) {Timber.w(e, "Failed parsing EULA");}
     }
 
     private void setupRecycler(RecyclerView recyclerView) {
