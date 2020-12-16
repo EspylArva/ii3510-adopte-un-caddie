@@ -99,17 +99,17 @@
             android:layout_marginBottom="@dimen/defaultInterComponentMargin">
 
             <TextView
-                android:id="@+id/lbl_gcu"
+                android:id="@+id/lbl_eula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:text="@string/gcu"
+                android:text="@string/eula"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_gcu"
+                android:id="@+id/recycler_eula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />

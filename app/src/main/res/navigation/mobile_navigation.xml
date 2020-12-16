@@ -93,6 +93,12 @@
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings"/>
 
+    <fragment
+        android:id="@+id/nav_sources"
+        android:name="com.wheretobuy.adopteuncaddie.ui.sources.SourcesFragment"
+        android:label="@string/menu_sources"
+        tools:layout="@layout/fragment_sources"/>
+
 
 
 

@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.nav_barcodeScanner,
-//                R.id.nav_gallery,
-//                R.id.nav_basket,
-//                R.id.nav_settings)
                 navController.getGraph())
                 .setOpenableLayout(drawer)
                 .build();
@@ -88,14 +84,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        Timber.d("button id: %s", item.getItemId());
         switch (item.getItemId())
         {
             case(R.id.action_settings):
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_settings);
                 break;
+            case(R.id.action_sources):
+                navController.navigate(R.id.nav_sources);
+                break;
             case(R.id.home):
+                Timber.d("AppBar");
                 onSupportNavigateUp();
                 break;
             default:

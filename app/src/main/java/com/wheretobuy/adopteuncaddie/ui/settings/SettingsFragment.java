@@ -36,33 +36,13 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         binding.setViewmodel(ViewModelProviders.of(this).get(SettingsViewModel.class));
 
         View root = binding.getRoot();
-//        navController = NavHostFragment.findNavController(this);
-//        setViewModelObservers(binding);
 
         initViews(binding);
         setClickListeners(binding);
-
-
-        /**
-         * Handle back arrow
-         */
-//        // This callback will only be called when MyFragment is at least Started.
-//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                // Handle the back button event
-//                Timber.d("Pressed back from Settings windows");
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-
-
 
         return root;
     }
@@ -71,12 +51,12 @@ public class SettingsFragment extends Fragment {
         setupRecycler(binding.recyclerShops);
         setupRecycler(binding.recyclerPayment);
         setupRecycler(binding.recyclerLanguages);
-        setupRecycler(binding.recyclerGcu);
+        setupRecycler(binding.recyclerEula);
 
         binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
-        binding.recyclerLanguages.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Français", "English", "Tching tchong le chinois"))));
-        binding.recyclerGcu.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Art. 1", "Art. 2", "Art. 3", "Art. 4"))));
+        binding.recyclerLanguages.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Français", "English"))));
+        binding.recyclerEula.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Art. 1", "Art. 2", "Art. 3", "Art. 4"))));
     }
 
     private void setupRecycler(RecyclerView recyclerView) {
@@ -111,9 +91,9 @@ public class SettingsFragment extends Fragment {
                 else if(v.getVisibility() == View.GONE) { v.setVisibility(View.VISIBLE); }
             }
         });
-        binding.lblGcu.setOnClickListener(new View.OnClickListener() {
+        binding.lblEula.setOnClickListener(new View.OnClickListener() {
             public void onClick(View lbl) {
-                RecyclerView v = binding.recyclerGcu;
+                RecyclerView v = binding.recyclerEula;
                 if(v.getVisibility() == View.VISIBLE) { v.setVisibility(View.GONE); }
                 else if(v.getVisibility() == View.GONE) { v.setVisibility(View.VISIBLE); }
             }

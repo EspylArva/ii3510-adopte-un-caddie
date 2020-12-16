@@ -71,7 +71,7 @@ public class GalleryViewModel extends AndroidViewModel {
                         mLastLocation.postValue(task.getResult());
 //                        Timber.d("Long: %s - Lat: %s", mLastLocation.getValue().getLongitude(), mLastLocation.getValue().getLatitude());
                     } else {
-                        Timber.w(task.getException(), "getLastLocation:exception");
+                        Timber.w(task.getException(), "getLastLocation:message");
                     }
                 }
             });

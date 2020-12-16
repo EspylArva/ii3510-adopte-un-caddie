@@ -12,4 +12,11 @@
         <attr name="auto_focus" format="boolean" />
         <attr name="use_flash" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="AppEntry">
+        <attr name="imgSrc" format="reference"/>
+        <attr name="title" format="string"/>
+        <attr name="url" format="string"/>
+        <attr name="frag" format="reference"/>
+    </declare-styleable>
 </resources>
