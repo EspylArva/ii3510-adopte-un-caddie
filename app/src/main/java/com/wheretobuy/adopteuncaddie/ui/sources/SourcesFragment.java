@@ -28,11 +28,9 @@ import java.util.Map;
 public class SourcesFragment extends Fragment {
 
     private LinearLayout layout_sources;
-    private SourcesViewModel sourcesViewModel;
     private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        sourcesViewModel = ViewModelProviders.of(this).get(SourcesViewModel.class);
         if (container != null) {
             container.removeAllViews();
         }

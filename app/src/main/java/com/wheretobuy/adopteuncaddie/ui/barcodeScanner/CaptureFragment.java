@@ -446,6 +446,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
     @Override
     public void onScanned(final Barcode barcode) {
+        playBeep();
         if (mListener != null && !isPaused) {
             if (getActivity() == null) {
                 return;
