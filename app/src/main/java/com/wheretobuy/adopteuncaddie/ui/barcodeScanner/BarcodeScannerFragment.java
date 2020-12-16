@@ -1,6 +1,8 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
 import android.annotation.SuppressLint;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -51,6 +53,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 //    private TextView txt_manualBarcode;
 
     private static final String TAG = "Barcode-reader";
+    private String beepSoundFile;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,8 +70,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
         barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
-
-        setViewModelObservers(binding);
         setClickListeners(binding);
 
 
@@ -83,6 +84,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
             Timber.d("Barcode: %s", barcode.displayValue);
+            playBeep();
             processBarcode(barcode.displayValue);
         }
     }
@@ -144,22 +146,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
             }
         });
     }
-    private void setViewModelObservers(FragmentBarcodeScannerBinding binding)
-    {
-
-//        vm.<MUTABLE_LIVE_DATA_GETTER>().observe(getViewLifecycleOwner(), new Observer<TYPE_OF_ATTRIBUTE>() {
-//            @Override
-//            public void onChanged(@Nullable TYPE_OF_ATTRIBUTE variable) {
-//                // DO STUFF
-//            }
-//        });
-//        vm.getBarcode().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer integer) {
-//                Toast.makeText(getContext(), "BARCODE: " + String.valueOf(integer), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
 
     private void processBarcode(String barcode)
     {
@@ -189,6 +175,28 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
             }// else: (status == 0) -> status_verbose: product not found
         }, barcode);
 
+    }
+
+    public void playBeep() {
+        MediaPlayer m = new MediaPlayer();
+        try {
+            if (m.isPlaying()) {
+                m.stop();
+                m.release();
+                m = new MediaPlayer();
+            }
+
+
+            AssetFileDescriptor descriptor = getActivity().getAssets().openFd(beepSoundFile != null ? beepSoundFile : "beep.mp3");
+            m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+            descriptor.close();
+
+            m.prepare();
+            m.setVolume(1f, 1f);
+            m.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

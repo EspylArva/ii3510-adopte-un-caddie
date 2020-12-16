@@ -49,6 +49,7 @@ import com.wheretobuy.adopteuncaddie.module.barcode_scanner.CameraSourcePreview;
 import com.wheretobuy.adopteuncaddie.module.barcode_scanner.GraphicOverlay;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import timber.log.Timber;
@@ -393,6 +394,34 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         }
     }
 
+    private static boolean cameraFocus(@NonNull CameraSource cameraSource, @NonNull String focusMode) {
+        Field[] declaredFields = CameraSource.class.getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            if (field.getType() == Camera.class) {
+                field.setAccessible(true);
+                try {
+                    Camera camera = (Camera) field.get(cameraSource);
+                    if (camera != null) {
+                        Camera.Parameters params = camera.getParameters();
+                        params.setFocusMode(focusMode);
+                        camera.setParameters(params);
+                        return true;
+                    }
+
+                    return false;
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * onTap returns the tapped barcode result to the calling Activity.
      *
@@ -401,6 +430,16 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
      * @return true if the activity is ending.
      */
     private boolean onTap(float rawX, float rawY) {
+
+        Timber.d("I was there. Clicked on the screen. Need to refocus?");
+//        cameraFocus(mCameraSource, Camera.Parameters.);
+        mCameraSource.autoFocus(new CameraSource.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success) {
+                Timber.d("Refocused!");
+            }
+        });
+
         // Find tap point in preview frame coordinates.
         int[] location = new int[2];
         mGraphicOverlay.getLocationOnScreen(location);
@@ -437,6 +476,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+
         boolean b = scaleGestureDetector.onTouchEvent(motionEvent);
 
         boolean c = gestureDetector.onTouchEvent(motionEvent);
@@ -446,7 +486,6 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
     @Override
     public void onScanned(final Barcode barcode) {
-        playBeep();
         if (mListener != null && !isPaused) {
             if (getActivity() == null) {
                 return;
@@ -569,26 +608,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         }
     }
 
-    public void playBeep() {
-        MediaPlayer m = new MediaPlayer();
-        try {
-            if (m.isPlaying()) {
-                m.stop();
-                m.release();
-                m = new MediaPlayer();
-            }
 
-            AssetFileDescriptor descriptor = getActivity().getAssets().openFd(beepSoundFile != null ? beepSoundFile : "beep.mp3");
-            m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-            descriptor.close();
-
-            m.prepare();
-            m.setVolume(1f, 1f);
-            m.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public interface BarcodeReaderListener {
         void onScanned(Barcode barcode);
