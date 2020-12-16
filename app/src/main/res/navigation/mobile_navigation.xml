@@ -98,8 +98,4 @@
         android:name="com.wheretobuy.adopteuncaddie.ui.sources.SourcesFragment"
         android:label="@string/menu_sources"
         tools:layout="@layout/fragment_sources"/>
-
-
-
-
 </navigation>

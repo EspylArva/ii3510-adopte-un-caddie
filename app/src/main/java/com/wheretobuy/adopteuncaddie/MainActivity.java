@@ -49,23 +49,21 @@ public class MainActivity extends AppCompatActivity {
 
         drawer = findViewById(R.id.drawer_layout);
 
-//        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
-//        drawer.addDrawerListener(actionBarDrawerToggle);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
+//                R.layout.fragment_barcode_scanner,
+//                R.layout.fragment_gallery,
+//                R.layout.fragment_basket)
                 navController.getGraph())
                 .setOpenableLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+//        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        Timber.d("AppBar");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
@@ -85,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item)
     {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        Timber.d("button id: %s", item.getItemId());
         switch (item.getItemId())
         {
             case(R.id.action_settings):
@@ -94,8 +92,7 @@ public class MainActivity extends AppCompatActivity {
             case(R.id.action_sources):
                 navController.navigate(R.id.nav_sources);
                 break;
-            case(R.id.home):
-                Timber.d("AppBar");
+            case(android.R.id.home): // android.R.id.home != R.id.home !!!
                 onSupportNavigateUp();
                 break;
             default:
