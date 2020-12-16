@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator();
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -53,16 +56,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                R.layout.fragment_barcode_scanner,
-//                R.layout.fragment_gallery,
-//                R.layout.fragment_basket)
-                navController.getGraph())
+                R.id.nav_barcodeScanner,
+                R.id.nav_gallery,
+                R.id.nav_basket)
                 .setOpenableLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-//        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
     }
 
     @Override
