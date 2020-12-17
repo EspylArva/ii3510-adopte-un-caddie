@@ -19,6 +19,10 @@
 			<source description="Quick search on UpDownPicker (C#/WPF)" link="https://stackoverflow.com/questions/3307213/android-having-numericupdown-button"/>
 			<source description="Android library" link="https://developer.android.com/reference/android/widget/NumberPicker"/>
 		</subcategory>
+		<subcategory title="Detecting &amp; Handling Long click">
+			<source description="Handling OnLongClickListener" link="https://stackoverflow.com/questions/15340246/textview-longclick-listener"/>
+			<source description="Disabling OnClickListener when OnLongClickListener is activated" link="https://stackoverflow.com/questions/5428077/android-why-does-long-click-also-trigger-a-normal-click"/>
+		</subcategory>
 	</category>
 
 	<category title="Creating Compound Views">
@@ -54,6 +58,10 @@
 			<source description="Accessing XML file programmatically" link="https://stackoverflow.com/questions/45908648/how-to-access-a-file-from-asset-raw-directory"/>
 			<source description="Accessing resources from fragment" link="https://stackoverflow.com/questions/7666589/using-getresources-in-non-activity-class"/>
 		</subcategory>
+		<subcategory title="Language &amp; Locales">
+			<source description="Android Library" link="https://developer.android.com/training/basics/supporting-devices/languages#java"/>
+			<source description="Change application locale programmatically" link="https://stackoverflow.com/questions/12908289/how-to-change-language-of-app-when-user-selects-language"/>
+		</subcategory>
 	</category>
 
 	<category title="Java structures">
@@ -70,7 +78,14 @@
 	</category>
 
 	<category title="Used API documentation">
-		<source description="Open Food Fact API calls using retrofit" link="https://github.com/openfoodfacts/openfoodfacts-androidapp"/>
+		<subcategory title="Open Food Fact">
+			<source description="Official Open Food Fact" link="https://github.com/openfoodfacts/openfoodfacts-androidapp"/>
+		</subcategory>
+		<subcategory title="EmojiCompat">
+			<source description="Android Library" link="https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat"/>
+			<source description="EmojiCompat example" link="https://github.com/android/user-interface-samples/tree/main/EmojiCompat"/>
+			<source description="Getting emoji from country code" link="https://stackoverflow.com/questions/58553373/country-flag-emoji-not-getting-using-country-code-in"/>
+		</subcategory>
 	</category>
 
 	<category title="AndroidManifest">
@@ -79,6 +94,7 @@
 
 	<category title="Miscellaneous">
 		<source description="Opening web page from url" link="https://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application"/>
+		<source description="Previous works from Huam T. (EspylArva)" link="https://github.com/2021-ii3510/assignment-4-currency-converter-EspylArva"/>
 	</category>
 
 	<category title="Resources">

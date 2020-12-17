@@ -27,7 +27,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.MyViewHo
     }
 
 
-    List<String> payments;
+    private List<String> payments;
     public PaymentAdapter(List<String> payment) {
         payments = payment;
     }

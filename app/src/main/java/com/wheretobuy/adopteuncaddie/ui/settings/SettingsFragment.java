@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,18 +26,18 @@ import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import timber.log.Timber;
 
 public class SettingsFragment extends Fragment {
-    private GalleryViewModel galleryViewModel;
-    private TextView lbl_geolocation;
-    private Button btn_refreshGeolocation;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -59,11 +60,11 @@ public class SettingsFragment extends Fragment {
 
         binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
-        binding.recyclerLanguages.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Français", "English"))));
+        binding.recyclerLanguages.setAdapter(new LanguageAdapter(new ArrayList<Map.Entry<String,String>>(Arrays.asList(
+                new AbstractMap.SimpleEntry<String, String>("FR","Français"), new AbstractMap.SimpleEntry<String, String>("US","English"))), getContext()));
         try{
             binding.recyclerEula.setAdapter(new SimpleTextAdapter(XmlEulaParser.parse(getResources().openRawResource(R.raw.eula))));
-        }
-        catch (Exception e) {Timber.w(e, "Failed parsing EULA");}
+        } catch (Exception e) {Timber.w(e, "Failed parsing EULA");}
     }
 
     private void setupRecycler(RecyclerView recyclerView) {
@@ -105,6 +106,47 @@ public class SettingsFragment extends Fragment {
                 else if(v.getVisibility() == View.GONE) { v.setVisibility(View.VISIBLE); }
             }
         });
+
+        binding.lblLanguages.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                collapseAllItemsExcept(binding, binding.recyclerLanguages);
+                return true;
+            }
+        });
+        binding.lblFavoriteShops.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                collapseAllItemsExcept(binding, binding.recyclerShops);
+                return true;
+            }
+        });
+        binding.lblPaymentList.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                collapseAllItemsExcept(binding, binding.recyclerPayment);
+                return true;
+            }
+        });
+        binding.lblEula.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                collapseAllItemsExcept(binding, binding.recyclerEula);
+                return true;
+            }
+        });
     }
 
+    private void collapseAllItemsExcept(FragmentSettingsBinding binding, RecyclerView recyclerView) {
+        for(RecyclerView rec : new RecyclerView[]{binding.recyclerShops, binding.recyclerPayment, binding.recyclerLanguages, binding.recyclerEula}) {
+            if(rec != recyclerView) {
+                rec.setVisibility(View.GONE);
+            }
+            else{
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
 }
+

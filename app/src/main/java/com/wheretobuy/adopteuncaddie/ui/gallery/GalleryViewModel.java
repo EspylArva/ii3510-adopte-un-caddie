@@ -43,6 +43,7 @@ public class GalleryViewModel extends AndroidViewModel {
 
     public MutableLiveData<Location> mLastLocation;
     private FusedLocationProviderClient mFusedLocationClient;
+    private int FAILED_GEOLOCATION_ATTEMPTS = 0;
 
     public MutableLiveData<Location> getLastLocation() {
         return this.mLastLocation;
@@ -74,11 +75,14 @@ public class GalleryViewModel extends AndroidViewModel {
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation.postValue(task.getResult());
-//                        Timber.d("Long: %s - Lat: %s", mLastLocation.getValue().getLongitude(), mLastLocation.getValue().getLatitude());
+                            FAILED_GEOLOCATION_ATTEMPTS = 0;
                         } else {
-                            Timber.w(task.getException(), "getLastLocation:message");
-//                        mFusedLocationClient.getCurrentLocation()
-                            initLocation();
+                            if(FAILED_GEOLOCATION_ATTEMPTS < 100)
+                            {
+                                Timber.w(task.getException(), "getLastLocation:message");
+                                FAILED_GEOLOCATION_ATTEMPTS += 1;
+                                initLocation();
+                            }
                         }
                     }
                 });
