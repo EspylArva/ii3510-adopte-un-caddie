@@ -117,6 +117,9 @@
     <string name="eula">EULA</string>
     <string name="menu_settings">User Settings</string>
     <string name="menu_sources">Development Sources</string>
+    <string name="changeLanguage">Change language</string>
+    <string name="confirmation_language_change">Are you sure you want to change language?</string>
+    <string name="confirm">Confirm</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

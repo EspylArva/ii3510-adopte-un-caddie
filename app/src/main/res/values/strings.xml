@@ -114,6 +114,9 @@
     <string name="eula">Conditions d\'Utilisation</string>
     <string name="menu_settings">Paramètres de l\'utilisateur</string>
     <string name="menu_sources">Sources de développement</string>
+    <string name="changeLanguage">Changement de langue</string>
+    <string name="confirmation_language_change">Êtes-vous sur de vouloir changer de langue ?</string>
+    <string name="confirm">Confirmer</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

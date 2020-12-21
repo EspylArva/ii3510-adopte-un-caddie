@@ -1,6 +1,9 @@
 package com.wheretobuy.adopteuncaddie.ui.settings;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,10 +44,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.MyView
 
 
     private List<Map.Entry<String, String>> languages;
-    private Context context;
-    public LanguageAdapter(List<Map.Entry<String, String>> languages, Context context) {
+    private Activity activity;
+    public LanguageAdapter(List<Map.Entry<String, String>> languages, Activity activity) {
         this.languages = languages;
-        this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -60,18 +63,28 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Map.Entry<String, String> language = languages.get(position); // en; English;
-        Timber.d("Key: %s | Value: %s", language.getKey(), language.getValue());
 
         holder.lbl_description.setText(language.getValue());
-        holder.lbl_flag.setText(
-                Utils.countryCodeToEmoji(language.getKey())
-        );
+        holder.lbl_flag.setText(Utils.countryCodeToEmoji(language.getKey()));
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v)
-            {
-                Utils.setLocale(language.getKey(), context);
-                Toast.makeText(context, String.format("Locale in %s !", language.getValue()), Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                new AlertDialog.Builder(activity)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.changeLanguage)
+                        .setMessage(R.string.confirmation_language_change)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Timber.d("Key: %s | Value: %s", language.getKey(), language.getValue());
+                                Utils.setLocale(language.getKey(), activity);
+                                Toast.makeText(activity, String.format("Locale in %s !", language.getValue()), Toast.LENGTH_SHORT).show();
+                            }
+
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
             }
         });
 
