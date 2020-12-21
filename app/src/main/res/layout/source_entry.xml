@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/sources" />
+        app:srcCompat="@drawable/sources" />
 
     <TextView
         android:id="@+id/lbl_entry_title"
@@ -40,5 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/right_arrow" />
+        android:background="@null"
+        app:srcCompat="@drawable/right_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

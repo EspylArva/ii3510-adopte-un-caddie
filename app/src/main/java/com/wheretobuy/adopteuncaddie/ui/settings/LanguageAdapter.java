@@ -70,7 +70,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.MyView
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(activity)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle(R.string.changeLanguage)
                         .setMessage(R.string.confirmation_language_change)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener()
@@ -81,7 +81,6 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.MyView
                                 Utils.setLocale(language.getKey(), activity);
                                 Toast.makeText(activity, String.format("Locale in %s !", language.getValue()), Toast.LENGTH_SHORT).show();
                             }
-
                         })
                         .setNegativeButton(R.string.cancel, null)
                         .show();
