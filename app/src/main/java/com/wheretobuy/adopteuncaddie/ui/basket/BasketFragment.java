@@ -79,7 +79,10 @@ public class BasketFragment extends Fragment {
         {
             itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
             itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
-            addItemToBasket(itemAddedProductState, itemAddedNumber);
+            if(itemAddedProductState != null)
+            {
+                addItemToBasket(itemAddedProductState, itemAddedNumber);
+            }
         }
 
         // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));

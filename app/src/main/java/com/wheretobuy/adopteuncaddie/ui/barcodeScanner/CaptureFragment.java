@@ -49,7 +49,10 @@ import com.wheretobuy.adopteuncaddie.module.barcode_scanner.CameraSourcePreview;
 import com.wheretobuy.adopteuncaddie.module.barcode_scanner.GraphicOverlay;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class CaptureFragment extends Fragment implements View.OnTouchListener, BarcodeGraphicTracker.BarcodeGraphicTrackerListener {
     protected static final String TAG = CaptureFragment.class.getSimpleName();
@@ -166,59 +169,16 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         super.onActivityCreated(savedInstanceState);
         permissionStatus = getActivity().getSharedPreferences("permissionStatus", getActivity().MODE_PRIVATE);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                //Show Information about why you need the permission
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.grant_permission));
-                builder.setMessage(getString(R.string.permission_camera));
-                builder.setPositiveButton(R.string.grant, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CALLBACK_CONSTANT);
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        mListener.onCameraPermissionDenied();
-                    }
-                });
-                builder.show();
-            } else if (permissionStatus.getBoolean(Manifest.permission.CAMERA, false)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.grant_permission));
-                builder.setMessage(getString(R.string.permission_camera));
-                builder.setPositiveButton(R.string.grant, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        sentToSettings = true;
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                        intent.setData(uri);
-                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        mListener.onCameraPermissionDenied();
-                    }
-                });
-                builder.show();
-            } else {
-                //just request the permission
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CALLBACK_CONSTANT);
-            }
-
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_CALLBACK_CONSTANT);
 
             SharedPreferences.Editor editor = permissionStatus.edit();
             editor.putBoolean(Manifest.permission.CAMERA, true);
             editor.apply();
-        } else {
+            onActivityCreated(savedInstanceState);
+        }
+        else {
             //You already have the permission, just go ahead.
             proceedAfterPermission();
         }
@@ -239,7 +199,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
      */
     @SuppressLint("InlinedApi")
     private void createCameraSource(final boolean autoFocus, final boolean useFlash) {
-        Log.e(TAG, "createCameraSource:");
+        Timber.e("createCameraSource:");
         Context context = getActivity();
 
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
@@ -261,7 +221,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
             // isOperational() can be used to check if the required native libraries are currently
             // available.  The detectors will automatically become operational once the library
             // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
+            Timber.w("Detector dependencies are not yet available.");
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
@@ -270,7 +230,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
             if (hasLowStorage) {
                 Toast.makeText(getActivity(), R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                Log.w(TAG, getString(R.string.low_storage_error));
+                Timber.w(getString(R.string.low_storage_error));
             }
         }
 
@@ -427,12 +387,40 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
             try {
                 mPreview.start(mCameraSource, mGraphicOverlay);
             } catch (IOException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
+                Timber.e(TAG, "Unable to start camera source.", e);
                 mCameraSource.release();
                 mCameraSource = null;
             }
         }
     }
+
+    private static boolean cameraFocus(@NonNull CameraSource cameraSource, @NonNull String focusMode) {
+        Field[] declaredFields = CameraSource.class.getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            if (field.getType() == Camera.class) {
+                field.setAccessible(true);
+                try {
+                    Camera camera = (Camera) field.get(cameraSource);
+                    if (camera != null) {
+                        Camera.Parameters params = camera.getParameters();
+                        params.setFocusMode(focusMode);
+                        camera.setParameters(params);
+                        return true;
+                    }
+
+                    return false;
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * onTap returns the tapped barcode result to the calling Activity.
@@ -442,6 +430,16 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
      * @return true if the activity is ending.
      */
     private boolean onTap(float rawX, float rawY) {
+
+        Timber.d("I was there. Clicked on the screen. Need to refocus?");
+//        cameraFocus(mCameraSource, Camera.Parameters.);
+        mCameraSource.autoFocus(new CameraSource.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success) {
+                Timber.d("Refocused!");
+            }
+        });
+
         // Find tap point in preview frame coordinates.
         int[] location = new int[2];
         mGraphicOverlay.getLocationOnScreen(location);
@@ -478,6 +476,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+
         boolean b = scaleGestureDetector.onTouchEvent(motionEvent);
 
         boolean c = gestureDetector.onTouchEvent(motionEvent);
@@ -609,26 +608,7 @@ public class CaptureFragment extends Fragment implements View.OnTouchListener, B
         }
     }
 
-    public void playBeep() {
-        MediaPlayer m = new MediaPlayer();
-        try {
-            if (m.isPlaying()) {
-                m.stop();
-                m.release();
-                m = new MediaPlayer();
-            }
 
-            AssetFileDescriptor descriptor = getActivity().getAssets().openFd(beepSoundFile != null ? beepSoundFile : "beep.mp3");
-            m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-            descriptor.close();
-
-            m.prepare();
-            m.setVolume(1f, 1f);
-            m.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public interface BarcodeReaderListener {
         void onScanned(Barcode barcode);

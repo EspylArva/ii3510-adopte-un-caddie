@@ -1,40 +1,117 @@
 <sources>
-	<category>XML resources</category>
-	<source description="Formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
-	<source description="Creating a border for a View" link="https://stackoverflow.com/questions/3263611/border-for-an-image-view-in-android"/>
+	<category title="Project Architecture &amp; Android informations">
+		<source description="Why ViewModels should be uncoupled from Activities" link="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e"/>
+		<source description="Android programming good practices" link="https://material.io/design"/>
+		<source description="sp, dp, and other units" link="https://stackoverflow.com/questions/2025282/what-is-the-difference-between-px-dip-dp-and-sp"/>
+	</category>
 
-	<category>Project Architecture</category>
-	<source description="Why ViewModels should be uncoupled from Activities" link="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e"/>
+	<category title="Android Components">
+		<subcategory title="Navigation Drawer">
+			<source description="Navigating across fragments using NavController" link="https://stackoverflow.com/questions/53803598/how-to-interact-with-other-fragment-when-using-navigation-architecture-component"/>
+			<source description="Fixing lack of answer when clicking on ActionBar (Hamburger &amp; Back buttons)" link="https://stackoverflow.com/questions/41183130/android-actionbar-wrong-home-button-id"/>
+		</subcategory>
+		<subcategory title="Recycler View &amp; List View">
+			<source description="Android library" link="https://developer.android.com/guide/topics/ui/layout/recyclerview#java"/>
+			<source description="Setting margin inside Recycler View" link="https://stackoverflow.com/questions/37507937/margin-between-items-in-recycler-view-android"/>
+			<source description="ArrayAdapter and ListViews" link="https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView"/>
+		</subcategory>
+		<subcategory title="NumberPicker">
+			<source description="Quick search on UpDownPicker (C#/WPF)" link="https://stackoverflow.com/questions/3307213/android-having-numericupdown-button"/>
+			<source description="Android library" link="https://developer.android.com/reference/android/widget/NumberPicker"/>
+		</subcategory>
+		<subcategory title="Detecting &amp; Handling Long click">
+			<source description="Handling OnLongClickListener" link="https://stackoverflow.com/questions/15340246/textview-longclick-listener"/>
+			<source description="Disabling OnClickListener when OnLongClickListener is activated" link="https://stackoverflow.com/questions/5428077/android-why-does-long-click-also-trigger-a-normal-click"/>
+		</subcategory>
+	</category>
 
-	<category>Navigation Drawer</category>
-	<source description="Navigating across fragments using NavController" link="https://stackoverflow.com/questions/53803598/how-to-interact-with-other-fragment-when-using-navigation-architecture-component"/>
+	<category title="Creating Compound Views">
+		<source description="Android library" link="https://developer.android.com/training/custom-views/create-view#java"/>
+		<source description="Code example on Custom View implementation" link="https://stackoverflow.com/questions/2695646/declaring-a-custom-android-ui-element-using-xml"/>
+		<source description="Code example on Compound View implementation" link="https://code.tutsplus.com/tutorials/creating-compound-views-on-android--cms-22889#:~:text=Create%20a%20Compound%20View,%2Fres%2Flayout%2Fsidespinner_view."/>
+		<source description="GradientColor" link="https://www.dibbus.com/2011/08/even-more-gradient-buttons-for-android/"/>
+	</category>
 
-	<category>Functionalities</category>
-		<subcategory description="Using Camera">
+	<category title="Functionality">
+		<subcategory title="Using Camera">
 			<source description="Integrating Camera in an ImageView" link="https://stackoverflow.com/questions/54275594/how-to-start-camera-from-fragment-in-android/54275808"/>
 			<source description="Google Developers Barcode API" link="https://developers.google.com/vision/android/barcodes-overview"/>
 			<source description="Using Google Vision in fragment" link="https://github.com/avaneeshkumarmaurya/Barcode-Reader"/>
-			<source description="Getting a barcode format" linl="https://developers.google.com/android/reference/com/google/android/gms/vision/barcode/Barcode#format"/>
-		</subcategory>	
-		<subcategory description="Using Geolocation">
+			<source description="Getting a barcode format" link="https://developers.google.com/android/reference/com/google/android/gms/vision/barcode/Barcode#format"/>
+			<source description="Manual refocusing of camera" link="https://stackoverflow.com/questions/11681262/android-camera-focus-mode"/>
+		</subcategory>
+		<subcategory title="Using Geolocation">
 			<source description="Android Library" link="https://developer.android.com/reference/android/location/package-summary"/>
-			<source description="Pulling geolocation positions" link="https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android"/>
+			<source description="Enabling geolocation" link="https://stackoverflow.com/questions/43518520/how-to-ask-user-to-enable-gps-at-the-launch-of-application"/>
+			<source description="Fetching geolocation positions" link="https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android"/>
 			<source description="Fused Location Provider" link="https://developer.android.com/training/location/request-updates"/>
 			<source description="Fixing getLastKnownLocation() returning null" link="https://stackoverflow.com/questions/23906926/locationmanager-getlastknownlocation-return-null"/>
+			<source description="Fetching actively position with FusedLocation" link="https://stackoverflow.com/questions/51984960/how-to-get-just-one-location-with-fused-location-client"/>
 		</subcategory>
-	<category>AndroidManifest</category>
-	<source description="Managing permissions" link=""/>
+		<subcategory title="XML resources: Formatting &amp; Handling resources">
+			<source description="Formatting in xml resources files" link="https://developer.android.com/guide/topics/resources/string-resource#formatting-strings"/>
+			<source description="Creating a border for a View" link="https://stackoverflow.com/questions/3263611/border-for-an-image-view-in-android"/>
+			<source description="Setting characteristics of a View programmatically" link="https://stackoverflow.com/questions/4854492/setting-width-to-wrap-content-for-textview-through-code"/>
+			<source description="Finding a string asset programmatically" link="https://stackoverflow.com/questions/7493287/android-how-do-i-get-string-from-resources-using-its-name"/>
+			<source description="Finding a reference asset programmatically" link="https://stackoverflow.com/questions/38212831/how-to-set-imagebutton-property-of-appsrccompat-drawable-pic-programmaticall"/>
+			<source description="Android library" link="https://developer.android.com/training/basics/network-ops/xml"/>
+			<source description="Accessing XML file programmatically" link="https://stackoverflow.com/questions/45908648/how-to-access-a-file-from-asset-raw-directory"/>
+			<source description="Accessing resources from fragment" link="https://stackoverflow.com/questions/7666589/using-getresources-in-non-activity-class"/>
+		</subcategory>
+		<subcategory title="Language &amp; Locales">
+			<source description="Android Library" link="https://developer.android.com/training/basics/supporting-devices/languages#java"/>
+			<source description="Change application locale programmatically" link="https://stackoverflow.com/questions/12908289/how-to-change-language-of-app-when-user-selects-language"/>
+		</subcategory>
+	</category>
+
+	<category title="Java structures">
+		<subcategory>
+			<source description="Working with enums" link="https://codingexplained.com/coding/java/enum-to-integer-and-integer-to-enum"/>
+			<source description="First implementation of enums" link="https://www.baeldung.com/java-enum-values"/>
+		</subcategory>
+	</category>
+
+	<category title="User Experience (UX)">
+		<source description="Disable focus on Views on start-up" link="https://stackoverflow.com/questions/1555109/how-to-stop-edittext-from-gaining-focus-at-activity-startup-in-android"/>
+		<source description="Remove focus" link="https://stackoverflow.com/questions/15412943/hide-soft-keyboard-on-losing-focus#:~:text=Best%20way%20is%20to%20set,when%20the%20EditText%20loses%20focus.&amp;text=Try%20this%2C%20May%20be%20it%20will%20solve%20your%20problem."/>
+		<source description="Hide keyboard" link="https://stackoverflow.com/questions/43061216/dismiss-keyboard-on-button-click-that-close-fragment"/>
+	</category>
+
+	<category title="Used API documentation">
+		<subcategory title="Open Food Fact">
+			<source description="Official Open Food Fact" link="https://github.com/openfoodfacts/openfoodfacts-androidapp"/>
+		</subcategory>
+		<subcategory title="EmojiCompat">
+			<source description="Android Library" link="https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat"/>
+			<source description="EmojiCompat example" link="https://github.com/android/user-interface-samples/tree/main/EmojiCompat"/>
+			<source description="Getting emoji from country code" link="https://stackoverflow.com/questions/58553373/country-flag-emoji-not-getting-using-country-code-in"/>
+		</subcategory>
+	</category>
+
+	<category title="AndroidManifest">
+		<source description="Managing permissions" link="https://developer.android.com/training/permissions/requesting"/>
+	</category>
+
+	<category title="Miscellaneous">
+		<source description="Opening web page from url" link="https://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application"/>
+		<source description="Previous works from Huam T. (EspylArva)" link="https://github.com/2021-ii3510/assignment-4-currency-converter-EspylArva"/>
+	</category>
+
+	<category title="Resources">
+		<source description="Icons credits go to flaticon.com" link="https://www.flaticon.com/"/>
+		<source description="Lorem ipsum for EULA articles" link="http://legalipsum.com/?count=8"/>
+	</category>
 </sources>
 
-<<<<<<< HEAD
 
-<!--
-<source description="" link=""/>
-https://stackoverflow.com/questions/43518520/how-to-ask-user-to-enable-gps-at-the-launch-of-application
+<!-- ====== SOURCES UTILISEES DANS LES PROJETS 1-4 ======
 
-https://github.com/openfoodfacts/openfoodfacts-androidapp
 
-https://stackoverflow.com/questions/53803598/how-to-interact-with-other-fragment-when-using-navigation-architecture-component
-	-->
-=======
->>>>>>> dev-antoine
+    <source>
+        <category>Allowing screen rotation</category>
+        <url description="Android library - Navigation" link="https://developer.android.com/guide/navigation/navigation-programmatic#java"/>
+        <url description="Resolving 'Can't inflate class fragment' issue" link="https://stackoverflow.com/questions/55893920/how-to-replace-a-fragment-using-navcontroller-navigate-instead-of-adding-it-on-t"/>
+        <url description="Android library - Implementing NavHost Programmatically" link="https://developer.android.com/guide/navigation/navigation-programmatic"/>
+    </source>
+
+-->

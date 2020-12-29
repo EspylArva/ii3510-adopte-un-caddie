@@ -28,6 +28,8 @@ import com.wheretobuy.adopteuncaddie.module.barcode_scanner.GraphicOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 //import android.support.annotation.UiThread;
 //import com.google.android.gms.samples.vision.barcodereader.ui.camera.GraphicOverlay;
 
@@ -55,7 +57,7 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     @Override
     public void onNewItem(int id, Barcode item) {
         mGraphic.setId(id);
-        Log.e("XX", "barcode detected: " + item.displayValue + ", listener: " + listener);
+        Timber.e("barcode detected: %s, listener: %s", item.displayValue, listener);
 
         if (listener != null) {
             listener.onScanned(item);
@@ -71,8 +73,8 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
         mGraphic.updateItem(item);
 
         if (detectionResults != null && detectionResults.getDetectedItems().size() > 1) {
-            Log.e("XX", "Multiple items detected");
-            Log.e("XX", "onUpdate: " + detectionResults.getDetectedItems().size());
+            Timber.e("Multiple items detected");
+            Timber.e("onUpdate: %s", detectionResults.getDetectedItems().size());
 
             if (listener != null) {
                 List<Barcode> barcodes = asList(detectionResults.getDetectedItems());

@@ -13,6 +13,8 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.wheretobuy.adopteuncaddie.utils.ManualBarcodeListener;
 
+import timber.log.Timber;
+
 
 public class BarcodeScannerViewModel extends AndroidViewModel{ // implements ManualBarcodeListener {
 
@@ -32,7 +34,7 @@ public class BarcodeScannerViewModel extends AndroidViewModel{ // implements Man
         {
             this.barcode = (barcode);
         }
-        Log.e("DATA BINDING", String.valueOf(barcode));
+        Timber.e(String.valueOf(barcode));
     }
 
 //    @Override

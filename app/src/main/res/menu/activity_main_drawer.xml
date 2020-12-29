@@ -12,12 +12,9 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_gallery" />
-
         <item
             android:id="@+id/nav_basket"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_basket" />
-
-
     </group>
 </menu>

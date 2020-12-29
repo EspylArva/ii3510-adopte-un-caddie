@@ -20,6 +20,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.ViewHolder> {
 
@@ -45,7 +46,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
+        Timber.d("onBindViewHolder: called.");
 
         Glide.with(mContext)
                 .asBitmap()
@@ -56,7 +57,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "OnClick clicked on: "+ mItemNames.get(position));
+                Timber.d("OnClick clicked on: " + mItemNames.get(position));
 
                 Toast.makeText(mContext, mItemNames.get(position), Toast.LENGTH_SHORT).show();
             }
