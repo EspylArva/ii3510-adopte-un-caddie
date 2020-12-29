@@ -45,30 +45,6 @@ public class SourceEntry extends ConstraintLayout
         setButtonsOnClickListener();
     }
 
-//    public SourceEntry(Context context, @Nullable AttributeSet attrs)
-//    {
-//        super(context, attrs);
-//
-//        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.AppEntry, 0, 0);
-//
-//        try
-//        {
-//            entry_title = a.getString(R.styleable.AppEntry_title);
-//            entry_imgSrc = a.getResourceId(R.styleable.AppEntry_imgSrc, R.mipmap.ic_launcher_round);
-//            entry_link = a.getString(R.styleable.AppEntry_url);
-//        }
-//        catch (Exception e)
-//        {
-//            System.out.println(e);
-//        }
-//        finally {
-//            a.recycle();
-//        }
-//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        init(inflater);
-//        setButtonsOnClickListener();
-//    }
-
     private void setButtonsOnClickListener() {
         btn_goto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,13 +75,6 @@ public class SourceEntry extends ConstraintLayout
         img_icon = root.findViewById(R.id.img_entry_icon);
         lbl_title = root.findViewById(R.id.lbl_entry_title);
         btn_goto = root.findViewById(R.id.btn_go_next);
-
-//        lbl_title.setSelected(true);
-//        img_icon.setImageResource(entry_imgSrc);
-        img_icon.setAdjustViewBounds(true);
-        lbl_title.setText(entry_title);
-//        btn_goto.setImageResource(R.mipmap.right_arrow);
-//        btn_goto.setAdjustViewBounds(true);
-        btn_goto.setAdjustViewBounds(true);
+        lbl_title.setText(entry_title); 
     }
 }
