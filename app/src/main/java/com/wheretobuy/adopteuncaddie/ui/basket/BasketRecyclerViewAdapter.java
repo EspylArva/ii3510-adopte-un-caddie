@@ -45,7 +45,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
+//        Log.d(TAG, "onBindViewHolder: called.");
 
         Glide.with(mContext)
                 .asBitmap()
