@@ -106,7 +106,7 @@ public class BasketFragment extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.recycler_items);
 
 
-        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesName(vm.getArticlesArrayList()), vm.getArticlesUrl(vm.getArticlesArrayList()), getContext());
+        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesName(vm.getArticlesArrayList()), vm.getArticlesUrl(vm.getArticlesArrayList()), vm.getArticlesQuantity(vm.getArticlesArrayList()), vm.getArticlesPrice(vm.getArticlesArrayList()), getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return root;
@@ -122,6 +122,33 @@ public class BasketFragment extends Fragment {
 
         vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
         vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
+        vm.getArticlesArrayList().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3000001032670_PHOTOSITE_20160318_163819_0.jpg", "Citron", 2, 3));
+
 
     }
 

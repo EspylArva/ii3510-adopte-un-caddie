@@ -27,11 +27,15 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     private ArrayList<String> mItemNames = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<Integer> mItemQuantity = new ArrayList<>();
+    private ArrayList<Float> mItemPrices = new ArrayList<>();
     private Context mContext;
 
-    public BasketRecyclerViewAdapter(ArrayList<String> itemNames, ArrayList<String> images, android.content.Context context) {
+    public BasketRecyclerViewAdapter(ArrayList<String> itemNames, ArrayList<String> images, ArrayList<Integer> quantity, ArrayList<Float> prices,  android.content.Context context) {
         mItemNames = itemNames;
         mImages = images;
+        mItemQuantity = quantity;
+        mItemPrices = prices;
         mContext = context;
     }
 
@@ -52,11 +56,13 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                 .load(mImages.get(position))
                 .into(holder.image);
         holder.itemName.setText(mItemNames.get(position));
+        holder.itemQuantity.setText(mItemQuantity.get(position).toString());
+        holder.itemPrice.setText(mItemPrices.get(position).toString());
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "OnClick clicked on: "+ mItemNames.get(position));
+                Log.d(TAG, "OnClick clicked on: " + mItemNames.get(position));
 
                 Toast.makeText(mContext, mItemNames.get(position), Toast.LENGTH_SHORT).show();
             }
@@ -68,7 +74,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         return mItemNames.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView image;
         TextView itemName;

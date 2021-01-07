@@ -46,6 +46,22 @@ public class BasketViewModel extends AndroidViewModel {
         return articlesUrl;
     }
 
+    public ArrayList<Float> getArticlesPrice(ArrayList<Articles> articlesArrayList) {
+        ArrayList<Float> articlesPrice = new ArrayList<>();
+        for (int i = 0; i < articlesArrayList.size(); i++) {
+            articlesPrice.add(articlesArrayList.get(i).getPrice());
+        }
+        return articlesPrice;
+    }
+
+    public ArrayList<Integer> getArticlesQuantity(ArrayList<Articles> articlesArrayList) {
+        ArrayList<Integer> articlesQuantity = new ArrayList<>();
+        for (int i = 0; i < articlesArrayList.size(); i++) {
+            articlesQuantity.add(articlesArrayList.get(i).getQuantity());
+        }
+        return articlesQuantity;
+    }
+
     private ArrayList<Articles> articlesArrayList = new ArrayList<Articles>();
 
 
