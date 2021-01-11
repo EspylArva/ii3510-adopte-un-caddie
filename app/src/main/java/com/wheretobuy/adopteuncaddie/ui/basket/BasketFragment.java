@@ -120,8 +120,11 @@ public class BasketFragment extends Fragment {
         Type listType = new TypeToken<ArrayList<Articles>>(){}.getType();
         List<Articles> yourClassList = new Gson().fromJson(json, listType);
 
-        for (Articles art : yourClassList){
-            System.out.println(art.getName());
+        if(yourClassList != null)
+        {
+            for (Articles art : yourClassList){
+                System.out.println(art.getName());
+            }
         }
 
         // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));
