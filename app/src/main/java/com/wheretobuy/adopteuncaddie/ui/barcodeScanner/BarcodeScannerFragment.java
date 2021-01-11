@@ -1,6 +1,8 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
 import android.annotation.SuppressLint;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,58 +22,57 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.wheretobuy.adopteuncaddie.R;
-import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
-import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
-import com.wheretobuy.adopteuncaddie.module.openfoodfacts.BarcodeCallback;
-import com.wheretobuy.adopteuncaddie.module.openfoodfacts.OpenFoodFactsService;
+import com.wheretobuy.adopteuncaddie.databinding.FragmentBarcodeScannerBinding;
 import com.wheretobuy.adopteuncaddie.module.openfoodfacts.RetrofitCall;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Text;
-
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import timber.log.Timber;
 
 public class BarcodeScannerFragment extends Fragment implements CaptureFragment.BarcodeReaderListener {
 
     private static boolean REQUIRE_CONFIRMATION = true;
     private static final List<Integer> ACCEPTED_BARCODE_FORMATS = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 32, 64, 128, 512, 1024, 5));
-    private BarcodeScannerViewModel vm;
+//    private BarcodeScannerViewModel vm;
+
+    NavController navController;
 
 
     private CaptureFragment barcodeReader;
-    private TextView txt_manualBarcode;
-
+//    private TextView txt_manualBarcode;
 
     private static final String TAG = "Barcode-reader";
+    private String beepSoundFile;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        vm = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+        FragmentBarcodeScannerBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_barcode_scanner, container, false);
+        binding.setViewmodel(ViewModelProviders.of(this).get(BarcodeScannerViewModel.class));
 
-        View root = viewsInit(inflater, container);
-        setViewModelObservers();
-        setClickListeners();
+        View root = binding.getRoot();
+
+        navController = NavHostFragment.findNavController(this);
+
+//        barcodeReader = (CaptureFragment)binding.barcodeFragment;
+//        txt_manualBarcode = binding.txtManualBarcode;
+
+        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
+        barcodeReader.setListener(this);
+        setClickListeners(binding);
+
+
 
         return root;
     }
@@ -78,17 +80,18 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
     @SuppressLint("ResourceType")
     @Override
     public void onScanned(final Barcode barcode) {
-        Log.d(TAG, "onScanned: " + barcode.displayValue + " (format: " + barcode.format + ")");
+        Timber.d("onScanned: %s (format: %s)", barcode.displayValue, barcode.format);
         if(ACCEPTED_BARCODE_FORMATS.contains(barcode.format))
         {
-            Log.d("Calling retrofit", "Barcode: " + barcode.displayValue);
+            Timber.d("Barcode: %s", barcode.displayValue);
+            playBeep();
             processBarcode(barcode.displayValue);
         }
     }
 
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
-        Log.d(TAG, "onScannedMultiple: " + barcodes.size());
+        Timber.d("onScannedMultiple: %s", barcodes.size());
         for(Barcode barcode : barcodes)
         {
             onScanned(barcode);
@@ -102,7 +105,7 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
 
     @Override
     public void onScanError(String errorMessage) {
-        Log.e(TAG, "onScanError: " + errorMessage);
+        Timber.e("onScanError: %s", errorMessage);
     }
 
     @Override
@@ -110,54 +113,38 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         Toast.makeText(getActivity(), "Camera permission denied!", Toast.LENGTH_LONG).show();
     }
 
-
-    private View viewsInit(LayoutInflater inflater, ViewGroup container) {
-        View root = inflater.inflate(R.layout.fragment_barcode_scanner, container, false);
-
-        barcodeReader = (CaptureFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
-        barcodeReader.setListener(this);
-
-        txt_manualBarcode = root.findViewById(R.id.txt_manualBarcode);
-
-
-
-        return root;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
-    private void setClickListeners() {
-//        btn_<ID_HERE>.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //DO STUFF
-//            }
-//        });
+    private void setClickListeners(FragmentBarcodeScannerBinding binding) {
+        binding.btnReturnToBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
+                {
+                    NavDirections action = BarcodeScannerFragmentDirections.returnNavBarcodeScannerToNavBasket();
+                    navController.navigate(action);
+                } // else: a navRequest has already been posted, we're just waiting for the transition.
+                // Avoid the following code from being ran twice, as the fragment has technically already been changed
+            }
+        });
 
-        txt_manualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        // Remove the caret bar & try to get the product page
+        binding.txtManualBarcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                processBarcode(txt_manualBarcode.getText().toString());
-                txt_manualBarcode.setFocusable(false);
+                Timber.d(binding.getViewmodel().getBarcode());
+                processBarcode(binding.getViewmodel().getBarcode());
+                binding.txtManualBarcode.setFocusable(false);
                 return false;
             }
         });
-        txt_manualBarcode.setOnTouchListener(new View.OnTouchListener() {
+        // Get the caret bar back
+        binding.txtManualBarcode.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) {
-                txt_manualBarcode.setFocusableInTouchMode(true);
+            public boolean onTouch(View v, MotionEvent event) {
+                binding.txtManualBarcode.setFocusableInTouchMode(true);
                 return false;
             }
         });
-    }
-    private void setViewModelObservers()
-    {
-
-//        vm.<MUTABLE_LIVE_DATA_GETTER>().observe(getViewLifecycleOwner(), new Observer<TYPE_OF_ATTRIBUTE>() {
-//            @Override
-//            public void onChanged(@Nullable TYPE_OF_ATTRIBUTE variable) {
-//                // DO STUFF
-//            }
-//        });
     }
 
     private void processBarcode(String barcode)
@@ -165,7 +152,6 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
         RetrofitCall.callProductById(productState -> {
             if(productState.getStatus() == 1) // status_verbose: product found
             {
-                NavController navController = NavHostFragment.findNavController(this);
                 if(navController.getCurrentDestination().getId() == R.id.nav_barcodeScanner)
                 {
                     if(BarcodeScannerFragment.REQUIRE_CONFIRMATION) // user setting: need confirmation to add to basket. Redirect to ProductScannedFragment
@@ -177,6 +163,8 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
                     {
                         // Add 1 element of product to basket
                         // TODO: Add 1 to basket static list of products
+                        BarcodeScannerFragmentDirections.ActionNavBarcodeScannerToNavProductScanned action = BarcodeScannerFragmentDirections.actionNavBarcodeScannerToNavProductScanned(productState);
+                        navController.navigate(action);
                     }
                 } // else: a navRequest has already been posted, we're just waiting for the transition.
                 // Avoid the following code from being ran twice, as the fragment has technically already been changed
@@ -187,6 +175,28 @@ public class BarcodeScannerFragment extends Fragment implements CaptureFragment.
             }// else: (status == 0) -> status_verbose: product not found
         }, barcode);
 
+    }
+
+    public void playBeep() {
+        MediaPlayer m = new MediaPlayer();
+        try {
+            if (m.isPlaying()) {
+                m.stop();
+                m.release();
+                m = new MediaPlayer();
+            }
+
+
+            AssetFileDescriptor descriptor = getActivity().getAssets().openFd(beepSoundFile != null ? beepSoundFile : "beep.mp3");
+            m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+            descriptor.close();
+
+            m.prepare();
+            m.setVolume(1f, 1f);
+            m.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,22 +1,50 @@
 package com.wheretobuy.adopteuncaddie.ui.barcodeScanner;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-public class BarcodeScannerViewModel extends AndroidViewModel {
+import com.wheretobuy.adopteuncaddie.utils.ManualBarcodeListener;
 
-    private MutableLiveData<String> mText;
+import timber.log.Timber;
+
+
+public class BarcodeScannerViewModel extends AndroidViewModel{ // implements ManualBarcodeListener {
+
+    private String barcode;
 
     public BarcodeScannerViewModel(Application app) {
         super(app);
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        setBarcode(null);
     }
 
-    public LiveData<String> getText() { return mText;
+    public String getBarcode() {
+        return barcode;
     }
+
+    public void setBarcode(String barcode) {
+        if(this.barcode != barcode)
+        {
+            this.barcode = (barcode);
+        }
+        Timber.e(String.valueOf(barcode));
+    }
+
+//    @Override
+//    public void onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//    }
+//
+//    @Override
+//    public void onTouch(View v, MotionEvent event) {
+//
+//    }
 
 }

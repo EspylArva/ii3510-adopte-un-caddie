@@ -1,15 +1,20 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class BasketViewModel extends AndroidViewModel {
+
 
 //    public ArrayList<String> getmItemNames() {
 //        return mItemNames;
@@ -22,12 +27,14 @@ public class BasketViewModel extends AndroidViewModel {
 //    private ArrayList<String> mItemNames = new ArrayList<>();
 //    private ArrayList<String> mImageUrls = new ArrayList<>();
 
-    public ArrayList<Articles> getArticlesArrayList() {
+    public SharedPreferences basketList;
+
+    public MutableLiveData<ArrayList<Articles>> getArticlesArrayList() {
         return articlesArrayList;
     }
 
     public void setArticlesArrayList(ArrayList<Articles> articlesArrayList) {
-        this.articlesArrayList = articlesArrayList;
+        this.articlesArrayList.postValue(articlesArrayList);
     }
 
     public ArrayList<String> getArticlesName(ArrayList<Articles> articlesArrayList) {
@@ -37,6 +44,7 @@ public class BasketViewModel extends AndroidViewModel {
         }
         return articlesName;
     }
+
 
     public ArrayList<String> getArticlesUrl(ArrayList<Articles> articlesArrayList) {
         ArrayList<String> articlesUrl = new ArrayList<>();
@@ -62,8 +70,7 @@ public class BasketViewModel extends AndroidViewModel {
         return articlesQuantity;
     }
 
-    private ArrayList<Articles> articlesArrayList = new ArrayList<Articles>();
-
+    private  MutableLiveData<ArrayList<Articles>> articlesArrayList = new MutableLiveData<ArrayList<Articles>>();
 
     private MutableLiveData<String> mText;
 
@@ -71,6 +78,8 @@ public class BasketViewModel extends AndroidViewModel {
         super(app);
         mText = new MutableLiveData<>();
         mText.setValue("This is basket fragment");
+        articlesArrayList.setValue(new ArrayList<Articles>());
+        basketList = getApplication().getSharedPreferences("prefs", Context.MODE_PRIVATE);
     }
 
     public LiveData<String> getText() {

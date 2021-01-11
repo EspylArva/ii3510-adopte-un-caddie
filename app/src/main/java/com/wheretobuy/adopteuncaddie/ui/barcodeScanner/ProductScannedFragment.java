@@ -17,6 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.wheretobuy.adopteuncaddie.R;
@@ -38,12 +41,14 @@ public class ProductScannedFragment extends Fragment {
 
     private ProductScannedViewModel vm;
 
+    private NavController navController;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         vm = ViewModelProviders.of(this).get(ProductScannedViewModel.class);
 
+        navController = NavHostFragment.findNavController(this);
         state = (ProductState) getArguments().getSerializable("productState");
 
         View root = viewsInit(inflater, container);
@@ -52,6 +57,7 @@ public class ProductScannedFragment extends Fragment {
 
         setViewModelObservers();
         setClickListeners();
+
 
         return root;
     }
@@ -138,10 +144,12 @@ public class ProductScannedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Add to list in basket
-                // TODO: Add to basket static list of products
-
-                // Close fragment
-                getParentFragmentManager().popBackStack();
+                if(navController.getCurrentDestination().getId() == R.id.nav_productScanned)
+                {
+                    ProductScannedFragmentDirections.ActionNavProductScannedToNavBasket action = ProductScannedFragmentDirections.actionNavProductScannedToNavBasket(state, vm.getQuantity().getValue());
+                    navController.navigate(action);
+                } // else: a navRequest has already been posted, we're just waiting for the transition.
+                // Avoid the following code from being ran twice, as the fragment has technically already been changed
             }
         });
     }

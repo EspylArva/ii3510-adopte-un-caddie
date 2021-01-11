@@ -1,0 +1,130 @@
+<resources>
+    <string name="app_name">Adopt a Shopping Cart</string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_gallery">Testing Fragment</string>
+    <string name="lorem">lorem ipsum</string>
+    <string name="hint_manualBarcode">Manually give a barcode</string>
+    <string name="title_barcodeScanningFragment">
+        or<br/>
+        Scan a barcode
+    </string>
+    <string name="backToBasket">Back to basket</string>
+    <string name="menu_barcodeScanner">Barcode scanner</string>
+    <string name="ok">OK</string>
+
+
+    <!-- Geolocation -->
+
+
+    <!-- Barcode Scanner-->
+    <string name="low_storage_error">Insufficient device storage. Could not download detection module.</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="permission_camera">This application requires camera permission to scan barcode</string>
+    <string name="grant">Grant</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Open Food Facts -->
+    <string name="txtNutritionLevelLow">at low quantities</string>
+    <string name="txtNutritionLevelModerate">at moderate quantities</string>
+    <string name="txtNutritionLevelHigh">at high quantities</string>
+    <string name="vitamin_a">Vitamin A</string>
+    <string name="vitamin_d">Vitamin D</string>
+    <string name="vitamin_e">Vitamin E</string>
+    <string name="vitamin_k">Vitamin K</string>
+    <string name="vitamin_c">Vitamin C</string>
+    <string name="vitamin_b1">Vitamin B1</string>
+    <string name="vitamin_b2">Vitamin B2</string>
+    <string name="vitamin_pp">Vitamin PP</string>
+    <string name="vitamin_b6">Vitamin B6</string>
+    <string name="vitamin_b9">Vitamin B9</string>
+    <string name="vitamin_b12">Vitamin B12</string>
+    <string name="biotin">Biotin</string>
+    <string name="pantothenic_acid">Pantothenic acid</string>
+    <string name="nutrition_minerals">Minerals</string>
+    <string name="silica">Silica</string>
+    <string name="bicarbonate">Bicarbonate</string>
+    <string name="potassium">Potassium</string>
+    <string name="chloride">Chloride</string>
+    <string name="calcium">Calcium</string>
+    <string name="phosphorus">Phosphorus</string>
+    <string name="iron">Iron</string>
+    <string name="magnesium">Magnesium</string>
+    <string name="zinc">Zinc</string>
+    <string name="copper">Copper</string>
+    <string name="manganese">Manganese</string>
+    <string name="fluoride">Fluoride</string>
+    <string name="selenium">Selenium</string>
+    <string name="chromium">Chromium</string>
+    <string name="molybdenum">Molybdenum</string>
+    <string name="iodine">Iodine</string>
+    <string name="caffeine">Caffeine</string>
+    <string name="taurine">Taurine</string>
+    <string name="ph">pH</string>
+    <string name="fruits_vegetables_nuts">Fruits, vegetables, nuts</string>
+    <string name="collagen_meat_protein_ratio">Collagen meat protein ratio</string>
+    <string name="cocoa">Cocoa</string>
+    <string name="chlorophyl">Chlorophyl</string>
+
+    <string name="nutrition_satured_fat">Saturated fat</string>
+    <string name="nutrition_omega3">Omega 3</string>
+    <string name="nutrition_omega6">Omega 6</string>
+    <string name="nutrition_omega9">Omega 9</string>
+    <string name="nutrition_sucrose">Sucrose</string>
+    <string name="nutrition_glucose">Glucose</string>
+    <string name="nutrition_fructose">Fructose</string>
+    <string name="nutrition_maltose">Maltose</string>
+    <string name="nutrition_alcohol">Alcohol</string>
+    <string name="nutrition_vitamins">Vitamins</string>
+    <string name="nutrition_sugars">Sugars</string>
+    <string name="nutrition_lactose">Lactose</string>
+    <string name="nutrition_casein">Casein</string>
+    <string name="nutrition_maltodextrins">Maltodextrins</string>
+    <string name="nutrition_serum_proteins">Serum Proteins</string>
+    <string name="nutrition_nucleotides">Nucleotides</string>
+    <string name="nutrition_cholesterol">Cholesterol</string>
+    <string name="nutrition_trans_fat">Trans fat</string>
+    <string name="nutrition_monounsaturatedFat">Monounsaturated fat</string>
+    <string name="nutrition_polyunsaturatedFat">Polyunsaturated fat</string>
+
+
+    <string name="addToBasket">Add to basket</string>
+    <string name="price">Price</string>
+    <string name="nutriscore">Nutri-score</string>
+    <string name="menu_productScanned">Product\'s informations</string>
+    <string name="productNotFound">Product not found</string>
+
+    <string name="brand">Brand</string>
+    <string name="nbOfIngredients">Number of ingredients</string>
+    <string name="packaging">Packaging</string>
+    <string name="allergens">Allergens</string>
+    <string name="volume">Mass/Volume</string>
+    <string name="energy_kcal">Energy (in kcal)</string>
+    <string name="sugars">Sugars</string>
+    <string name="salt">Salt</string>
+    <string name="proteins">Proteins</string>
+    <string name="carbohydrates">Carbohydrates</string>
+    <string name="sodium">Sodium</string>
+
+    <string name="menu_basket">Basket</string>
+    <string name="menu_payment">Pay the basket</string>
+    <string name="payment_list">Payment information</string>
+    <string name="favorite_shops">Favorite shops</string>
+    <string name="languages">Languages</string>
+    <string name="eula">EULA</string>
+    <string name="menu_settings">User Settings</string>
+    <string name="menu_sources">Development Sources</string>
+    <string name="changeLanguage">Change language</string>
+    <string name="confirmation_language_change">Are you sure you want to change language?</string>
+    <string name="confirm">Confirm</string>
+
+    <string-array name="shop_names">
+        <item>Auchan</item>
+        <item>Carrefour</item>
+        <item>Monoprix</item>
+    </string-array>
+
+</resources>
