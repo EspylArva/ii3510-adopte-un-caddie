@@ -111,19 +111,20 @@ public class BasketFragment extends Fragment {
             itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
             itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
             if (itemAddedProductState != null) {
-                addItemToBasket(itemAddedProductState, itemAddedNumber);
+                addItemToBasket(itemAddedProductState.getProduct().getProductName(),itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
             }
         }
 
         Gson gson = new Gson();
+        List<Articles> yourClassList = new ArrayList<Articles>();
         String json = vm.basketList.getString("Articles", "");
         Type listType = new TypeToken<ArrayList<Articles>>(){}.getType();
-        List<Articles> yourClassList = new Gson().fromJson(json, listType);
+        yourClassList = new Gson().fromJson(json, listType);
 
-        if(yourClassList != null)
-        {
-            for (Articles art : yourClassList){
+        if (yourClassList != null) {
+            for (Articles art : yourClassList) {
                 System.out.println(art.getName());
+                addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
             }
         }
 
@@ -132,9 +133,9 @@ public class BasketFragment extends Fragment {
         return root;
     }
 
-    private void addItemToBasket(ProductState itemAddedProductState, int itemAddedNumber) {
+    private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber) {
 
-        String urlComplete = url.concat(itemAddedProductState.getProduct().getProductName()).replace(" ", "_");
+        String urlComplete = url.concat(itemName.replace(" ", "_"));
 
         Log.d("onVolleyResponse", urlComplete);
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -152,7 +153,7 @@ public class BasketFragment extends Fragment {
         });
         queue.add(request);
         System.out.println(itemAddedNumber);
-        Articles article = new Articles(itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedProductState.getProduct().getProductName(), itemAddedNumber, 10.9f);
+        Articles article = new Articles(itemImageUrl, itemName, itemAddedNumber, 10.9f);
         vm.getArticlesArrayList().getValue().add(article);
 
         SharedPreferences.Editor prefsEditor = vm.basketList.edit();
