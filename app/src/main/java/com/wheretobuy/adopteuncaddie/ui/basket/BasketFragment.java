@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -71,22 +74,15 @@ public class BasketFragment extends Fragment {
 
     String url = "http://vps-bfc92ef6.vps.ovh.net/index.php/products/getBy/";
 
+    private RecyclerView recyclerView;
 
 
-
-
-
-
-
-
-
-            // Ajout par TK
-            // Gère la transmission d'article de ProductScannedFragment -> BasketFragment
+    // Ajout par TK
+    // Gère la transmission d'article de ProductScannedFragment -> BasketFragment
     private int itemAddedNumber;                // Nombre d'item à ajouter
     private ProductState itemAddedProductState; // Fiche OpenFoodFacts de l'article
     // Gère la redirection des fragments via Navigation
     private NavController navController;
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -106,19 +102,11 @@ public class BasketFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shopList.setAdapter(adapter);
 
-        // get the item if the fragment request comes from ProductScannedFragment
-        if (getArguments() != null) {
-            itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
-            itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
-            if (itemAddedProductState != null) {
-                addItemToBasket(itemAddedProductState.getProduct().getProductName(),itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
-            }
-        }
-
         Gson gson = new Gson();
         List<Articles> yourClassList = new ArrayList<Articles>();
         String json = vm.basketList.getString("Articles", "");
-        Type listType = new TypeToken<ArrayList<Articles>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Articles>>() {
+        }.getType();
         yourClassList = new Gson().fromJson(json, listType);
 
         if (yourClassList != null) {
@@ -129,7 +117,14 @@ public class BasketFragment extends Fragment {
         }
 
         // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));
-
+// get the item if the fragment request comes from ProductScannedFragment
+        if (getArguments() != null) {
+            itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
+            itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
+            if (itemAddedProductState != null) {
+                addItemToBasket(itemAddedProductState.getProduct().getProductName(), itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
+            }
+        }
         return root;
     }
 
@@ -154,7 +149,7 @@ public class BasketFragment extends Fragment {
         queue.add(request);
         System.out.println(itemAddedNumber);
         Articles article = new Articles(itemImageUrl, itemName, itemAddedNumber, 10.9f);
-        vm.getArticlesArrayList().getValue().add(article);
+        vm.addItem(article);
 
         SharedPreferences.Editor prefsEditor = vm.basketList.edit();
         Gson gson = new Gson();
@@ -171,7 +166,6 @@ public class BasketFragment extends Fragment {
 //        SharedPreferences basketList = context.getSharedPreferences("prefs", context.MODE_PRIVATE);
 //        SharedPreferences.Editor prefsEditor = basketList.edit();
 //    }
-
 
 
     private void setClickListeners() {
@@ -220,12 +214,14 @@ public class BasketFragment extends Fragment {
 
 
     private void setViewModelObservers() {
-//        vm.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//        @Override
-//        public void onChanged(@Nullable String variable) {
-        //TODO: DO STUFF
-//        }
-//    });
+        vm.getArticlesArrayList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Articles>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Articles> a) {
+                BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+        });
 
     }
 
@@ -237,16 +233,16 @@ public class BasketFragment extends Fragment {
         payButton = root.findViewById(R.id.pay_button);
         payButton.setText("Payer");
 //        initImageBitmaps();
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_items);
+        recyclerView = root.findViewById(R.id.recycler_items);
 
-
-        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesName(vm.getArticlesArrayList().getValue()), vm.getArticlesUrl(vm.getArticlesArrayList().getValue()), vm.getArticlesQuantity(vm.getArticlesArrayList().getValue()), vm.getArticlesPrice(vm.getArticlesArrayList().getValue()), getContext());
+        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return root;
     }
 
-//    private void initImageBitmaps() {
+
+    //    private void initImageBitmaps() {
 //
 //        vm.getArticlesArrayList().getValue().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
 //

@@ -1,6 +1,8 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,17 +30,13 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     private static final String TAG = "BasketRecyclerViewAdapt";
 
-    private ArrayList<String> mItemNames = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
-    private ArrayList<Integer> mItemQuantity = new ArrayList<>();
-    private ArrayList<Float> mItemPrices = new ArrayList<>();
+
     private Context mContext;
 
-    public BasketRecyclerViewAdapter(ArrayList<String> itemNames, ArrayList<String> images, ArrayList<Integer> quantity, ArrayList<Float> prices,  android.content.Context context) {
-        mItemNames = itemNames;
-        mImages = images;
-        mItemQuantity = quantity;
-        mItemPrices = prices;
+    private MutableLiveData<ArrayList<Articles>> articles;
+
+    public BasketRecyclerViewAdapter(MutableLiveData<ArrayList<Articles>> articles, android.content.Context context) {
+        this.articles = articles;
         mContext = context;
     }
 
@@ -57,26 +56,54 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImages.get(position))
+                .load(articles.getValue().get(position).getUrl())
                 .into(holder.image);
-        holder.itemName.setText(mItemNames.get(position));
-        holder.itemQuantity.setText(mItemQuantity.get(position).toString());
-        holder.itemPrice.setText(String.format("%.2f", mItemPrices.get(position)));
+        holder.itemName.setText(articles.getValue().get(position).getName());
+        holder.itemQuantity.setText(String.valueOf(articles.getValue().get(position).getQuantity()));
+        holder.itemPrice.setText(String.format("%.2f", articles.getValue().get(position).getPrice()));
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//             Toast.makeText(mContext, mItemNames.get(position), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder itemCountPopup = new AlertDialog.Builder(mContext);
+                itemCountPopup.setTitle("Ajout et suppression de produits");
+                itemCountPopup.setPositiveButton("+", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() + 1);
+                        articles.postValue(articles.getValue());
+                    }
+                });
+                itemCountPopup.setNegativeButton("-", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (articles.getValue().get(position).getQuantity() == 1){
+                            articles.getValue().remove(articles.getValue().get(position));
+                        } else {
+                            articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() - 1);
+                        }
+                        articles.postValue(articles.getValue());
+                    }
 
-//                Timber.d("OnClick clicked on: " + mItemNames.get(position));
+                });
+                itemCountPopup.setNeutralButton("Supprimer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        articles.getValue().remove(articles.getValue().get(position));
+                        articles.postValue(articles.getValue());
+                    }
+                });
 
-                Toast.makeText(mContext, mItemNames.get(position), Toast.LENGTH_SHORT).show();
+                itemCountPopup.show();
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mItemNames.size();
+        return articles.getValue().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

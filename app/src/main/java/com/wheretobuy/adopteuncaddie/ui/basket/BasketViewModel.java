@@ -70,6 +70,18 @@ public class BasketViewModel extends AndroidViewModel {
         return articlesQuantity;
     }
 
+    public void addItem (Articles articles){
+        getArticlesArrayList().getValue().add(articles);
+        articlesArrayList.postValue(articlesArrayList.getValue());
+    }
+
+    public void deleteItem (Articles articles){
+        getArticlesArrayList().getValue().remove(articles);
+        articlesArrayList.postValue(articlesArrayList.getValue());
+    }
+
+
+
     private  MutableLiveData<ArrayList<Articles>> articlesArrayList = new MutableLiveData<ArrayList<Articles>>();
 
     private MutableLiveData<String> mText;
