@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
+//        navController.navigate(action);
+        navController.navigate(R.id.nav_barcodeScanner);
 
     }
 
@@ -82,10 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        Timber.d("AppBar");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+//        NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
+//        navController.navigate(action);
+        navController.navigate(R.id.nav_barcodeScanner);
+
+        return true;
+//        return NavigationUI.navigateUp(navController, mAppBarConfiguration) ||
+//            super.onSupportNavigateUp();
     }
 
     @Override

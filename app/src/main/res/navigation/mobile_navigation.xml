@@ -10,7 +10,7 @@
         android:id="@+id/nav_barcodeScanner"
         android:name="com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerFragment"
         android:label="@string/menu_barcodeScanner"
-        tools:layout="@layout/fragment_barcode_scanner" >
+        tools:layout="@layout/fragment_barcode_scanner">
         <action
             android:name="productScanned"
             android:id="@+id/action_nav_barcodeScanner_to_nav_productScanned"
@@ -32,9 +32,6 @@
             android:id="@+id/return_nav_barcodeScanner_to_nav_basket"
             app:destination="@id/nav_basket">
         </action>
-        <action android:id="@+id/action_back_to_basket"
-            app:popUpTo="@id/nav_basket"
-            app:popUpToInclusive="true" />
     </fragment>
 
 <!--    Page de test -->
@@ -52,17 +49,17 @@
         tools:layout="@layout/fragment_product_scanned" >
         <argument
             android:name="productState"
-            app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
+            app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState"/>
         <action
             android:name="addToBasket"
             android:id="@+id/action_nav_productScanned_to_nav_basket"
             app:destination="@id/nav_basket">
             <argument
                 android:name="productState"
-                app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState" />
+                app:argType="com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState"/>
             <argument
                 android:name="numberOfProduct"
-                app:argType="integer" />
+                app:argType="integer"/>
         </action>
     </fragment>
 
@@ -80,7 +77,9 @@
         <action
             android:name="gotoPayment"
             android:id="@+id/action_nav_basket_to_nav_payment"
-            app:destination="@id/nav_payment">
+            app:destination="@id/nav_payment"
+            app:popUpTo="@id/nav_basket"
+            app:popUpToInclusive="true">
         </action>
     </fragment>
 

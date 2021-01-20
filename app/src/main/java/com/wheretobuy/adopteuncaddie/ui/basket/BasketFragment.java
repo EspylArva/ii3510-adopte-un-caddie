@@ -88,30 +88,27 @@ public class BasketFragment extends Fragment {
         setViewModelObservers();
         setClickListeners();
 
-        if(getArguments() != null && getArguments().getSerializable("productState") != null)
+//        else {
+        if(vm.getArticlesArrayList().getValue().size() == 0)
         {
+            String json = vm.basketList.getString("Articles", "");
+            Type listType = new TypeToken<ArrayList<Article>>() {}.getType();
+            List<Article> yourClassList = new Gson().fromJson(json, listType);
+            if (yourClassList != null) {
+                for (Article art : yourClassList) {
+                    Timber.d(art.getName());
+                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
+                }
+            }
+        }
+        if(getArguments() != null && getArguments().getSerializable("productState") != null) {
             Timber.d("CurrentBackStackEntry: %s", navController.getGraph().getStartDestination() );
-            Timber.d("Adding product from passed arguments");
             ProductScannedFragmentArgs args = ProductScannedFragmentArgs.fromBundle(getArguments());
             itemAddedProductState = args.getProductState();
             itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
             addItemToBasket(itemAddedProductState.getProduct().getProductName(), itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
         }
-        else
-        {
-            if(vm.getArticlesArrayList().getValue().size() == 0)
-            {
-                String json = vm.basketList.getString("Articles", "");
-                Type listType = new TypeToken<ArrayList<Article>>() {}.getType();
-                List<Article> yourClassList = new Gson().fromJson(json, listType);
-                if (yourClassList != null) {
-                    for (Article art : yourClassList) {
-                        Timber.d(art.getName());
-                        addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
-                    }
-                }
-            }
-        }
+//        }
         return root;
     }
 
@@ -131,9 +128,6 @@ public class BasketFragment extends Fragment {
         queue.add(request);
         Article article = new Article(itemImageUrl, itemName, itemAddedNumber, 10.9f);
         vm.addItem(article);
-
-        vm.saveBasket();
-
         Timber.d(String.valueOf(vm.getArticlesArrayList().getValue().size()));
     }
 
@@ -199,6 +193,7 @@ public class BasketFragment extends Fragment {
 
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_basket, container, false);
+
         shopList = root.findViewById(R.id.shop_list);
         addItem = root.findViewById(R.id.fab);
         payButton = root.findViewById(R.id.pay_button);

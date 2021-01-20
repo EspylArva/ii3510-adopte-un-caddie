@@ -13,6 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.wheretobuy.adopteuncaddie.R;
 
@@ -46,15 +49,8 @@ public class PaymentFragment extends Fragment {
         vm = ViewModelProviders.of(this).get(PaymentViewModel.class);
 
         View root = viewsInit(inflater, container);
-
-        if (toolbar != null){
-            toolbar.setTitle("Payer");
-        }
-
-
         setViewModelObservers();
         setClickListeners();
-
 
         return root;
     }

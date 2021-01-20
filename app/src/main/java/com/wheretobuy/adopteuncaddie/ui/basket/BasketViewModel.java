@@ -28,28 +28,28 @@ public class BasketViewModel extends AndroidViewModel {
     public void addItem (Article article){
         getArticlesArrayList().getValue().add(article);
         articlesArrayList.postValue(articlesArrayList.getValue());
+        saveBasket();
     }
 
     public void deleteItem (Article article){
         getArticlesArrayList().getValue().remove(article);
         articlesArrayList.postValue(articlesArrayList.getValue());
+        saveBasket();
     }
 
     public void emptyBasket()
     {
         setArticlesArrayList(new ArrayList<Article>());
-        SharedPreferences.Editor prefsEditor = basketList.edit();
-        prefsEditor.putString("Articles", "");
-        prefsEditor.apply();
+        saveBasket();
     }
 
     public BasketViewModel(Application app) {
         super(app);
         articlesArrayList.setValue(new ArrayList<Article>());
-        basketList = getApplication().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        basketList = getApplication().getSharedPreferences("Articles", Context.MODE_PRIVATE);
     }
 
-    public void saveBasket() {
+    private void saveBasket() {
         SharedPreferences.Editor prefsEditor = basketList.edit();
         String json = new Gson().toJson(getArticlesArrayList().getValue());
         prefsEditor.putString("Articles", json);
