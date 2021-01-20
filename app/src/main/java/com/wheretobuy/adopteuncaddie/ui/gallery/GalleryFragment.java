@@ -39,6 +39,8 @@ import timber.log.Timber;
 
 public class GalleryFragment extends Fragment {
 
+
+
     // ERR: For testing purpose. Should not appear in release version.
 
     private GalleryViewModel galleryViewModel;

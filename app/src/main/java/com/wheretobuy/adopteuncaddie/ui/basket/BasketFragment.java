@@ -1,8 +1,5 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
-import android.app.VoiceInteractor;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,18 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.NavHost;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,18 +33,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.wheretobuy.adopteuncaddie.R;
-import com.wheretobuy.adopteuncaddie.model.openfoodfacts.Product;
 import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
-import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
-import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentDirections;
-import com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment;
+import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentArgs;
 
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class BasketFragment extends Fragment {
 
@@ -67,12 +58,13 @@ public class BasketFragment extends Fragment {
      * - Changer quantite articles
      */
 
-    BasketViewModel vm;
-    Spinner shopList;
-    FloatingActionButton addItem;
-    Button payButton;
+    private BasketViewModel vm;
+    private Spinner shopList;
+    private FloatingActionButton addItem;
+    private Button payButton;
+    private Button deleteAll;
 
-    String url = "http://vps-bfc92ef6.vps.ovh.net/index.php/products/getBy/";
+    private final String URL = "http://vps-bfc92ef6.vps.ovh.net/index.php/products/getBy/";
 
     private RecyclerView recyclerView;
 
@@ -96,33 +88,28 @@ public class BasketFragment extends Fragment {
         setViewModelObservers();
         setClickListeners();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.shop_names,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        shopList.setAdapter(adapter);
-
-        Gson gson = new Gson();
-        List<Articles> yourClassList = new ArrayList<Articles>();
-        String json = vm.basketList.getString("Articles", "");
-        Type listType = new TypeToken<ArrayList<Articles>>() {
-        }.getType();
-        yourClassList = new Gson().fromJson(json, listType);
-
-        if (yourClassList != null) {
-            for (Articles art : yourClassList) {
-                System.out.println(art.getName());
-                addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
-            }
-        }
-
-        // addItem.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_24));
-// get the item if the fragment request comes from ProductScannedFragment
-        if (getArguments() != null) {
-            itemAddedProductState = (ProductState) getArguments().getSerializable("productState");
+        if(getArguments() != null && getArguments().getSerializable("productState") != null)
+        {
+            Timber.d("CurrentBackStackEntry: %s", navController.getGraph().getStartDestination() );
+            Timber.d("Adding product from passed arguments");
+            ProductScannedFragmentArgs args = ProductScannedFragmentArgs.fromBundle(getArguments());
+            itemAddedProductState = args.getProductState();
             itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
-            if (itemAddedProductState != null) {
-                addItemToBasket(itemAddedProductState.getProduct().getProductName(), itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
+            addItemToBasket(itemAddedProductState.getProduct().getProductName(), itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
+        }
+        else
+        {
+            if(vm.getArticlesArrayList().getValue().size() == 0)
+            {
+                String json = vm.basketList.getString("Articles", "");
+                Type listType = new TypeToken<ArrayList<Article>>() {}.getType();
+                List<Article> yourClassList = new Gson().fromJson(json, listType);
+                if (yourClassList != null) {
+                    for (Article art : yourClassList) {
+                        Timber.d(art.getName());
+                        addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
+                    }
+                }
             }
         }
         return root;
@@ -130,42 +117,25 @@ public class BasketFragment extends Fragment {
 
     private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber) {
 
-        String urlComplete = url.concat(itemName.replace(" ", "_"));
+        String urlComplete = URL.concat(itemName.replace(" ", "_"));
 
-        Log.d("onVolleyResponse", urlComplete);
+        Timber.d(urlComplete);
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlComplete, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("onVolleyResponse: ", response.toString());
+                Timber.d(response.toString());
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("onVolleyResponse error: ", error.toString());
-            }
-        });
+        }, error -> Timber.d(error.toString()));
         queue.add(request);
-        System.out.println(itemAddedNumber);
-        Articles article = new Articles(itemImageUrl, itemName, itemAddedNumber, 10.9f);
+        Article article = new Article(itemImageUrl, itemName, itemAddedNumber, 10.9f);
         vm.addItem(article);
 
-        SharedPreferences.Editor prefsEditor = vm.basketList.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(vm.getArticlesArrayList().getValue());
-        prefsEditor.putString("Articles", json);
-        prefsEditor.commit();
+        vm.saveBasket();
 
-        Log.d("addItemBasket", String.valueOf(vm.getArticlesArrayList().getValue().size()));
+        Timber.d(String.valueOf(vm.getArticlesArrayList().getValue().size()));
     }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        SharedPreferences basketList = context.getSharedPreferences("prefs", context.MODE_PRIVATE);
-//        SharedPreferences.Editor prefsEditor = basketList.edit();
-//    }
 
 
     private void setClickListeners() {
@@ -201,12 +171,14 @@ public class BasketFragment extends Fragment {
             public void onClick(View v) {
                 NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
                 navController.navigate(action);
+            }
+        });
 
-//                Fragment payFragment = new PaymentFragment();  // https://stackoverflow.com/questions/40871451/how-implement-a-next-button-in-a-fragment
-//                FragmentTransaction transaction = ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.nav_host_fragment, payFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
+        deleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                vm.emptyBasket();
             }
         });
 
@@ -214,15 +186,14 @@ public class BasketFragment extends Fragment {
 
 
     private void setViewModelObservers() {
-        vm.getArticlesArrayList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Articles>>() {
+        vm.getArticlesArrayList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Article>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<Articles> a) {
+            public void onChanged(@Nullable ArrayList<Article> a) {
                 BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-
     }
 
 
@@ -231,24 +202,21 @@ public class BasketFragment extends Fragment {
         shopList = root.findViewById(R.id.shop_list);
         addItem = root.findViewById(R.id.fab);
         payButton = root.findViewById(R.id.pay_button);
-        payButton.setText("Payer");
-//        initImageBitmaps();
+        deleteAll = root.findViewById(R.id.deleteAll_button);
         recyclerView = root.findViewById(R.id.recycler_items);
+
+        ArrayAdapter<CharSequence> shopAdapters = ArrayAdapter.createFromResource(getContext(),
+                R.array.shop_names,
+                android.R.layout.simple_spinner_item);
+        shopAdapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shopList.setAdapter(shopAdapters);
 
         BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         return root;
     }
-
-
-    //    private void initImageBitmaps() {
-//
-//        vm.getArticlesArrayList().getValue().add(new Articles("https://www.carrefour.fr/media/280x280/Photosite/PRODUITS_FRAIS_TRANSFORMATION/FRUITS_ET_LEGUMES/3276552308414_PHOTOSITE_20160318_163311_0.jpg", "Kiwi", 10, 5));
-//
-//    }
-
-
 }
 
 

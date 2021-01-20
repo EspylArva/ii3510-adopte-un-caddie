@@ -107,7 +107,7 @@
     <string name="sodium">Sodium</string>
 
     <string name="menu_basket">Panier</string>
-    <string name="menu_payment">Paiment du panier</string>
+    <string name="menu_payment">Paiement du panier</string>
     <string name="payment_list">Gestion des moyens de paiement</string>
     <string name="favorite_shops">Liste des magasins favoris</string>
     <string name="languages">Langues</string>
@@ -117,6 +117,8 @@
     <string name="changeLanguage">Changement de langue</string>
     <string name="confirmation_language_change">Êtes-vous sur de vouloir changer de langue ?</string>
     <string name="confirm">Confirmer</string>
+    <string name="pay">Payer</string>
+    <string name="delete_all">Vider le panier</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

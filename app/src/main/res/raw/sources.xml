@@ -99,7 +99,7 @@
 
 	<category title="Resources">
 		<source description="Icons credits go to flaticon.com" link="https://www.flaticon.com/"/>
-		<source description="Lorem ipsum for EULA articles" link="http://legalipsum.com/?count=8"/>
+		<source description="Lorem ipsum for EULA article" link="http://legalipsum.com/?count=8"/>
 	</category>
 </sources>
 

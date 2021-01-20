@@ -10,9 +10,9 @@
         android:id="@+id/shop_list"
         android:layout_width="371dp"
         android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/defaultInterComponentMargin"
+        android:layout_marginTop="@dimen/defaultInterComponentMargin"
+        android:layout_marginEnd="@dimen/defaultInterComponentMargin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,13 +20,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_items"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_list" />
+        app:layout_constraintTop_toBottomOf="@+id/shop_list"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -38,14 +37,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_circle_24" />
-
     <Button
         android:id="@+id/pay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="20dp"
-        android:text="Button"
+        android:text="@string/pay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/deleteAll_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/delete_all"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

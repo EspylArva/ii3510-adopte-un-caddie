@@ -120,6 +120,8 @@
     <string name="changeLanguage">Change language</string>
     <string name="confirmation_language_change">Are you sure you want to change language?</string>
     <string name="confirm">Confirm</string>
+    <string name="pay">Pay</string>
+    <string name="delete_all">Empty the basket</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

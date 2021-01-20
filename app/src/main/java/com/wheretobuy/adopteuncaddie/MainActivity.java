@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.wheretobuy.adopteuncaddie.ui.basket.BasketFragment;
 import com.wheretobuy.adopteuncaddie.ui.basket.BasketFragmentDirections;
 import com.wheretobuy.adopteuncaddie.ui.settings.SettingsFragment;
 import com.wheretobuy.adopteuncaddie.utils.CustomDebugTree;
@@ -65,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     @Override

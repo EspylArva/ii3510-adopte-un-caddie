@@ -3,14 +3,10 @@ package com.wheretobuy.adopteuncaddie.ui.basket;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -19,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.wheretobuy.adopteuncaddie.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -34,9 +28,9 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     private Context mContext;
 
-    private MutableLiveData<ArrayList<Articles>> articles;
+    private MutableLiveData<ArrayList<Article>> articles;
 
-    public BasketRecyclerViewAdapter(MutableLiveData<ArrayList<Articles>> articles, android.content.Context context) {
+    public BasketRecyclerViewAdapter(MutableLiveData<ArrayList<Article>> articles, android.content.Context context) {
         this.articles = articles;
         mContext = context;
     }

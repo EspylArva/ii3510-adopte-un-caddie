@@ -1,13 +1,13 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
-public class Articles {
+public class Article {
 
     String url = "";
     String name = "";
     int quantity = 0;
     float price = 0;
 
-    public Articles(String url, String name, int quantity, float price) {
+    public Article(String url, String name, int quantity, float price) {
         this.url = url;
         this.name = name;
         this.quantity = quantity;
