@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 //        NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
 //        navController.navigate(action);
         navController.navigate(R.id.nav_barcodeScanner);
-// HAHA LUCAS GO GBRRRR
     }
 
     @Override
@@ -87,13 +86,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
-//        navController.navigate(action);
-        navController.navigate(R.id.nav_barcodeScanner);
+//        navController.navigate(R.id.nav_barcodeScanner);
 
-        return true;
-//        return NavigationUI.navigateUp(navController, mAppBarConfiguration) ||
-//            super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) ||
+                super.onSupportNavigateUp();
     }
 
     @Override
