@@ -37,6 +37,20 @@ public class BasketViewModel extends AndroidViewModel {
         saveBasket();
     }
 
+    public float getTotalPrice(ArrayList<Article> articlesArrayList)
+    {
+        ArrayList<Float> prices = getArticlesPrice(articlesArrayList);
+        return (float)prices.stream().mapToDouble(a -> a).sum();
+    }
+
+    public ArrayList<Float> getArticlesPrice(ArrayList<Article> articlesArrayList) {
+        ArrayList<Float> articlesPrice = new ArrayList<>();
+        for (int i = 0; i < articlesArrayList.size(); i++) {
+            articlesPrice.add(articlesArrayList.get(i).getPrice());
+        }
+        return articlesPrice;
+    }
+
     public void emptyBasket()
     {
         setArticlesArrayList(new ArrayList<Article>());

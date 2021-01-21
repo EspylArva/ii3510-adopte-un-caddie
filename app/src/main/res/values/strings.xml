@@ -24,6 +24,12 @@
     <string name="grant">Accorder</string>
     <string name="cancel">Annuler</string>
 
+    <!-- Basket-->
+    <string name="shops_found">magasin(s) trouvé(s) aux alentours</string>
+    <string name="shops_not_found">Aucuns magasins trouvés, vérifiez votre géolocalisation</string>
+    <string name="refresh_shop_list">Chercher des magasins</string>
+    <string name="nearest">le plus proche</string>
+
     <!-- Open Food Facts -->
     <string name="txtNutritionLevelLow">en faible quantité</string>
     <string name="txtNutritionLevelModerate">en quantité modérée</string>

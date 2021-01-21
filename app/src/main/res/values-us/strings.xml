@@ -27,6 +27,12 @@
     <string name="grant">Grant</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Basket-->
+    <string name="shops_found">shops found nearby</string>
+    <string name="shops_not_found">No shops found, please verify your position</string>
+    <string name="refresh_shop_list">Search for shops</string>
+    <string name="nearest">nearest</string>
+
     <!-- Open Food Facts -->
     <string name="txtNutritionLevelLow">at low quantities</string>
     <string name="txtNutritionLevelModerate">at moderate quantities</string>
