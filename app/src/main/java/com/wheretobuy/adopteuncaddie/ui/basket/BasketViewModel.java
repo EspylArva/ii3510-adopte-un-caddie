@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 public class BasketViewModel extends AndroidViewModel {
 
     public SharedPreferences basketList;
@@ -22,27 +24,29 @@ public class BasketViewModel extends AndroidViewModel {
     }
 
     public void setArticlesArrayList(ArrayList<Article> articleArrayList) {
-        this.articlesArrayList.postValue(articleArrayList);
+        this.articlesArrayList.setValue(articleArrayList);
     }
 
     public void addItem (Article article){
         getArticlesArrayList().getValue().add(article);
-        articlesArrayList.postValue(articlesArrayList.getValue());
+        articlesArrayList.setValue(articlesArrayList.getValue());
         saveBasket();
     }
 
     public void deleteItem (Article article){
         getArticlesArrayList().getValue().remove(article);
-        articlesArrayList.postValue(articlesArrayList.getValue());
+        articlesArrayList.setValue(articlesArrayList.getValue());
         saveBasket();
     }
 
+    // Lucas
     public float getTotalPrice(ArrayList<Article> articlesArrayList)
     {
         ArrayList<Float> prices = getArticlesPrice(articlesArrayList);
         return (float)prices.stream().mapToDouble(a -> a).sum();
     }
 
+    // Antoine
     public ArrayList<Float> getArticlesPrice(ArrayList<Article> articlesArrayList) {
         ArrayList<Float> articlesPrice = new ArrayList<>();
         for (int i = 0; i < articlesArrayList.size(); i++) {
@@ -57,17 +61,24 @@ public class BasketViewModel extends AndroidViewModel {
         saveBasket();
     }
 
+    public void saveBasket() {
+
+        for(Article art : getArticlesArrayList().getValue())
+        {
+            Timber.d(art.toString());
+        }
+
+
+        SharedPreferences.Editor prefsEditor = basketList.edit();
+        String json = new Gson().toJson(getArticlesArrayList().getValue());
+        prefsEditor.putString("Articles", json);
+        prefsEditor.apply();
+    }
+
     public BasketViewModel(Application app) {
         super(app);
         articlesArrayList = new MutableLiveData<>();
         articlesArrayList.setValue(new ArrayList<Article>());
         basketList = getApplication().getSharedPreferences("Articles", Context.MODE_PRIVATE);
-    }
-
-    private void saveBasket() {
-        SharedPreferences.Editor prefsEditor = basketList.edit();
-        String json = new Gson().toJson(getArticlesArrayList().getValue());
-        prefsEditor.putString("Articles", json);
-        prefsEditor.apply();
     }
 }

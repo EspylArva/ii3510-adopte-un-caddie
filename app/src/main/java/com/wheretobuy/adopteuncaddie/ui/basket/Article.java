@@ -47,5 +47,11 @@ public class Article {
     }
 
 
+    @Override
+    public String toString()
+    {
+        return String.format("%s (%sx%s)", getName(), getPrice(), getQuantity());
+    }
+
 
 }

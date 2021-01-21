@@ -67,7 +67,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() + 1);
-                        articles.postValue(articles.getValue());
+                        articles.setValue(articles.getValue());
                     }
                 });
                 itemCountPopup.setNegativeButton("-", new DialogInterface.OnClickListener() {
@@ -78,7 +78,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                         } else {
                             articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() - 1);
                         }
-                        articles.postValue(articles.getValue());
+                        articles.setValue(articles.getValue());
                     }
 
                 });
@@ -86,7 +86,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         articles.getValue().remove(articles.getValue().get(position));
-                        articles.postValue(articles.getValue());
+                        articles.setValue(articles.getValue());
                     }
                 });
 

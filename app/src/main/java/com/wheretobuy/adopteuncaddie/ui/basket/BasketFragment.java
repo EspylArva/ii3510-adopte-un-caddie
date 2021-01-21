@@ -282,11 +282,12 @@ public class BasketFragment extends Fragment {
         Article article = new Article(itemImageUrl, itemName, itemAddedNumber, price);
         vm.addItem(article);
 
-        SharedPreferences.Editor prefsEditor = vm.basketList.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(vm.getArticlesArrayList().getValue());
-        prefsEditor.putString("Articles", json);
-        prefsEditor.commit();
+//        vm.saveBasket();
+//        SharedPreferences.Editor prefsEditor = vm.basketList.edit();
+//        Gson gson = new Gson();
+//        String json = gson.toJson(vm.getArticlesArrayList().getValue());
+//        prefsEditor.putString("Articles", json);
+//        prefsEditor.commit();
 
         Log.d("addItemBasket", String.valueOf(vm.getArticlesArrayList().getValue().size()));
     }
