@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 //        NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
 //        navController.navigate(action);
         navController.navigate(R.id.nav_barcodeScanner);
-
+// HAHA LUCAS GO GBRRRR
     }
 
     @Override
