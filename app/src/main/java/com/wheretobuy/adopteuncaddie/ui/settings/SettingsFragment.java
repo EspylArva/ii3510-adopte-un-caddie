@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wheretobuy.adopteuncaddie.R;
 import com.wheretobuy.adopteuncaddie.components.RecyclerViewMargin;
 import com.wheretobuy.adopteuncaddie.databinding.FragmentBarcodeScannerBinding;
@@ -24,24 +26,31 @@ import com.wheretobuy.adopteuncaddie.databinding.FragmentSettingsBinding;
 import com.wheretobuy.adopteuncaddie.module.xml.XmlEulaParser;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.BarcodeScannerViewModel;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment;
+import com.wheretobuy.adopteuncaddie.ui.basket.Article;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
+import com.wheretobuy.adopteuncaddie.ui.payment.PaymentViewModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import timber.log.Timber;
 
 public class SettingsFragment extends Fragment {
 
+    SettingsViewModel vm;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
+        vm = ViewModelProviders.of(this).get(SettingsViewModel.class);
         binding.setViewmodel(ViewModelProviders.of(this).get(SettingsViewModel.class));
 
         View root = binding.getRoot();
@@ -60,6 +69,10 @@ public class SettingsFragment extends Fragment {
 
         binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
+        vm.cbArrayList.add("1234-5678-ABCD");
+        vm.cbArrayList.add("1234-5678-EFGH");
+        vm.cbArrayList.add("1234-5678-IJKL");
+        vm.saveCB();
         binding.recyclerLanguages.setAdapter(new LanguageAdapter(new ArrayList<Map.Entry<String,String>>(Arrays.asList(
                 new AbstractMap.SimpleEntry<String, String>("fr","Français"), new AbstractMap.SimpleEntry<String, String>("us","English"))), getActivity()));
         try{

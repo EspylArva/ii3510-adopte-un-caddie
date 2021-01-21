@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class BasketViewModel extends AndroidViewModel {
 
     public SharedPreferences basketList;
-    private MutableLiveData<ArrayList<Article>> articlesArrayList = new MutableLiveData<ArrayList<Article>>();
+    private MutableLiveData<ArrayList<Article>> articlesArrayList;
 
 
     public MutableLiveData<ArrayList<Article>> getArticlesArrayList() {
@@ -45,6 +45,7 @@ public class BasketViewModel extends AndroidViewModel {
 
     public BasketViewModel(Application app) {
         super(app);
+        articlesArrayList = new MutableLiveData<>();
         articlesArrayList.setValue(new ArrayList<Article>());
         basketList = getApplication().getSharedPreferences("Articles", Context.MODE_PRIVATE);
     }
