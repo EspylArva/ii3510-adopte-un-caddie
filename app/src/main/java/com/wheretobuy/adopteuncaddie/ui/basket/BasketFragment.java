@@ -237,6 +237,8 @@ public class BasketFragment extends Fragment {
 
     private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber)
     {
+
+        DecimalFormat df = new DecimalFormat("0.00##");
         int shopUID = shopViewModel.shopList.getInt("Shop_UID",0);
         String urlComplete = URL+"?name="+itemName.replace(" ", "_")+"&shop_uid="+shopUID;
 
@@ -249,7 +251,7 @@ public class BasketFragment extends Fragment {
             {
                 try
                 {
-                    float price = Float.parseFloat(response.getJSONArray("results").getJSONObject(0).getString("price"));
+                    float price = Float.parseFloat(df.format(response.getJSONArray("results").getJSONObject(0).getString("price")));
                     Timber.d("Found price %s", price);
                     finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,price);
                 }
