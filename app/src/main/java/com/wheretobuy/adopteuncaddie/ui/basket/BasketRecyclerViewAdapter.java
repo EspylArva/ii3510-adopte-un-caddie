@@ -50,9 +50,6 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-//        Timber.d("onBindViewHolder: called.");
-
-
         Glide.with(mContext)
                 .asBitmap()
                 .load(articles.getValue().get(position).getUrl())

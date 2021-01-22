@@ -70,19 +70,6 @@ import timber.log.Timber;
 
 public class BasketFragment extends Fragment {
 
-    /**
-     * @Antoine FIXME
-     * Choses ajoutées :
-     * - Navigation (voir ligne #64 et #107, 108)
-     * <p>
-     * Choses à revoir :
-     * - Revoir la visibilité des attributs (private en priorité, public sinon)
-     * - Préférer le XML au code java, tu peux plus facilement set des propriétés sur le XML (genre le texte d'un bouton) et ca nettoie un peu le code
-     * - Shared Preference, le panier est fait a partir des SP
-     * - Changer quantite articles
-     */
-
-
     private static final float DEFAULT_PRICE = 10.9f;
 
     private BasketViewModel vm;
@@ -93,7 +80,7 @@ public class BasketFragment extends Fragment {
     private Button deleteAll;
 
     private final String URL = "http://vps-bfc92ef6.vps.ovh.net/index.php/products/getBy";
-    String getClosestUrl = "http://vps-bfc92ef6.vps.ovh.net/index.php/shops/getClosest?";
+    private final String getClosestUrl = "http://vps-bfc92ef6.vps.ovh.net/index.php/shops/getClosest?";
 
     private RecyclerView recyclerView;
 
@@ -214,7 +201,7 @@ public class BasketFragment extends Fragment {
             shopUIDs.add(Integer.parseInt(shops.getJSONObject(i).getString("shop_uid")));
         }
 
-        shopNames.set(0,shopNames.get(0)+"("+getString(R.string.nearest)+")");
+        shopNames.set(0, String.format("%s (%s)", shopNames.get(0), getString(R.string.nearest)));
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, shopNames);

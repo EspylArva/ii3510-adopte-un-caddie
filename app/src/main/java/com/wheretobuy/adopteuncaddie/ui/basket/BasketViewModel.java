@@ -94,9 +94,6 @@ public class BasketViewModel extends AndroidViewModel {
             this.articlesArrayList.getValue().get(position).setQuantity(newQuantity);
             saveBasket();
         }
-//        articles.get(position).setQuantity(articles.get(position).getQuantity() - 1);
-//                            vm.setArticlesArrayList(articles);
-//                            vm.saveBasket();
     }
 
     private boolean printBasket()
