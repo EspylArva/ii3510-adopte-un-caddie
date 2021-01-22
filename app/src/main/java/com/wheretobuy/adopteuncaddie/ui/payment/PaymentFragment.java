@@ -123,8 +123,6 @@ public class PaymentFragment extends Fragment {
         paymentFragmentButton = root.findViewById(R.id.paymentFragmentButton);
         cardList = root.findViewById(R.id.cardList);
         totalPriceText = root.findViewById(R.id.totalPriceText);
-        paymentFragmentButton.setText("Payer");
-
 
         return root;
     }
