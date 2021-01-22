@@ -77,12 +77,15 @@ public class SettingsFragment extends Fragment {
         //binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
         binding.recyclerShops.setAdapter(new PaymentAdapter(getSavedShops()));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
+
         vm.cbArrayList.add("1234-5678-ABCD");
         vm.cbArrayList.add("1234-5678-EFGH");
         vm.cbArrayList.add("1234-5678-IJKL");
         vm.saveCB();
+
         binding.recyclerLanguages.setAdapter(new LanguageAdapter(new ArrayList<Map.Entry<String,String>>(Arrays.asList(
                 new AbstractMap.SimpleEntry<String, String>("fr","Français"), new AbstractMap.SimpleEntry<String, String>("us","English"))), getActivity()));
+
         try{
             binding.recyclerEula.setAdapter(new SimpleTextAdapter(XmlEulaParser.parse(getResources().openRawResource(R.raw.eula))));
         } catch (Exception e) {Timber.w(e, "Failed parsing EULA");}
