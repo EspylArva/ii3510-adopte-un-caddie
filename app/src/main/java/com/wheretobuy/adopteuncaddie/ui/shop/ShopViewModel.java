@@ -43,6 +43,22 @@ public class ShopViewModel extends AndroidViewModel
                 .collect(Collectors.toList());
     }
 
+    public int getShopPositionByUID(int shopUID)
+    {
+        ArrayList<Shop> shops = getFromStorage();
+
+        if(shops == null) return 0;
+
+        for (int i = 0; i < shops.size(); i++)
+        {
+            if(shops.get(i).getShopUID() == shopUID)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+
     public void createFromAPIFetch(JSONArray response)
     {
         try

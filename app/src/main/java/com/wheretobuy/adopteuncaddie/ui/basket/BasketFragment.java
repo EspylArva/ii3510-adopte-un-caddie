@@ -179,7 +179,7 @@ public class BasketFragment extends Fragment {
 
     private void fetchClosest(Location location)
     {
-        String urlComplete = getClosestUrl +"lat="+location.getLatitude()+"&long="+location.getLongitude()+"&radius=5";
+        String urlComplete = getClosestUrl +"lat="+location.getLatitude()+"&long="+location.getLongitude()+"&radius=50";
 
         Log.d("onVolleyResponse", urlComplete);
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -223,11 +223,16 @@ public class BasketFragment extends Fragment {
 
         shopNames.set(0, String.format("%s (%s)", shopNames.get(0), getString(R.string.nearest)));
 
+        int shopUID = shopViewModel.shopList.getInt("Shop_UID",0);
+        int selectedShop = shopViewModel.getShopPositionByUID(shopUID); // Ensure to auto set the right shop in the spinner
+
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, shopNames);
         spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
         shopList.setAdapter(spinnerArrayAdapter);
+
+        shopList.setSelection(selectedShop);
     }
 
     private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber)
@@ -265,6 +270,20 @@ public class BasketFragment extends Fragment {
         });
         queue.add(request);
         System.out.println(itemAddedNumber);
+    }
+
+    private void updatePrices()
+    {
+        ArrayList<Article> articles = vm.getArticlesArrayList().getValue();
+
+        vm.emptyBasket();
+
+        for(Article article : articles)
+        {
+            addItemToBasket(article.getName(),article.getUrl(),article.getQuantity());
+        }
+
+        refreshBasketRecyclerView();
     }
 
     private void finalizeProductToBasket(String itemImageUrl,String itemName,int itemAddedNumber,float price)
@@ -307,6 +326,7 @@ public class BasketFragment extends Fragment {
                 {
                     shopViewModel.saveShopUID(shopUIDs.get(position));
                 }
+                updatePrices();
 //                computeFullPrice();
             }
 
