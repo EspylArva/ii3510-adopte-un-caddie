@@ -2,10 +2,10 @@ package com.wheretobuy.adopteuncaddie.ui.basket;
 
 public class Article {
 
-    String url = "";
-    String name = "";
-    int quantity = 0;
-    float price = 0;
+    private String url = "";
+    private String name = "";
+    private int quantity = 0;
+    private float price = 0;
 
     public Article(String url, String name, int quantity, float price) {
         this.url = url;

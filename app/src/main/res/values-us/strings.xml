@@ -128,6 +128,9 @@
     <string name="confirm">Confirm</string>
     <string name="pay">Pay</string>
     <string name="delete_all">Empty the basket</string>
+    <string name="payment_price">The total price of your basket amounts to %.2f€</string>
+    <string name="empty_basket">Your basket is empty!</string>
+    <string name="payment_complete">You just paid your shopping cart!</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

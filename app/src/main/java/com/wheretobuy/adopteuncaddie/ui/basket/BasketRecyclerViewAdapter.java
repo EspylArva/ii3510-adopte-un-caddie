@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,12 +29,14 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
 
     private Context mContext;
+//    private BasketViewModel vm;
 
     private MutableLiveData<ArrayList<Article>> articles;
 
     public BasketRecyclerViewAdapter(MutableLiveData<ArrayList<Article>> articles, android.content.Context context) {
         this.articles = articles;
         mContext = context;
+//        vm = ViewModelProviders.of((FragmentActivity) context).get(BasketViewModel.class);
     }
 
     @NonNull
@@ -67,16 +71,25 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() + 1);
+//                        articles.setValue(articles);
                         articles.setValue(articles.getValue());
+//                        vm.setArticlesArrayList(articles.getValue());
+//                        vm.saveBasket();
+//                        vm.setNewQuantityForArticle(position, articles.get(position).getQuantity() + 1);
                     }
                 });
                 itemCountPopup.setNegativeButton("-", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (articles.getValue().get(position).getQuantity() == 1){
+//                            vm.deleteItem(articles.getValue().get(position));
                             articles.getValue().remove(articles.getValue().get(position));
                         } else {
                             articles.getValue().get(position).setQuantity(articles.getValue().get(position).getQuantity() - 1);
+//                            vm.setArticlesArrayList(articles.getValue());
+//                            vm.saveBasket();
+
+//                            vm.setNewQuantityForArticle(position, articles.get(position).getQuantity() - 1);
                         }
                         articles.setValue(articles.getValue());
                     }
@@ -87,6 +100,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
                     public void onClick(DialogInterface dialog, int which) {
                         articles.getValue().remove(articles.getValue().get(position));
                         articles.setValue(articles.getValue());
+//                        vm.deleteItem(articles.getValue().get(position));
                     }
                 });
 

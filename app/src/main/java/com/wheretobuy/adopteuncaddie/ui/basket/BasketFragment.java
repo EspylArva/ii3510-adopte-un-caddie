@@ -1,6 +1,7 @@
 package com.wheretobuy.adopteuncaddie.ui.basket;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -52,6 +53,7 @@ import com.google.gson.reflect.TypeToken;
 import com.wheretobuy.adopteuncaddie.R;
 import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentArgs;
+import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentDirections;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
 
 import org.json.JSONArray;
@@ -62,6 +64,7 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import timber.log.Timber;
 
@@ -97,6 +100,8 @@ public class BasketFragment extends Fragment {
 
     private ArrayList<Integer> shopUIDs;
 
+    private static final Random RANDOM = new Random();
+
     // Ajout par TK
     // Gère la transmission d'article de ProductScannedFragment -> BasketFragment
     private int itemAddedNumber;                // Nombre d'item à ajouter
@@ -112,28 +117,31 @@ public class BasketFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         View root = viewsInit(inflater, container);
-        shopUIDs = new ArrayList<>();
-
-        getUserLocation();
-        setupNearestShops();
-        computeFullPrice();
-
         setViewModelObservers();
         setClickListeners();
+
+        shopUIDs = new ArrayList<>();
+        getUserLocation();
+        setupNearestShops();
+//        computeFullPrice();
+
 
 //        else {
         if(vm.getArticlesArrayList().getValue().size() == 0)
         {
+            //vm.emptyBasket();
             String json = vm.basketList.getString("Articles", "");
             Type listType = new TypeToken<ArrayList<Article>>() {}.getType();
-            List<Article> yourClassList = new Gson().fromJson(json, listType);
-            if (yourClassList != null) {
-                for (Article art : yourClassList) {
+            List<Article> savedArticles = new Gson().fromJson(json, listType);
+            if (savedArticles != null) {
+                for (Article art : savedArticles) {
                     Timber.d(art.getName());
-                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
+//                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
+                    finalizeProductToBasket(art.getUrl(), art.getName(), art.getQuantity(), art.getPrice());
                 }
             }
         }
+
         if(getArguments() != null && getArguments().getSerializable("productState") != null) {
             Timber.d("CurrentBackStackEntry: %s", navController.getGraph().getStartDestination() );
             ProductScannedFragmentArgs args = ProductScannedFragmentArgs.fromBundle(getArguments());
@@ -141,17 +149,9 @@ public class BasketFragment extends Fragment {
             itemAddedNumber = getArguments().getInt("numberOfProduct", 1);
             addItemToBasket(itemAddedProductState.getProduct().getProductName(), itemAddedProductState.getProduct().getImageFrontUrl(), itemAddedNumber);
         }
-//        }
         return root;
     }
 
-    private void computeFullPrice()
-    {
-        float sum = vm.getTotalPrice(vm.getArticlesArrayList().getValue());
-        DecimalFormat df = new DecimalFormat("#.##");
-
-        payButton.setText(getString(R.string.pay)+" ("+df.format(sum)+" €)");
-    }
 
     private void setupNearestShops()
     {
@@ -223,31 +223,12 @@ public class BasketFragment extends Fragment {
         shopList.setAdapter(spinnerArrayAdapter);
     }
 
-/*    private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber) {
-
-        String urlComplete = URL.concat(itemName.replace(" ", "_"));
-
-        Timber.d(urlComplete);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlComplete, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Timber.d(response.toString());
-            }
-        }, error -> Timber.d(error.toString()));
-        queue.add(request);
-        Article article = new Article(itemImageUrl, itemName, itemAddedNumber, 10.9f);
-        vm.addItem(article);
-        Timber.d(String.valueOf(vm.getArticlesArrayList().getValue().size()));
-    }*/
-
     private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber)
     {
         int shopUID = vm.basketList.getInt("Shop_UID",0);
         String urlComplete = URL+"?name="+itemName.replace(" ", "_")+"&shop_uid="+shopUID;
 
-        Log.d("onVolleyResponse", urlComplete);
+        Timber.d(urlComplete);
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlComplete, null, new Response.Listener<JSONObject>() {
@@ -257,20 +238,22 @@ public class BasketFragment extends Fragment {
                 try
                 {
                     float price = Float.parseFloat(response.getJSONArray("results").getJSONObject(0).getString("price"));
-                    Log.d("onVolleyResponse: ","Found price "+price);
+                    Timber.d("Found price %s", price);
                     finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,price);
                 }
                 catch (Exception e)
                 {
-                    Log.d("onVolleyResponse: ", "Error :"+e.getMessage());
-                    finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,DEFAULT_PRICE);
+                    Timber.d("Error :%s", e.getMessage());
+//                    finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,DEFAULT_PRICE);
+                    finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,RANDOM.nextFloat() * (10 - 1) + 0.49f);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("onVolleyResponse error: ", error.toString());
-                finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,DEFAULT_PRICE);
+                Timber.d(error.toString());
+//                finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,DEFAULT_PRICE);
+                finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,RANDOM.nextFloat() * (10 - 1) + 0.49f);
             }
         });
         queue.add(request);
@@ -289,7 +272,7 @@ public class BasketFragment extends Fragment {
 //        prefsEditor.putString("Articles", json);
 //        prefsEditor.commit();
 
-        Log.d("addItemBasket", String.valueOf(vm.getArticlesArrayList().getValue().size()));
+        Timber.d(String.valueOf(vm.getArticlesArrayList().getValue().size()));
     }
 
 
@@ -317,9 +300,9 @@ public class BasketFragment extends Fragment {
                 {
                     SharedPreferences.Editor prefsEditor = vm.basketList.edit();
                     prefsEditor.putInt("Shop_UID", shopUIDs.get(position));
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                 }
-                computeFullPrice();
+//                computeFullPrice();
             }
 
             @Override
@@ -331,8 +314,10 @@ public class BasketFragment extends Fragment {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
+                BasketFragmentDirections.ActionNavBasketToNavPayment action = BasketFragmentDirections.actionNavBasketToNavPayment(vm.getTotalPrice().getValue());
                 navController.navigate(action);
+//                NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
+//                navController.navigate(action);
             }
         });
 
@@ -351,13 +336,35 @@ public class BasketFragment extends Fragment {
         vm.getArticlesArrayList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Article>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Article> a) {
-                BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                vm.computeTotalPrice();
+                vm.saveBasket();
+                refreshBasketRecyclerView();
+                Timber.d("Should have refreshed basket recyclerView...");
+//                refreshPayButtonPrice();
+            }
+        });
+
+        vm.getTotalPrice().observe(getViewLifecycleOwner(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                refreshPayButtonPrice(aFloat);
             }
         });
     }
 
+    @SuppressLint("DefaultLocale")
+    private void refreshPayButtonPrice(Float price) {
+        //String.format("%.2f€", articles.get(position).getPrice())
+//        DecimalFormat df = new DecimalFormat("0.00");
+        payButton.setText(String.format("%s (%.2f€)", getString(R.string.pay), price));
+    }
+
+    private void refreshBasketRecyclerView()
+    {
+        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
 
     private View viewsInit(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_basket, container, false);
@@ -374,9 +381,7 @@ public class BasketFragment extends Fragment {
         shopAdapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shopList.setAdapter(shopAdapters);
 
-        BasketRecyclerViewAdapter adapter = new BasketRecyclerViewAdapter(vm.getArticlesArrayList(), getContext());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        refreshBasketRecyclerView();
 
         return root;
     }

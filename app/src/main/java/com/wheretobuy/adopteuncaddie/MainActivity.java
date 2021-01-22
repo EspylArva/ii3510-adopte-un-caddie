@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_barcodeScanner,
-                R.id.nav_gallery,
+//                R.id.nav_gallery,
                 R.id.nav_basket)
                 .setOpenableLayout(drawer)
                 .build();

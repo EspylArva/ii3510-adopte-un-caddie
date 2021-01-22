@@ -77,9 +77,10 @@
         <action
             android:name="gotoPayment"
             android:id="@+id/action_nav_basket_to_nav_payment"
-            app:destination="@id/nav_payment"
-            app:popUpTo="@id/nav_basket"
-            app:popUpToInclusive="true">
+            app:destination="@id/nav_payment">
+            <argument
+                android:name="basket_total_price"
+                app:argType="float"/>
         </action>
     </fragment>
 
@@ -88,9 +89,6 @@
         android:name="com.wheretobuy.adopteuncaddie.ui.payment.PaymentFragment"
         android:label="@string/menu_payment"
         tools:layout="@layout/fragment_payment">
-        <action android:id="@+id/action_back_to_basket"
-            app:popUpTo="@id/nav_basket"
-            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

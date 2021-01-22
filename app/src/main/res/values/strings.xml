@@ -125,6 +125,9 @@
     <string name="confirm">Confirmer</string>
     <string name="pay">Payer</string>
     <string name="delete_all">Vider le panier</string>
+    <string name="payment_price">Le total de votre panier est de %.2f€</string>
+    <string name="empty_basket">Votre panier est vide !</string>
+    <string name="payment_complete">Paiement effectué!</string>
 
     <string-array name="shop_names">
         <item>Auchan</item>

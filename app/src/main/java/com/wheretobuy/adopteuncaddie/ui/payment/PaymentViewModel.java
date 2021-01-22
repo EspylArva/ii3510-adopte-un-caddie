@@ -15,25 +15,27 @@ import java.util.ArrayList;
 
 public class PaymentViewModel extends AndroidViewModel {
     private MutableLiveData<String> mText;
-    public SharedPreferences basketList;
+//    public SharedPreferences basketList;
     public SharedPreferences cbList;
-    private MutableLiveData<ArrayList<Article>> articlesArrayList;
+//    private MutableLiveData<ArrayList<Article>> articlesArrayList;
     public ArrayList<String> cbArrayList;
+    private MutableLiveData<Float> price;
+
 
     public ArrayList<String> getGetCbArrayList() { return cbArrayList; }
-    public MutableLiveData<ArrayList<Article>> getArticlesArrayList() {
-        return articlesArrayList;
-    }
+//    public MutableLiveData<ArrayList<Article>> getArticlesArrayList() {
+//        return articlesArrayList;
+//    }
 
 
     public PaymentViewModel(Application app) {
         super(app);
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-        articlesArrayList = new MutableLiveData<>();
-        articlesArrayList.setValue(new ArrayList<Article>());
+        price = new MutableLiveData<Float>();
+//        articlesArrayList = new MutableLiveData<>();
+        price.setValue(0f);
+//        articlesArrayList.setValue(new ArrayList<Article>());
         cbArrayList = new ArrayList<>();
-        basketList = getApplication().getSharedPreferences("Articles", Context.MODE_PRIVATE);
+//        basketList = getApplication().getSharedPreferences("Articles", Context.MODE_PRIVATE);
         cbList = getApplication().getSharedPreferences("CB", Context.MODE_PRIVATE);
     }
 
@@ -46,4 +48,6 @@ public class PaymentViewModel extends AndroidViewModel {
         prefsEditor.apply();
     }
 
+    public MutableLiveData<Float> getPrice() {return price;}
+    public void setPrice(float price) { this.price.setValue(price); }
 }
