@@ -119,6 +119,7 @@
     <string name="menu_payment">Pay the basket</string>
     <string name="payment_list">Payment information</string>
     <string name="favorite_shops">Favorite shops</string>
+    <string name="no_favorite_shops">No shop saved yet</string>
     <string name="languages">Languages</string>
     <string name="eula">EULA</string>
     <string name="menu_settings">User Settings</string>

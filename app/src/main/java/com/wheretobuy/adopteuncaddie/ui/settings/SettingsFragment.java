@@ -29,12 +29,15 @@ import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.CaptureFragment;
 import com.wheretobuy.adopteuncaddie.ui.basket.Article;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
 import com.wheretobuy.adopteuncaddie.ui.payment.PaymentViewModel;
+import com.wheretobuy.adopteuncaddie.ui.shop.Shop;
+import com.wheretobuy.adopteuncaddie.ui.shop.ShopViewModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Array;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,11 +49,14 @@ import timber.log.Timber;
 public class SettingsFragment extends Fragment {
 
     SettingsViewModel vm;
+    private ShopViewModel shopViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         vm = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        shopViewModel = ViewModelProviders.of(this).get(ShopViewModel.class);
+
         binding.setViewmodel(ViewModelProviders.of(this).get(SettingsViewModel.class));
 
         View root = binding.getRoot();
@@ -67,7 +73,9 @@ public class SettingsFragment extends Fragment {
         setupRecycler(binding.recyclerLanguages);
         setupRecycler(binding.recyclerEula);
 
-        binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
+
+        //binding.recyclerShops.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("Auchan", "Carrefour", "Leclerc"))));
+        binding.recyclerShops.setAdapter(new PaymentAdapter(getSavedShops()));
         binding.recyclerPayment.setAdapter(new PaymentAdapter(new ArrayList<String>(Arrays.asList("1234-5678-ABCD", "1234-5678-EFGH", "1234-5678-IJKL"))));
         vm.cbArrayList.add("1234-5678-ABCD");
         vm.cbArrayList.add("1234-5678-EFGH");
@@ -78,6 +86,16 @@ public class SettingsFragment extends Fragment {
         try{
             binding.recyclerEula.setAdapter(new SimpleTextAdapter(XmlEulaParser.parse(getResources().openRawResource(R.raw.eula))));
         } catch (Exception e) {Timber.w(e, "Failed parsing EULA");}
+    }
+
+    private ArrayList<String> getSavedShops()
+    {
+        List<String> savedShops = shopViewModel.getSavedShopsName();
+        if(savedShops == null)
+        {
+            return new ArrayList<String>(Arrays.asList(getString(R.string.no_favorite_shops)));
+        }
+        return (ArrayList<String>)savedShops;
     }
 
     private void setupRecycler(RecyclerView recyclerView) {

@@ -3,13 +3,17 @@ package com.wheretobuy.adopteuncaddie.ui.basket;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -29,7 +33,15 @@ public class BasketViewModel extends AndroidViewModel {
     }
 
     public void addItem (Article article){
-        getArticlesArrayList().getValue().add(article);
+        Article sameArticle = getArticleByName(article.getName());
+        if(sameArticle != null)
+        {
+            sameArticle.setQuantity(sameArticle.getQuantity()+article.getQuantity());
+        }
+        else
+        {
+            getArticlesArrayList().getValue().add(article);
+        }
         this.setArticlesArrayList(this.getArticlesArrayList().getValue());
         saveBasket();
     }
@@ -38,6 +50,13 @@ public class BasketViewModel extends AndroidViewModel {
         getArticlesArrayList().getValue().remove(article);
         this.setArticlesArrayList(this.getArticlesArrayList().getValue());
         saveBasket();
+    }
+
+    private Article getArticleByName( String name)
+    {
+        return getArticlesArrayList().getValue().stream()
+                .filter(article -> article.getName().equals(name))
+                .findAny().orElse(null);
     }
 
     // Lucas

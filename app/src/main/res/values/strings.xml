@@ -116,6 +116,7 @@
     <string name="menu_payment">Paiement du panier</string>
     <string name="payment_list">Gestion des moyens de paiement</string>
     <string name="favorite_shops">Liste des magasins favoris</string>
+    <string name="no_favorite_shops">Pas de magasins enregistrés</string>
     <string name="languages">Langues</string>
     <string name="eula">Conditions d\'Utilisation</string>
     <string name="menu_settings">Paramètres de l\'utilisateur</string>

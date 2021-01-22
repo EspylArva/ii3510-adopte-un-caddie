@@ -55,6 +55,8 @@ import com.wheretobuy.adopteuncaddie.model.openfoodfacts.ProductState;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentArgs;
 import com.wheretobuy.adopteuncaddie.ui.barcodeScanner.ProductScannedFragmentDirections;
 import com.wheretobuy.adopteuncaddie.ui.gallery.GalleryViewModel;
+import com.wheretobuy.adopteuncaddie.ui.shop.Shop;
+import com.wheretobuy.adopteuncaddie.ui.shop.ShopViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +76,7 @@ public class BasketFragment extends Fragment {
 
     private BasketViewModel vm;
     private GalleryViewModel galleryViewModel;
+    private ShopViewModel shopViewModel;
     private Spinner shopList;
     private FloatingActionButton addItem;
     private Button payButton;
@@ -101,6 +104,7 @@ public class BasketFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         vm = ViewModelProviders.of(this).get(BasketViewModel.class);
         galleryViewModel =ViewModelProviders.of(this).get(GalleryViewModel.class);
+        shopViewModel =  ViewModelProviders.of(this).get(ShopViewModel.class);
         navController = NavHostFragment.findNavController(this);
 
         View root = viewsInit(inflater, container);
@@ -108,10 +112,12 @@ public class BasketFragment extends Fragment {
         setClickListeners();
 
         shopUIDs = new ArrayList<>();
-        getUserLocation();
-        setupNearestShops();
-//        computeFullPrice();
 
+        tryGetShops();
+        //getUserLocation();
+        setupNearestShops();
+
+//        computeFullPrice();
 
 //        else {
         if(vm.getArticlesArrayList().getValue().size() == 0)
@@ -123,8 +129,8 @@ public class BasketFragment extends Fragment {
             if (savedArticles != null) {
                 for (Article art : savedArticles) {
                     Timber.d(art.getName());
-//                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
-                    finalizeProductToBasket(art.getUrl(), art.getName(), art.getQuantity(), art.getPrice());
+                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
+                    //finalizeProductToBasket(art.getUrl(), art.getName(), art.getQuantity(), art.getPrice());
                 }
             }
         }
@@ -139,15 +145,27 @@ public class BasketFragment extends Fragment {
         return root;
     }
 
+    private void tryGetShops()
+    {
+        ArrayList<Shop> shops = shopViewModel.getFromStorage();
+        if(shops != null)
+        {
+            updateShopListSpinner(shops);
+        }
+        else
+        {
+            getUserLocation();
+        }
+    }
 
     private void setupNearestShops()
     {
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        /* galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 //Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
             }
-        });
+        }); */
         galleryViewModel.getLastLocation().observe(getViewLifecycleOwner(), new Observer<Location>()
         {
             @Override
@@ -172,7 +190,8 @@ public class BasketFragment extends Fragment {
                 try {
                     Log.d("onVolleyResponse: ", response.getJSONArray("results").toString());
                     Toast.makeText(getContext(),response.getJSONArray("results").length()+" "+getString(R.string.shops_found),Toast.LENGTH_LONG).show();
-                    updateShopListSpinner(response.getJSONArray("results"));
+                    shopViewModel.createFromAPIFetch(response.getJSONArray("results"));
+                    updateShopListSpinner(shopViewModel.getShopsArrayList());
                 }
                 catch (JSONException e)
                 {
@@ -192,13 +211,14 @@ public class BasketFragment extends Fragment {
         queue.add(request);
     }
 
-    private void updateShopListSpinner(JSONArray shops) throws JSONException
+    private void updateShopListSpinner(ArrayList<Shop> shops)
     {
         ArrayList<String> shopNames = new ArrayList<>();
-        for (int i = 0; i < shops.length(); i++)
+
+        for (int i = 0; i < shops.size(); i++)
         {
-            shopNames.add(shops.getJSONObject(i).getString("name"));
-            shopUIDs.add(Integer.parseInt(shops.getJSONObject(i).getString("shop_uid")));
+            shopNames.add(shops.get(i).getName());
+            shopUIDs.add(shops.get(i).getShopUID());
         }
 
         shopNames.set(0, String.format("%s (%s)", shopNames.get(0), getString(R.string.nearest)));
@@ -212,7 +232,7 @@ public class BasketFragment extends Fragment {
 
     private void addItemToBasket(String itemName, String itemImageUrl, int itemAddedNumber)
     {
-        int shopUID = vm.basketList.getInt("Shop_UID",0);
+        int shopUID = shopViewModel.shopList.getInt("Shop_UID",0);
         String urlComplete = URL+"?name="+itemName.replace(" ", "_")+"&shop_uid="+shopUID;
 
         Timber.d(urlComplete);
@@ -285,9 +305,7 @@ public class BasketFragment extends Fragment {
                 String selectedShop = shopList.getSelectedItem().toString();
                 if(position < shopUIDs.size())
                 {
-                    SharedPreferences.Editor prefsEditor = vm.basketList.edit();
-                    prefsEditor.putInt("Shop_UID", shopUIDs.get(position));
-                    prefsEditor.apply();
+                    shopViewModel.saveShopUID(shopUIDs.get(position));
                 }
 //                computeFullPrice();
             }
