@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        navController.navigate(R.id.nav_barcodeScanner);
-
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) ||
                 super.onSupportNavigateUp();
     }
