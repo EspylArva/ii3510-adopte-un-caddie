@@ -129,8 +129,7 @@ public class BasketFragment extends Fragment {
             if (savedArticles != null) {
                 for (Article art : savedArticles) {
                     Timber.d(art.getName());
-                    addItemToBasket(art.getName(), art.getUrl(), art.getQuantity());
-                    //finalizeProductToBasket(art.getUrl(), art.getName(), art.getQuantity(), art.getPrice());
+                    finalizeProductToBasket(art.getUrl(), art.getName(), art.getQuantity(), art.getPrice());
                 }
             }
         }
@@ -341,10 +340,8 @@ public class BasketFragment extends Fragment {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BasketFragmentDirections.ActionNavBasketToNavPayment action = BasketFragmentDirections.actionNavBasketToNavPayment(vm.getTotalPrice().getValue());
+                BasketFragmentDirections.ActionNavBasketToNavPayment action = BasketFragmentDirections.actionNavBasketToNavPayment(vm.getTotalPrice().getValue(), vm);
                 navController.navigate(action);
-//                NavDirections action = BasketFragmentDirections.actionNavBasketToNavPayment();
-//                navController.navigate(action);
             }
         });
 

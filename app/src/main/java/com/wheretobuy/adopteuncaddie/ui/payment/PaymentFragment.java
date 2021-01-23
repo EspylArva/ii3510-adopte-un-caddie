@@ -15,6 +15,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -47,6 +48,7 @@ public class PaymentFragment extends Fragment {
     private Button paymentFragmentButton;
     private TextView totalPriceText;
     private Spinner cardList;
+    private BasketViewModel bVM;
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -55,15 +57,17 @@ public class PaymentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         vm = ViewModelProviders.of(this).get(PaymentViewModel.class);
+
+
         View root = viewsInit(inflater, container);
         setViewModelObservers();
         setClickListeners();
-
 
         if(getArguments() != null ) {
             float price = getArguments().getFloat("basket_total_price", 0f);
             Timber.d("Price: %s", price);
             vm.setPrice(price);
+            bVM = (BasketViewModel) getArguments().get("viewmodel");
         }
 
 
@@ -77,7 +81,10 @@ public class PaymentFragment extends Fragment {
         paymentFragmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bVM.emptyBasket();
                 Toast.makeText(getContext(), R.string.payment_complete, Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigateUp();
             }
         });
 

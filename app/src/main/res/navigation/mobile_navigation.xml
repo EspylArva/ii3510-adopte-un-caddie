@@ -81,6 +81,9 @@
             <argument
                 android:name="basket_total_price"
                 app:argType="float"/>
+            <argument
+                android:name="viewmodel"
+                app:argType="com.wheretobuy.adopteuncaddie.ui.basket.BasketViewModel"/>
         </action>
     </fragment>
 

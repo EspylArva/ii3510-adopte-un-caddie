@@ -11,13 +11,14 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
 
-public class BasketViewModel extends AndroidViewModel {
+public class BasketViewModel extends AndroidViewModel implements Serializable {
 
     public SharedPreferences basketList;
     private MutableLiveData<ArrayList<Article>> articlesArrayList;
