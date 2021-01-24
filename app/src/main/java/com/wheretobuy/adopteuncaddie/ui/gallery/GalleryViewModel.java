@@ -70,7 +70,9 @@ public class GalleryViewModel extends AndroidViewModel {
     @SuppressWarnings("MissingPermission")
     public void fetchLocation() {
         mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this.getApplication().getMainExecutor(), new OnCompleteListener<Location>() {
+//                .addOnCompleteListener(this.getApplication().getMainExecutor(), new OnCompleteListener<Location>() {
+                // Fixing compatibility issues with older devices
+                .addOnCompleteListener(ContextCompat.getMainExecutor(this.getApplication()), new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
