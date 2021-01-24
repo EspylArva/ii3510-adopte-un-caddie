@@ -6,7 +6,7 @@
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="menu_gallery">Testing Fragment</string>
-    <string name="lorem">lorem ipsum</string>
+    <string name="lorem">10.90€</string>
 
     <string name="hint_manualBarcode">Entrez un code barre manuellement</string>
     <string name="title_barcodeScanningFragment">
