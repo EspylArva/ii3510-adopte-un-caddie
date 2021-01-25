@@ -250,7 +250,8 @@ public class BasketFragment extends Fragment {
             {
                 try
                 {
-                    float price = Float.parseFloat(df.format(response.getJSONArray("results").getJSONObject(0).getString("price")));
+//                    float price = Float.parseFloat(df.format(response.getJSONArray("results").getJSONObject(0).getString("price")));
+                    float price = Float.parseFloat(response.getJSONArray("results").getJSONObject(0).getString("price"));
                     Timber.d("Found price %s", price);
                     finalizeProductToBasket(itemImageUrl,itemName,itemAddedNumber,price);
                 }
