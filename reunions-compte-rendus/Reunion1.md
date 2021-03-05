@@ -1,4 +1,4 @@
-# Réunion 1 - Planification de projet
+# Réunion 1 - Planification de projet (28/10/2020)
 
 ## Architecture & Gestion de projet
 Architecture à implémenter : MVVM  
