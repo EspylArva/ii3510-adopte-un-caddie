@@ -1,4 +1,5 @@
 # Adopte un Caddie pour Android
+## Présentation
 Vous ne faites pas confiance aux services de livraison des supermarchés depuis que les chips que vous aviez commandé la dernière fois se sont transformé en poussière ? Ou vous préférez tout simplement arpenter les rayons des magasins plutôt que vous prélasser sur votre canapé ?
 
 Pour vous qui remplissez peut-être trop votre chariot de courses, qui en avez assez d’attendre que la queue avance, qui patientez plusieurs heures que le caissier finisse sa pause avant de scanner vos trois articles... Pour vous tous, nous vous présentons Adopte un Caddie.
@@ -13,3 +14,6 @@ Adopte un Caddie, c’est 3 piliers :
 Notre équipe se compose de trois élèves de l’ISEP, spécialisés en développement logiciel, data analysis et en cybersécurité, avec la volonté d’améliorer la qualité de vie d’une majorité d’utilisateurs ; et finalement, Adopte un Caddie, c’est ça.
 
 *Update : le projet Adopte un Caddie étant initialement un projet universitaire, nous avons mis fin à l'hébergement de l'API développé pour Adopte un Caddie. L'application devrait fonctionner tout de même, mais les prix des aliments seront aléatoires.*
+
+## En savoir plus
+Pour plus d'informations, vous pouvez consulter le rapport de projet ici : https://www.overleaf.com/read/gtvytwkywwmt
