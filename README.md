@@ -1,4 +1,7 @@
 # Adopte un Caddie pour Android
+## Contexte
+Cette application a été développé dans le cadre d'un projet universitaire visant à montrer nos capacités en développement d'application mobile, en particulier Android.
+
 ## Présentation
 Vous ne faites pas confiance aux services de livraison des supermarchés depuis que les chips que vous aviez commandé la dernière fois se sont transformé en poussière ? Ou vous préférez tout simplement arpenter les rayons des magasins plutôt que vous prélasser sur votre canapé ?
 
